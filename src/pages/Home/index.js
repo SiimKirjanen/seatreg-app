@@ -1,5 +1,6 @@
-import { View, Text, ScrollView } from 'react-native';
-import BottomAction from '../../components/BottomAction';
+import { View, ScrollView } from 'react-native';
+import { ActionWrapper } from '../../components/Actions';
+import TokenActions from '../../components/Actions/TokenActions';
 import Connection from '../../components/Connection';
 
 function Home() {
@@ -17,7 +18,7 @@ function Home() {
       id: 3
     }
   ];
-
+  
   return (
     <View style={{flex: 1}}>
       <ScrollView>
@@ -25,7 +26,9 @@ function Home() {
           <Connection key={connection.id} title={connection.title} />
         ))}
       </ScrollView>
-      <BottomAction />
+      <ActionWrapper>
+        <TokenActions />
+      </ActionWrapper>
     </View>
   );
 }

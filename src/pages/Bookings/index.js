@@ -1,9 +1,16 @@
-import {View, Text, Button } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
+import { ActionWrapper } from '../../components/Actions';
+import { BookingsActions } from '../../components/Actions/BookingsActions';
 
 function Bookings() {
     return (
-        <View>
-          <Text>Bookings</Text>
+        <View style={{flex: 1}}>
+          <ScrollView>
+            <Text>Bookings</Text>
+          </ScrollView>
+          <ActionWrapper>
+            <BookingsActions />
+          </ActionWrapper>
         </View>
     );
 }
