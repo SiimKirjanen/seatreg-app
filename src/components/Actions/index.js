@@ -1,4 +1,5 @@
 import { StyleSheet, View } from 'react-native';
+import { BORDER_COLOR } from '../../constants';
 
 export function ActionWrapper({children}) {
     return (
@@ -12,11 +13,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 0, 
         flexDirection: 'row', 
-        justifyContent: 'flex-end', 
+        justifyContent: 'center', 
         alignItems: 'center', 
         paddingBottom: 20, 
         paddingTop: 8, 
         borderTopWidth: 1,
-        borderColor: '#ccc'
+        borderColor: BORDER_COLOR
     }
 });
