@@ -1,14 +1,8 @@
 import React, { useReducer } from 'react';
+import { reducer } from '../reducers/AppContextReducer';
 
-export const ADD_TOKEN_ACTION = 'ADD_TOKEN_ACTION';
 const initState = {
     apiTokens: []
-};
-const reducer = (state, action) => {
-    switch(action.type) {
-        case ADD_TOKEN_ACTION:
-            return {...state, apiTokens: [...state.apiTokens, action.payload]};
-    }
 };
 
 export const AppContext = React.createContext({});

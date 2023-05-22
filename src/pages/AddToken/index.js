@@ -2,7 +2,8 @@ import { useContext, useState } from 'react';
 import { Input, Button } from '@rneui/themed';
 import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { AppContext, ADD_TOKEN_ACTION } from '../../context/AppContextProvider';
+import { AppContext } from '../../context/AppContextProvider';
+import { ADD_TOKEN_ACTION } from '../../reducers/AppContextReducer';
 
 const STEP_1 = 1;
 const STEP_2 = 2;
