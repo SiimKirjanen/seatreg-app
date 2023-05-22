@@ -1,21 +1,19 @@
-import { initState } from '../context/AppContextProvider';
-export const ADD_TOKEN_ACTION = 'ADD_TOKEN_ACTION';
+import { StateType } from '../context/AppContextProvider';
 
 export const enum ACTION_TYPE {
     ADD_TOKEN_ACTION = 'ADD_TOKEN_ACTION'
 }
-
 interface ReducerAction {
     type: ACTION_TYPE,
-    payload?: string|object
+    payload?: any
 }
 
-export const reducer = (state: typeof initState, action: ReducerAction) => {
+export const reducer = (state: StateType, action: ReducerAction) => {
     switch(action.type) {
         case ACTION_TYPE.ADD_TOKEN_ACTION:
             return {...state, apiTokens: [...state.apiTokens, action.payload]};
         default: {
-            state;
+            return state;
         }
     }
 };

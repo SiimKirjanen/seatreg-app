@@ -76,9 +76,7 @@ function AddToken() {
           <Button title="Next" onPress={validateURL} loading={loading}/>
         </View>
       );
-    }
-
-    if(step === STEP_2) {
+    }else {
       return (
         <View style={styles.stepWrap}>
           <Text>Add token</Text>
@@ -93,7 +91,7 @@ function AddToken() {
           </View>
         </View>
       );
-  }
+    }
 }
 
 const styles = StyleSheet.create({

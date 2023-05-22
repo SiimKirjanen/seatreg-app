@@ -1,14 +1,14 @@
+import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import {
-  TouchableHighlight,
-  TouchableOpacity
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation, ParamListBase } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import { BORDER_COLOR } from '../../constants';
 
 function Connection({title}) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     return (
         <View style={styles.wrap}>
@@ -19,7 +19,7 @@ function Connection({title}) {
           </View>
           <View style={styles.iconWrap}>
             <TouchableOpacity onPress={() => navigation.navigate('AddToken')} style={styles.btn}>
-                <FontAwesome name="gear" size={20} style={styles.icon} />
+                <FontAwesome name="gear" size={20} />
               </TouchableOpacity>
           </View>
         </View>
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconWrap: {
-   
     width: 50,
   }
 });
