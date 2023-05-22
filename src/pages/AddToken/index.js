@@ -3,7 +3,7 @@ import { Input, Button } from '@rneui/themed';
 import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../../context/AppContextProvider';
-import { ADD_TOKEN_ACTION } from '../../reducers/AppContextReducer';
+import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 
 const STEP_1 = 1;
 const STEP_2 = 2;
@@ -20,7 +20,7 @@ function AddToken() {
       try {
         setLoading(true);
         const response = await (await fetch(
-          'https://79a9-2001-7d0-843c-1a80-3417-f226-bca8-e94a.ngrok-free.app/wp-json/seatreg/v1/echo',
+          'https://7270-2001-7d0-843c-1a80-3417-f226-bca8-e94a.ngrok-free.app/wp-json/seatreg/v1/echo',
         )).json();
 
         if( response.message === 'ok' ) {
@@ -39,13 +39,13 @@ function AddToken() {
       try {
         setLoading(true);
         const response = await (await fetch(
-          `https://79a9-2001-7d0-843c-1a80-3417-f226-bca8-e94a.ngrok-free.app/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`,
+          `https://7270-2001-7d0-843c-1a80-3417-f226-bca8-e94a.ngrok-free.app/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`,
         )).json();
         
         console.log(response);
         if(response.message === 'ok') {
           dispatch({
-            type: ADD_TOKEN_ACTION,
+            type: ACTION_TYPE.ADD_TOKEN_ACTION,
             payload: {
               apiToken: response.apiToken,
               title: 'test'

@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import { reducer } from '../reducers/AppContextReducer';
 
-const initState = {
+export const initState = {
     apiTokens: []
 };
 
