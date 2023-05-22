@@ -2,28 +2,18 @@ import { View, ScrollView } from 'react-native';
 import { ActionWrapper } from '../../components/Actions';
 import TokenActions from '../../components/Actions/TokenActions';
 import Connection from '../../components/Connection';
+import { useContext } from 'react';
+import { AppContext } from '../../context/AppContextProvider';
 
 function Home() {
-  const connections = [
-    {
-      title: 'Lan',
-      id: 1
-    },
-    {
-      title: 'Lan2',
-      id: 2
-    },
-    {
-      title: 'Lan3',
-      id: 3
-    }
-  ];
-  
+  const {state} = useContext(AppContext);
+  console.log('Home state', state);
+
   return (
     <View style={{flex: 1}}>
       <ScrollView>
-        {connections.map((connection) => (
-          <Connection key={connection.id} title={connection.title} />
+        {state?.apiTokens.map((token, i) => (
+          <Connection key={i} title={token.title} />
         ))}
       </ScrollView>
       <ActionWrapper>
