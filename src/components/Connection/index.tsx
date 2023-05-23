@@ -7,7 +7,12 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { BORDER_COLOR } from '../../constants';
 
-function Connection({title, apiToken}) {
+interface Props {
+  title: string,
+  apiToken: string
+};
+
+function Connection({title, apiToken}: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     return (
