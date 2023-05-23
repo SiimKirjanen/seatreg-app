@@ -7,13 +7,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { BORDER_COLOR } from '../../constants';
 
-function Connection({title}) {
+function Connection({title, apiToken}) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     return (
         <View style={styles.wrap}>
           <View style={{flexGrow: 1}}>
-            <TouchableOpacity onPress={() => navigation.navigate('Bookings')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Bookings', {
+              apiToken: apiToken
+            })}>
               <Text style={styles.text}>{title}</Text>
             </TouchableOpacity>
           </View>
