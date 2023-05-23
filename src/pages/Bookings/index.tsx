@@ -40,8 +40,8 @@ function Bookings() {
           <ScrollView>
             {loading && <Text>Loading</Text>}
             {bookings.map((booking) => {
-              return <Text>
-                {booking.id}
+              return <Text key={booking.id}>
+                {booking.booking_id}
               </Text>
             })}
           </ScrollView>
