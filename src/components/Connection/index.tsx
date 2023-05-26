@@ -9,17 +9,19 @@ import { BORDER_COLOR } from '../../constants';
 
 interface Props {
   title: string,
-  apiToken: string
+  apiToken: string,
+  siteUrl: string
 };
 
-function Connection({title, apiToken}: Props) {
+function Connection({title, apiToken, siteUrl}: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     return (
         <View style={styles.wrap}>
           <View style={{flexGrow: 1}}>
             <TouchableOpacity onPress={() => navigation.navigate('Bookings', {
-              apiToken: apiToken
+              apiToken: apiToken,
+              siteUrl: siteUrl
             })}>
               <Text style={styles.text}>{title}</Text>
             </TouchableOpacity>

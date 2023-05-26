@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import { reducer } from '../reducers/AppContextReducer';
 
 export type StateType = {
-    apiTokens: string[];
+    apiTokens: object[];
 };
 
 export const initState: StateType = {

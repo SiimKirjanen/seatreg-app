@@ -10,7 +10,7 @@ const STEP_2 = 2;
 
 function AddToken() {
     const [step, setStep] = useState(STEP_1);
-    const [siteURL, setSiteURL] = useState('');
+    const [siteURL, setSiteURL] = useState('https://dc7e-2001-7d0-843c-1a80-7cdb-7dcf-6ba9-86e9.ngrok-free.app');
     const [apiToken, setApiToken] = useState('');
     const [loading, setLoading] = useState(false);
     const { dispatch } = useContext(AppContext);
@@ -20,7 +20,7 @@ function AddToken() {
       try {
         setLoading(true);
         const response = await (await fetch(
-          'https://b65f-2001-7d0-843c-1a80-cd4b-4fd-58b0-4c07.ngrok-free.app/wp-json/seatreg/v1/echo',
+          `${siteURL}/wp-json/seatreg/v1/echo`,
         )).json();
 
         if( response.message === 'ok' ) {
@@ -39,7 +39,7 @@ function AddToken() {
       try {
         setLoading(true);
         const response = await (await fetch(
-          `https://b65f-2001-7d0-843c-1a80-cd4b-4fd-58b0-4c07.ngrok-free.app/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`,
+          `${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`,
         )).json();
         
         console.log(response);
@@ -50,7 +50,7 @@ function AddToken() {
               apiToken: response.apiToken,
               title: 'test',
               id: response.id,
-              siteUrl: response.siteUrl,
+              siteUrl: siteURL,
             }
           });
           navigation.navigate('Home');
