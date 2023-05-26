@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, Modal, StyleSheet, Button } from 'react-native';
 
+import { BarCodeScanner } from '../BarCodeScanner';
+
 interface Props {
     searchOpen: boolean,
     setSearchOpen: Function
@@ -16,6 +18,7 @@ function SearchModal({searchOpen, setSearchOpen}: Props) {
         }}>
       <View style={styles.modal}>
         <Text>Modal</Text>
+        <BarCodeScanner />
         <Button title='Close' onPress={() => setSearchOpen(false)} />
       </View>
   </Modal>

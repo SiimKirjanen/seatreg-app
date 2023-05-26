@@ -11,7 +11,7 @@ const STEP_2 = 2;
 function AddToken() {
     const [step, setStep] = useState(STEP_1);
     const [siteURL, setSiteURL] = useState('https://dc7e-2001-7d0-843c-1a80-7cdb-7dcf-6ba9-86e9.ngrok-free.app');
-    const [apiToken, setApiToken] = useState('');
+    const [apiToken, setApiToken] = useState('8285278186');
     const [loading, setLoading] = useState(false);
     const { dispatch } = useContext(AppContext);
     const navigation = useNavigation();
