@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BORDER_COLOR } from '../../constants';
 
 export function ActionWrapper({children}) {
     return (
@@ -16,9 +15,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'center', 
         alignItems: 'center', 
-        paddingBottom: 20, 
-        paddingTop: 8, 
-        borderTopWidth: 1,
-        borderColor: BORDER_COLOR
+        paddingBottom: 16, 
+        paddingTop: 16, 
     }
 });

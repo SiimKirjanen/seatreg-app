@@ -1,9 +1,15 @@
 import React from 'react';
-import { FontAwesome } from '@expo/vector-icons';
-import { ICON_SIZE, SEATREG_GREEN } from '../../../constants'; 
+import { FAB } from '@rneui/themed';
+
+import { SEATREG_GREEN } from '../../../constants'; 
 
 export function BookingsActions({onPress}) {
     return(
-        <FontAwesome name="search" size={ICON_SIZE} color={SEATREG_GREEN} onPress={onPress} />
-    );
+        <FAB
+            loading={false}
+            icon={{ name: 'search', color: 'white' }}
+            color={SEATREG_GREEN}
+            onPress={onPress}
+        />
+    )
 }
