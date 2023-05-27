@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { Card } from '@rneui/themed';
 
 import { ActionWrapper } from '../../components/Actions';
 import { BookingsActions } from '../../components/Actions/BookingsActions';
@@ -39,18 +40,25 @@ function Bookings() {
 
     return (
         <View style={{flex: 1}}>
-          <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
+          {loading && <Text>Loading</Text>}
           <ScrollView>
-            {loading && <Text>Loading</Text>}
-            {bookings.map((booking) => {
-              return <Text key={booking.id}>
-                {booking.booking_id}
-              </Text>
-            })}
+            {bookings.map((booking) => (
+               <Card key={booking.id}>
+                  <Card.Title>
+                    {booking.booking_id}
+                  </Card.Title>
+                  <Card.Divider />
+                  <Text>Name: {booking.first_name} {booking.last_name}</Text>
+                  <Text>Email: {booking.email}</Text>
+                  <Text>Seat: {booking.seat_nr}</Text>
+                  <Text>Status: {booking.status}</Text>
+              </Card>
+            ))}
           </ScrollView>
           <ActionWrapper>
             <BookingsActions onPress={() => setSearchOpen(true)} />
           </ActionWrapper>
+          <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
         </View>
     );
 }
