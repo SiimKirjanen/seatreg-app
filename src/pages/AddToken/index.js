@@ -1,114 +1,105 @@
-import { useContext, useState } from 'react';
-import { Input, Button } from '@rneui/themed';
-import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Input, Button } from '@rneui/themed';
+import { useContext, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
 import { AppContext } from '../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { storeApiTokenData } from '../../service/secureStore';
 
 const STEP_1 = 1;
-const STEP_2 = 2;
 
 function AddToken() {
-    const [step, setStep] = useState(STEP_1);
-    const [siteURL, setSiteURL] = useState('https://6647-2001-7d0-843c-1a80-a971-49d6-a0a3-c4a5.ngrok-free.app');
-    const [apiToken, setApiToken] = useState('8285278186');
-    const [loading, setLoading] = useState(false);
-    const { dispatch } = useContext(AppContext);
-    const navigation = useNavigation();
+  const [step, setStep] = useState(STEP_1);
+  const [siteURL, setSiteURL] = useState(
+    'https://6647-2001-7d0-843c-1a80-a971-49d6-a0a3-c4a5.ngrok-free.app'
+  );
+  const [apiToken, setApiToken] = useState('8285278186');
+  const [loading, setLoading] = useState(false);
+  const { dispatch } = useContext(AppContext);
+  const navigation = useNavigation();
 
-    async function validateURL() {
-      try {
-        setLoading(true);
-        const response = await (await fetch(
-          `${siteURL}/wp-json/seatreg/v1/echo`,
-        )).json();
+  async function validateURL() {
+    try {
+      setLoading(true);
+      const response = await (await fetch(`${siteURL}/wp-json/seatreg/v1/echo`)).json();
 
-        if( response.message === 'ok' ) {
-          setStep(2);
-        }else {
-          alert('Error');
-        }
-      }catch(error) {
+      if (response.message === 'ok') {
+        setStep(2);
+      } else {
         alert('Error');
-      }finally {
-        setLoading(false);
       }
+    } catch {
+      alert('Error');
+    } finally {
+      setLoading(false);
     }
+  }
 
-    async function saveToken() {
-      try {
-		setLoading(true);
-		const response = await (await fetch(
-			`${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`,
-		)).json();
-        
-        if(response.message === 'ok') {
-			const payload = {
-				apiToken: response.apiToken,
-				registrationName: 'test',
-				apiId: response.id,
-				siteUrl: siteURL,
-			};
+  async function saveToken() {
+    try {
+      setLoading(true);
+      const response = await (
+        await fetch(`${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`)
+      ).json();
 
-			dispatch({
-				type: ACTION_TYPE.ADD_TOKEN_ACTION,
-				payload
-			});
-		  storeApiTokenData(payload);
-          navigation.navigate('Home');
-        }else {
-          alert('Error');
-        }
+      if (response.message === 'ok') {
+        const payload = {
+          apiToken: response.apiToken,
+          registrationName: 'test',
+          apiId: response.id,
+          siteUrl: siteURL,
+        };
 
-      }catch(error) {
-        console.log(error)
-        alert('error');
-      }finally {
-        setLoading(false);
+        dispatch({
+          type: ACTION_TYPE.ADD_TOKEN_ACTION,
+          payload,
+        });
+        storeApiTokenData(payload);
+        navigation.navigate('Home');
+      } else {
+        alert('Error');
       }
+    } catch (error) {
+      console.log(error);
+      alert('error');
+    } finally {
+      setLoading(false);
     }
+  }
 
-    if(step === STEP_1) {
-      return (
-        <View style={styles.stepWrap}>
-          <Text>Enter site URL</Text>
-          <Input
-            onChangeText={setSiteURL}
-            value={siteURL}
-            placeholder='Enter URL'
-          />
-          <Button title="Next" onPress={validateURL} loading={loading}/>
+  if (step === STEP_1) {
+    return (
+      <View style={styles.stepWrap}>
+        <Text>Enter site URL</Text>
+        <Input onChangeText={setSiteURL} value={siteURL} placeholder="Enter URL" />
+        <Button title="Next" onPress={validateURL} loading={loading} />
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.stepWrap}>
+        <Text>Add token</Text>
+        <Input onChangeText={setApiToken} value={apiToken} placeholder="Enter API token" />
+        <View style={styles.buttonRow}>
+          <Button title="Back" onPress={() => setStep(STEP_1)} />
+          <Button title="Save" onPress={saveToken} loading={loading} />
         </View>
-      );
-    }else {
-      return (
-        <View style={styles.stepWrap}>
-          <Text>Add token</Text>
-          <Input
-            onChangeText={setApiToken}
-            value={apiToken}
-            placeholder='Enter API token'
-          />
-          <View style={styles.buttonRow}>
-            <Button title="Back" onPress={() => setStep(STEP_1)} />
-            <Button title='Save' onPress={saveToken} loading={loading} />
-          </View>
-        </View>
-      );
-    }
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   stepWrap: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonRow: {
     flexDirection: 'row',
-    columnGap: 16 
-  }
+    columnGap: 16,
+  },
 });
 
 export default AddToken;

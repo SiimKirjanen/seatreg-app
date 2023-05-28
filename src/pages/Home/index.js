@@ -10,10 +10,15 @@ function Home() {
   const { state } = useContext(AppContext);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <ScrollView>
         {state?.tokenData.map((token, i) => (
-          <Connection key={i} title={token.registrationName} apiToken={token.apiToken} siteUrl={token.siteUrl} />
+          <Connection
+            key={i}
+            title={token.registrationName}
+            apiToken={token.apiToken}
+            siteUrl={token.siteUrl}
+          />
         ))}
       </ScrollView>
       <ActionWrapper>

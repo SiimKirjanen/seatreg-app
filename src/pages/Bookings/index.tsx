@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { Card } from '@rneui/themed';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
 import { BookingsActions } from '../../components/Actions/BookingsActions';
 import SearchModal from '../../components/SearchModal';
-import { ParamList } from '../../types';
 import { IBooking } from '../../interface';
+import { ParamList } from '../../types';
 
 function Bookings() {
-  const { params: { apiToken, siteUrl } } = useRoute<RouteProp<ParamList, 'Bookings'>>();
+  const {
+    params: { apiToken, siteUrl },
+  } = useRoute<RouteProp<ParamList, 'Bookings'>>();
   const [bookings, setBookings] = useState<IBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -19,52 +21,48 @@ function Bookings() {
     async function getBookings() {
       try {
         setLoading(true);
-        const response = await (await fetch(
-          `${siteUrl}/wp-json/seatreg/v1/bookings?api_token=${apiToken}`,
-        )).json();
-        
-        if(response.message === 'ok') {
+        const response = await (
+          await fetch(`${siteUrl}/wp-json/seatreg/v1/bookings?api_token=${apiToken}`)
+        ).json();
+
+        if (response.message === 'ok') {
           setBookings(response.bookings);
-        }else {
+        } else {
           alert('Error');
         }
-      }catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
         alert('error');
-      }finally {
+      } finally {
         setLoading(false);
       }
     }
     getBookings();
   }, [apiToken]);
 
-    return (
-        <View style={{flex: 1}}>
-          {loading && <Text>Loading</Text>}
-          <ScrollView>
-            {bookings.map((booking) => (
-               <Card key={booking.id}>
-                  <Card.Title>
-                    {booking.booking_id}
-                  </Card.Title>
-                  <Card.Divider />
-                  <Text>Name: {booking.first_name} {booking.last_name}</Text>
-                  <Text>Email: {booking.email}</Text>
-                  <Text>Seat: {booking.seat_nr}</Text>
-                  <Text>Status: {booking.status}</Text>
-              </Card>
-            ))}
-          </ScrollView>
-          <ActionWrapper>
-            <BookingsActions onPress={() => setSearchOpen(true)} />
-          </ActionWrapper>
-          <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
-        </View>
-    );
+  return (
+    <View style={{ flex: 1 }}>
+      {loading && <Text>Loading</Text>}
+      <ScrollView>
+        {bookings.map((booking) => (
+          <Card key={booking.id}>
+            <Card.Title>{booking.booking_id}</Card.Title>
+            <Card.Divider />
+            <Text>
+              Name: {booking.first_name} {booking.last_name}
+            </Text>
+            <Text>Email: {booking.email}</Text>
+            <Text>Seat: {booking.seat_nr}</Text>
+            <Text>Status: {booking.status}</Text>
+          </Card>
+        ))}
+      </ScrollView>
+      <ActionWrapper>
+        <BookingsActions onPress={() => setSearchOpen(true)} />
+      </ActionWrapper>
+      <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
+    </View>
+  );
 }
-
-const styles = StyleSheet.create({
-
-});
 
 export default Bookings;
