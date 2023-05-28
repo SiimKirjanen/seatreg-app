@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Input, Button } from '@rneui/themed';
 import { useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useToast } from "react-native-toast-notifications";
 
 import { AppContext } from '../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
@@ -18,6 +19,7 @@ function AddToken() {
   const [loading, setLoading] = useState(false);
   const { dispatch } = useContext(AppContext);
   const navigation = useNavigation();
+  const toast = useToast();
 
   async function validateURL() {
     try {
@@ -56,6 +58,9 @@ function AddToken() {
           payload,
         });
         storeApiTokenData(payload);
+        toast.show('Token added', {
+          type: 'success',
+        });
         navigation.navigate('Home');
       } else {
         alert('Error');
