@@ -29,7 +29,7 @@ function SearchModal({ searchOpen, setSearchOpen }: Props) {
       <View style={styles.modal}>
         <Text>Booking search</Text>
         <SearchBar
-          lightTheme={true}
+          lightTheme
           placeholder="Type Here..."
           onChangeText={(search) => setSearch(search)}
           containerStyle={{ width: '60%', marginBottom: 12 }}

@@ -4,7 +4,7 @@ import { SECURE_STORE_KEY } from '../../constants';
 import { IToken } from '../../interface';
 
 export async function getStoredApiTokenData() {
-  let result = await SecureStore.getItemAsync(SECURE_STORE_KEY);
+  const result = await SecureStore.getItemAsync(SECURE_STORE_KEY);
 
   return result ? JSON.parse(result) : [];
 }

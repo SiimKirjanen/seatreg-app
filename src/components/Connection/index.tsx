@@ -21,8 +21,8 @@ function Connection({ title, apiToken, siteUrl }: Props) {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('Bookings', {
-              apiToken: apiToken,
-              siteUrl: siteUrl,
+              apiToken,
+              siteUrl,
             })
           }>
           <Text style={styles.text}>{title}</Text>

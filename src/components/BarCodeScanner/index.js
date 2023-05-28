@@ -14,7 +14,7 @@ export function BarCodeScanner({ barCodeScanned }) {
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} onBarCodeScanned={barCodeScanned}></Camera>
+      <Camera style={styles.camera} type={type} onBarCodeScanned={barCodeScanned} />
     </View>
   );
 }

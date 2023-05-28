@@ -1,11 +1,11 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
 
-import HomePage from './src/pages/Home';
+import AppContextProvider from './src/context/AppContextProvider';
 import AddTokenPage from './src/pages/AddToken';
 import Bookings from './src/pages/Bookings';
-import AppContextProvider from './src/context/AppContextProvider';
+import HomePage from './src/pages/Home';
 
 const Stack = createNativeStackNavigator();
 
