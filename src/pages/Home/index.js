@@ -12,8 +12,8 @@ function Home() {
   return (
     <View style={{flex: 1}}>
       <ScrollView>
-        {state?.apiTokens.map((token, i) => (
-          <Connection key={i} title={token.title} apiToken={token.apiToken} siteUrl={token.siteUrl} />
+        {state?.tokenData.map((token, i) => (
+          <Connection key={i} title={token.registrationName} apiToken={token.apiToken} siteUrl={token.siteUrl} />
         ))}
       </ScrollView>
       <ActionWrapper>

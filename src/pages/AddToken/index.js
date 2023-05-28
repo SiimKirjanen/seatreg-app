@@ -4,13 +4,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
+import { storeApiTokenData } from '../../service/secureStore';
 
 const STEP_1 = 1;
 const STEP_2 = 2;
 
 function AddToken() {
     const [step, setStep] = useState(STEP_1);
-    const [siteURL, setSiteURL] = useState('https://dc7e-2001-7d0-843c-1a80-7cdb-7dcf-6ba9-86e9.ngrok-free.app');
+    const [siteURL, setSiteURL] = useState('https://6647-2001-7d0-843c-1a80-a971-49d6-a0a3-c4a5.ngrok-free.app');
     const [apiToken, setApiToken] = useState('8285278186');
     const [loading, setLoading] = useState(false);
     const { dispatch } = useContext(AppContext);
@@ -37,22 +38,24 @@ function AddToken() {
 
     async function saveToken() {
       try {
-        setLoading(true);
-        const response = await (await fetch(
-          `${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`,
-        )).json();
+		setLoading(true);
+		const response = await (await fetch(
+			`${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`,
+		)).json();
         
-        console.log(response);
         if(response.message === 'ok') {
-          dispatch({
-            type: ACTION_TYPE.ADD_TOKEN_ACTION,
-            payload: {
-              apiToken: response.apiToken,
-              title: 'test',
-              id: response.id,
-              siteUrl: siteURL,
-            }
-          });
+			const payload = {
+				apiToken: response.apiToken,
+				registrationName: 'test',
+				apiId: response.id,
+				siteUrl: siteURL,
+			};
+
+			dispatch({
+				type: ACTION_TYPE.ADD_TOKEN_ACTION,
+				payload
+			});
+		  storeApiTokenData(payload);
           navigation.navigate('Home');
         }else {
           alert('Error');

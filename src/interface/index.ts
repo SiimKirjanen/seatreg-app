@@ -15,3 +15,10 @@ export interface IBooking {
     booker_email: string;
     calendar_date: string;
 }
+
+export interface IToken {
+    apiToken: string,
+    registrationName: string,
+    apiId: number,
+    siteUrl: string,
+}
