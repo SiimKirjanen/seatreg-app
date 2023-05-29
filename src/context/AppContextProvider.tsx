@@ -2,7 +2,7 @@ import React, { useReducer, useEffect } from 'react';
 
 import { IToken } from '../interface';
 import { ACTION_TYPE, reducer } from '../reducers/AppContextReducer';
-import { getStoredApiTokenData } from '../service/secureStore';
+import { getStoredApiTokenData } from '../service/storage';
 
 export type StateType = {
   tokenData: IToken[];

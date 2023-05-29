@@ -8,7 +8,7 @@ import Connection from '../../components/Connection';
 import { ConnectionOptions } from '../../components/ConnectionOptions';
 import { AppContext } from '../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
-import { remoteApiTokenFromStorage } from '../../service/secureStore';
+import { remoteApiTokenFromStorage } from '../../service/storage';
 
 function Home() {
   const { state, dispatch } = useContext(AppContext);

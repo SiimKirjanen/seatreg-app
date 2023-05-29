@@ -6,7 +6,7 @@ import { useToast } from "react-native-toast-notifications";
 
 import { AppContext } from '../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
-import { storeApiTokenData } from '../../service/secureStore';
+import { storeApiTokenData } from '../../service/storage';
 
 const STEP_1 = 1;
 
