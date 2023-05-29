@@ -5,14 +5,14 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import { BORDER_COLOR } from '../../constants';
+import { IToken } from '../../interface';
 
 interface Props {
-  title: string;
-  apiToken: string;
-  siteUrl: string;
+  tokenData: IToken;
+  optionsPress: Function;
 }
 
-function Connection({ title, apiToken, siteUrl }: Props) {
+function Connection({ tokenData, optionsPress }: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   return (
@@ -21,15 +21,14 @@ function Connection({ title, apiToken, siteUrl }: Props) {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('Bookings', {
-              apiToken,
-              siteUrl,
+              tokenData,
             })
           }>
-          <Text style={styles.text}>{title}</Text>
+          <Text style={styles.text}>{tokenData.registrationName}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.iconWrap}>
-        <TouchableOpacity onPress={() => navigation.navigate('AddToken')} style={styles.btn}>
+        <TouchableOpacity onPress={() => optionsPress(tokenData)} style={styles.btn}>
           <FontAwesome name="gear" size={20} />
         </TouchableOpacity>
       </View>

@@ -11,7 +11,7 @@ import { ParamList } from '../../types';
 
 function Bookings() {
   const {
-    params: { apiToken, siteUrl },
+    params: { tokenData },
   } = useRoute<RouteProp<ParamList, 'Bookings'>>();
   const [bookings, setBookings] = useState<IBooking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ function Bookings() {
       try {
         setLoading(true);
         const response = await (
-          await fetch(`${siteUrl}/wp-json/seatreg/v1/bookings?api_token=${apiToken}`)
+          await fetch(`${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`)
         ).json();
 
         if (response.message === 'ok') {
@@ -38,7 +38,7 @@ function Bookings() {
       }
     }
     getBookings();
-  }, [apiToken]);
+  }, [tokenData.apiToken]);
 
   return (
     <View style={{ flex: 1 }}>

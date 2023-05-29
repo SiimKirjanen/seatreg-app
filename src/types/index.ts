@@ -1,6 +1,7 @@
+import { IToken } from '../interface';
+
 export type ParamList = {
   Bookings: {
-    apiToken: string;
-    siteUrl: string;
+    tokenData: IToken;
   };
 };

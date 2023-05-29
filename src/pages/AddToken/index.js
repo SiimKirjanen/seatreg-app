@@ -48,7 +48,7 @@ function AddToken() {
       if (response.message === 'ok') {
         const payload = {
           apiToken: response.apiToken,
-          registrationName: 'test',
+          registrationName: response.registrationName,
           apiTokenId: response.id,
           siteUrl: siteURL,
         };
@@ -66,6 +66,7 @@ function AddToken() {
         alert('Error');
       }
     } catch (error) {
+      console.log('ttt');
       console.log(error);
       alert('error');
     } finally {
