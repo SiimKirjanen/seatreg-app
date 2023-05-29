@@ -58,7 +58,7 @@ function AddToken() {
           payload,
         });
         storeApiTokenData(payload);
-        toast.show('Token added', {
+        toast.show('Connection added', {
           type: 'success',
         });
         navigation.navigate('Home');

@@ -49,6 +49,20 @@ async function storeApiTokenIds(tokenIds) {
   await AsyncStorage.setItem(STORED_API_TOKEN_IDS, value);
 }
 
+export async function remoteApiTokenFromStorage(tokenData: IToken) {
+  try {
+    const tokenIdsSet = await getStoredApiTokenIds();
+
+    await SecureStore.deleteItemAsync(`${SECURE_STORE_KEY}_${tokenData.apiTokenId}`);
+
+    tokenIdsSet.delete(tokenData.apiTokenId);
+
+    await storeApiTokenIds(tokenIdsSet);
+  } catch (e) {
+    alert(e);
+  }
+}
+
 export async function clearAllStorage() {
   try {
     const tokenIdsSet = await getStoredApiTokenIds();
