@@ -13,7 +13,7 @@ const STEP_1 = 1;
 function AddToken() {
   const [step, setStep] = useState(STEP_1);
   const [siteURL, setSiteURL] = useState(
-    'https://6647-2001-7d0-843c-1a80-a971-49d6-a0a3-c4a5.ngrok-free.app'
+    'https://1e43-2001-7d0-843c-1a80-6cbc-edcd-3b93-f653.ngrok-free.app'
   );
   const [apiToken, setApiToken] = useState('8285278186');
   const [loading, setLoading] = useState(false);
@@ -29,10 +29,10 @@ function AddToken() {
       if (response.message === 'ok') {
         setStep(2);
       } else {
-        alert('Error');
+        alert('not ok');
       }
-    } catch {
-      alert('Error');
+    } catch (e) {
+      alert(e);
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ function AddToken() {
         const payload = {
           apiToken: response.apiToken,
           registrationName: 'test',
-          apiId: response.id,
+          apiTokenId: response.id,
           siteUrl: siteURL,
         };
 

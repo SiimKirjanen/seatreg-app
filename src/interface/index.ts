@@ -18,7 +18,7 @@ export interface IBooking {
 
 export interface IToken {
   apiToken: string;
+  apiTokenId: number;
   registrationName: string;
-  apiId: number;
   siteUrl: string;
 }
