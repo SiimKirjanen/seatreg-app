@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
 import { ActionWrapper } from '../../components/Actions';
@@ -9,6 +9,23 @@ import { ConnectionOptions } from '../../components/ConnectionOptions';
 import { AppContext } from '../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { remoteApiTokenFromStorage } from '../../service/storage';
+
+function Connections({ state, optionsPress }) {
+  if (state?.tokenData.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>No connections</Text>
+      </View>
+    );
+  }
+  return (
+    <ScrollView>
+      {state?.tokenData.map((token, i) => (
+        <Connection key={i} tokenData={token} optionsPress={optionsPress} />
+      ))}
+    </ScrollView>
+  );
+}
 
 function Home() {
   const { state, dispatch } = useContext(AppContext);
@@ -34,11 +51,7 @@ function Home() {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView>
-        {state?.tokenData.map((token, i) => (
-          <Connection key={i} tokenData={token} optionsPress={onOptionsPress} />
-        ))}
-      </ScrollView>
+      <Connections state={state} optionsPress={onOptionsPress} />
       <ActionWrapper>
         <TokenActions />
       </ActionWrapper>

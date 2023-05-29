@@ -61,7 +61,7 @@ function AddToken() {
         toast.show('Connection added', {
           type: 'success',
         });
-        navigation.navigate('Home');
+        navigation.navigate('Connections');
       } else {
         alert('Error');
       }

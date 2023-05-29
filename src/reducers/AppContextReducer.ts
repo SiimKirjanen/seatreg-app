@@ -16,13 +16,13 @@ export const reducer = (state: StateType, action: ReducerAction) => {
       return { ...state, tokenData: [...state.tokenData, action.payload] };
     case ACTION_TYPE.SET_TOKENS_ACTION:
       return { ...state, tokenData: action.payload };
-    case ACTION_TYPE.REMOVE_TOKEN_ACTION:
-      console.log('starting to remove')
+    case ACTION_TYPE.REMOVE_TOKEN_ACTION: {
       const filteredTokens = state.tokenData.filter(
         (data) => data.apiTokenId !== action.payload.apiTokenId
       );
 
       return { ...state, tokenData: filteredTokens };
+    }
     default: {
       return state;
     }

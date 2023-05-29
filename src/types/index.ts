@@ -1,7 +1,7 @@
 import { IToken } from '../interface';
 
 export type ParamList = {
-  Bookings: {
+  Connections: {
     tokenData: IToken;
   };
 };

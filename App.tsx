@@ -20,8 +20,8 @@ function App() {
       offsetBottom={80}>
       <AppContextProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomePage} />
+          <Stack.Navigator initialRouteName="Connections">
+            <Stack.Screen name="Connections" component={HomePage} />
             <Stack.Screen name="AddToken" component={AddTokenPage} />
             <Stack.Screen name="Bookings" component={Bookings} />
           </Stack.Navigator>
