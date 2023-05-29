@@ -1,10 +1,9 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Card, Button } from '@rneui/themed';
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
-import { BORDER_COLOR } from '../../constants';
 import { IToken } from '../../interface';
 
 interface Props {
@@ -16,47 +15,37 @@ function Connection({ tokenData, optionsPress }: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   return (
-    <View style={styles.wrap}>
-      <View style={{ flexGrow: 1 }}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Bookings', {
-              tokenData,
-            })
-          }>
-          <Text style={styles.text}>{tokenData.registrationName}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.iconWrap}>
-        <TouchableOpacity onPress={() => optionsPress(tokenData)} style={styles.btn}>
-          <FontAwesome name="gear" size={20} />
-        </TouchableOpacity>
-      </View>
+    <View style={{ flex: 1 }}>
+      <Card>
+        <Card.Title>{tokenData.registrationName}</Card.Title>
+        <Card.Divider />
+        <Text style={styles.siteUrl}>{tokenData.siteUrl}</Text>
+        <View style={styles.buttonWrap}>
+          <Button
+            title="Bookings"
+            onPress={() =>
+              navigation.navigate('Bookings', {
+                tokenData,
+              })
+            }
+          />
+          <Button title="Options" onPress={() => optionsPress(tokenData)} />
+        </View>
+      </Card>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: {
-    borderWidth: 1,
-    borderColor: BORDER_COLOR,
-    marginBottom: 12,
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  },
-  text: {
-    fontSize: 40,
+  siteUrl: {
     textAlign: 'center',
+    marginBottom: 12,
   },
-  btn: {
-    backgroundColor: '#ccc',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconWrap: {
-    width: 50,
-  },
+  buttonWrap: {
+    flexDirection: 'row',
+    columnGap: 10,
+    justifyContent: 'flex-end',
+  }
 });
 
 export default Connection;
