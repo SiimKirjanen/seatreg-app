@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     columnGap: 10,
     justifyContent: 'flex-end',
-  }
+  },
 });
 
 export default Connection;

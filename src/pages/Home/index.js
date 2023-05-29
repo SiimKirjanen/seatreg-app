@@ -40,7 +40,6 @@ function Home() {
 
   const onRemoveToken = async () => {
     await remoteApiTokenFromStorage(activeToken);
-    console.log('rem');
     dispatch({ type: ACTION_TYPE.REMOVE_TOKEN_ACTION, payload: activeToken });
     setShowOptions(false);
     setActiveToken(false);

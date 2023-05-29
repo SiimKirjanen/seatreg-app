@@ -22,7 +22,9 @@ function Bookings() {
       try {
         setLoading(true);
         const response = await (
-          await fetch(`${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`)
+          await fetch(
+            `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`
+          )
         ).json();
 
         if (response.message === 'ok') {

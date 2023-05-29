@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Input, Button } from '@rneui/themed';
 import { useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useToast } from "react-native-toast-notifications";
+import { useToast } from 'react-native-toast-notifications';
 
 import { AppContext } from '../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
