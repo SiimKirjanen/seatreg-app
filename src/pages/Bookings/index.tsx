@@ -9,6 +9,7 @@ import SearchModal from '../../components/SearchModal';
 import { IBooking } from '../../interface';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
+import { searchMatch } from '../../utils/search';
 
 function Bookings() {
   const {
@@ -18,6 +19,17 @@ function Bookings() {
   const [loading, setLoading] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
   const [bookingsState, bookingsDispatch] = useReducer(bookingsReducer, initState);
+
+  const bookingsFiltering = (booking: IBooking) => {
+    const searchValue = bookingsState.searchParams.searchValue;
+
+    if (searchValue) {
+      if (!searchMatch(booking, searchValue)) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   useEffect(() => {
     async function getBookings() {
@@ -48,7 +60,7 @@ function Bookings() {
     <View style={{ flex: 1 }}>
       {loading && <Text>Loading</Text>}
       <ScrollView>
-        {bookings.map((booking) => (
+        {bookings.filter(bookingsFiltering).map((booking) => (
           <Card key={booking.id}>
             <Card.Title>{booking.booking_id}</Card.Title>
             <Card.Divider />
