@@ -10,6 +10,7 @@ import { IBooking } from '../../interface';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
 import { searchMatch } from '../../utils/search';
+import { ActiveSearchNotification } from '../../components/ActiveSearchNotification';
 
 function Bookings() {
   const {
@@ -59,6 +60,12 @@ function Bookings() {
   return (
     <View style={{ flex: 1 }}>
       {loading && <Text>Loading</Text>}
+      {bookingsState.searchParams.searchValue && (
+        <ActiveSearchNotification
+          activeSearch={bookingsState.searchParams}
+          onPress={() => setSearchOpen(true)}
+        />
+      )}
       <ScrollView>
         {bookings.filter(bookingsFiltering).map((booking) => (
           <Booking booking={booking} />
