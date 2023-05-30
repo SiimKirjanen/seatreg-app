@@ -1,10 +1,10 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { Card } from '@rneui/themed';
 import React, { useEffect, useState, useReducer } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
 import { BookingsActions } from '../../components/Actions/BookingsActions';
+import { Booking } from '../../components/Booking';
 import SearchModal from '../../components/SearchModal';
 import { IBooking } from '../../interface';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
@@ -61,16 +61,7 @@ function Bookings() {
       {loading && <Text>Loading</Text>}
       <ScrollView>
         {bookings.filter(bookingsFiltering).map((booking) => (
-          <Card key={booking.id}>
-            <Card.Title>{booking.booking_id}</Card.Title>
-            <Card.Divider />
-            <Text>
-              Name: {booking.first_name} {booking.last_name}
-            </Text>
-            <Text>Email: {booking.email}</Text>
-            <Text>Seat: {booking.seat_nr}</Text>
-            <Text>Status: {booking.status}</Text>
-          </Card>
+          <Booking booking={booking} />
         ))}
       </ScrollView>
       <ActionWrapper>
