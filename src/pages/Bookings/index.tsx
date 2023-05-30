@@ -4,13 +4,13 @@ import { View, Text, ScrollView } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
 import { BookingsActions } from '../../components/Actions/BookingsActions';
+import { ActiveSearchNotification } from '../../components/ActiveSearchNotification';
 import { Booking } from '../../components/Booking';
 import SearchModal from '../../components/SearchModal';
 import { IBooking } from '../../interface';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
 import { searchMatch } from '../../utils/search';
-import { ActiveSearchNotification } from '../../components/ActiveSearchNotification';
 
 function Bookings() {
   const {
@@ -68,7 +68,7 @@ function Bookings() {
       )}
       <ScrollView>
         {bookings.filter(bookingsFiltering).map((booking) => (
-          <Booking booking={booking} />
+          <Booking booking={booking} key={booking.id} />
         ))}
       </ScrollView>
       <ActionWrapper>

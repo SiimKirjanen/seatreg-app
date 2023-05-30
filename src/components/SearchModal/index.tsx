@@ -1,10 +1,10 @@
 import { SearchBar, Dialog } from '@rneui/themed';
 import React, { useState } from 'react';
-import { View, Text, Modal, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 
-import { BarCodeScanner } from '../BarCodeScanner';
 import { ISearch } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/BookingsReducer';
+import { BarCodeScanner } from '../BarCodeScanner';
 
 interface Props {
   searchOpen: boolean;
@@ -30,7 +30,7 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
   const applySearch = () => {
     bookingsDispatch({
       type: ACTION_TYPE.UPDATE_SEARCH,
-      payload: search
+      payload: search,
     });
     closeModal();
   };
@@ -58,7 +58,7 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
         )}
       </View>
 
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', columnGap: 12 }}>
+      <View style={styles.buttonsWrap}>
         <Button title="Close" onPress={closeModal} />
         <Button title="Apply" onPress={applySearch} />
       </View>
@@ -67,11 +67,10 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
 }
 
 const styles = StyleSheet.create({
-  modal: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
+  buttonsWrap: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    columnGap: 12,
   },
 });
 
