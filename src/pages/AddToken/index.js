@@ -13,7 +13,7 @@ const STEP_1 = 1;
 function AddToken() {
   const [step, setStep] = useState(STEP_1);
   const [siteURL, setSiteURL] = useState(
-    'https://1e43-2001-7d0-843c-1a80-6cbc-edcd-3b93-f653.ngrok-free.app'
+    'https://62f0-2001-7d0-843c-1a80-2152-f535-fa32-48a4.ngrok-free.app'
   );
   const [apiToken, setApiToken] = useState('8285278186');
   const [loading, setLoading] = useState(false);

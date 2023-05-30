@@ -22,10 +22,11 @@ export function BarCodeScanner({ barCodeScanned }) {
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
+    marginBottom: 12,
   },
   camera: {
-    width: 400,
-    height: 400,
+    width: 'auto',
+    height: 300,
   },
   buttonContainer: {
     borderWidth: 1,
