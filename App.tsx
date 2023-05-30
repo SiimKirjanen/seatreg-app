@@ -17,7 +17,7 @@ function App() {
       duration={3000}
       placement="bottom"
       successColor={SEATREG_GREEN}
-      offsetBottom={80}>
+      offsetBottom={70}>
       <AppContextProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Connections">

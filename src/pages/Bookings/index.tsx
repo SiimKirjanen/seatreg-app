@@ -1,18 +1,18 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState, useReducer } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
 import { BookingsActions } from '../../components/Actions/BookingsActions';
 import { ActiveSearchNotification } from '../../components/ActiveSearchNotification';
-import { Booking } from '../../components/Booking';
+import { Bookings } from '../../components/Bookings';
 import SearchModal from '../../components/SearchModal';
+import { SEATREG_GREEN } from '../../constants';
 import { IBooking } from '../../interface';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
-import { searchMatch } from '../../utils/search';
 
-function Bookings() {
+function BookingsPage() {
   const {
     params: { tokenData },
   } = useRoute<RouteProp<ParamList, 'Bookings'>>();
@@ -20,17 +20,6 @@ function Bookings() {
   const [loading, setLoading] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
   const [bookingsState, bookingsDispatch] = useReducer(bookingsReducer, initState);
-
-  const bookingsFiltering = (booking: IBooking) => {
-    const searchValue = bookingsState.searchParams.searchValue;
-
-    if (searchValue) {
-      if (!searchMatch(booking, searchValue)) {
-        return false;
-      }
-    }
-    return true;
-  };
 
   useEffect(() => {
     async function getBookings() {
@@ -57,9 +46,17 @@ function Bookings() {
     getBookings();
   }, [tokenData.apiToken]);
 
+  if (loading) {
+    return (
+      <View style={styles.loadingWrap}>
+        <Text style={{ marginBottom: 6 }}>Loading bookings</Text>
+        <ActivityIndicator size="large" color={SEATREG_GREEN} />
+      </View>
+    );
+  }
+
   return (
-    <View style={{ flex: 1 }}>
-      {loading && <Text>Loading</Text>}
+    <View style={styles.bookingsWrap}>
       {bookingsState.searchParams.searchValue && (
         <ActiveSearchNotification
           activeSearch={bookingsState.searchParams}
@@ -67,9 +64,7 @@ function Bookings() {
         />
       )}
       <ScrollView>
-        {bookings.filter(bookingsFiltering).map((booking) => (
-          <Booking booking={booking} key={booking.id} />
-        ))}
+        <Bookings bookings={bookings} searchValue={bookingsState.searchParams.searchValue} />
       </ScrollView>
       <ActionWrapper>
         <BookingsActions onPress={() => setSearchOpen(true)} />
@@ -84,4 +79,17 @@ function Bookings() {
   );
 }
 
-export default Bookings;
+const styles = StyleSheet.create({
+  loadingWrap: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bookingsWrap: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+export default BookingsPage;

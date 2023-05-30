@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   wrap: {
     padding: 6,
     backgroundColor: NOTIFICATION_BLUE,
+    width: '100%',
   },
   text: {
     textAlign: 'center',

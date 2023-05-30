@@ -47,11 +47,11 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
         inputContainerStyle={{ backgroundColor: 'white' }}
         value={search}
       />
-      <View style={{ marginBottom: 12 }}>
+      <View style={{ marginBottom: 26 }}>
         {barCodeScannerOpen ? (
           <>
             <BarCodeScanner barCodeScanned={onbarCodeScanned} />
-            <Button title="Close QR" onPress={() => setBarCodeScannerOpen(false)} />
+            <Button title="Close QR scanner" onPress={() => setBarCodeScannerOpen(false)} />
           </>
         ) : (
           <Button title="Scan QR" onPress={() => setBarCodeScannerOpen(true)} />
