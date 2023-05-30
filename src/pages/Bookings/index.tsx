@@ -1,12 +1,13 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { Card } from '@rneui/themed';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
 import { BookingsActions } from '../../components/Actions/BookingsActions';
 import SearchModal from '../../components/SearchModal';
 import { IBooking } from '../../interface';
+import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
 
 function Bookings() {
@@ -16,6 +17,7 @@ function Bookings() {
   const [bookings, setBookings] = useState<IBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [bookingsState, bookingsDispatch] = useReducer(bookingsReducer, initState);
 
   useEffect(() => {
     async function getBookings() {
@@ -62,7 +64,12 @@ function Bookings() {
       <ActionWrapper>
         <BookingsActions onPress={() => setSearchOpen(true)} />
       </ActionWrapper>
-      <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
+      <SearchModal
+        searchParams={bookingsState.searchParams}
+        searchOpen={searchOpen}
+        setSearchOpen={setSearchOpen}
+        bookingsDispatch={bookingsDispatch}
+      />
     </View>
   );
 }

@@ -22,3 +22,7 @@ export interface IToken {
   registrationName: string;
   siteUrl: string;
 }
+
+export interface ISearch {
+  searchValue: string;
+}

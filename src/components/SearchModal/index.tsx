@@ -3,13 +3,17 @@ import React, { useState } from 'react';
 import { View, Text, Modal, StyleSheet, Button } from 'react-native';
 
 import { BarCodeScanner } from '../BarCodeScanner';
+import { ISearch } from '../../interface';
+import { ACTION_TYPE } from '../../reducers/BookingsReducer';
 
 interface Props {
   searchOpen: boolean;
   setSearchOpen: Function;
+  searchParams: ISearch;
+  bookingsDispatch: Function;
 }
 
-function SearchModal({ searchOpen, setSearchOpen }: Props) {
+function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch }: Props) {
   const [search, setSearch] = useState('');
   const [barCodeScannerOpen, setBarCodeScannerOpen] = useState(false);
 
@@ -21,6 +25,14 @@ function SearchModal({ searchOpen, setSearchOpen }: Props) {
   const closeModal = () => {
     setBarCodeScannerOpen(false);
     setSearchOpen(false);
+  };
+
+  const applySearch = () => {
+    bookingsDispatch({
+      type: ACTION_TYPE.UPDATE_SEARCH,
+      payload: search
+    });
+    closeModal();
   };
 
   return (
@@ -48,7 +60,7 @@ function SearchModal({ searchOpen, setSearchOpen }: Props) {
 
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end', columnGap: 12 }}>
         <Button title="Close" onPress={closeModal} />
-        <Button title="Apply" />
+        <Button title="Apply" onPress={applySearch} />
       </View>
     </Dialog>
   );
