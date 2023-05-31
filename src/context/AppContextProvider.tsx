@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
 
 import { IToken } from '../interface';
-import { ACTION_TYPE, reducer } from '../reducers/AppContextReducer';
+import { ACTION_TYPE, reducer, ReducerAction } from '../reducers/AppContextReducer';
 import { getStoredApiTokenData } from '../service/storage';
 
 export type StateType = {
@@ -12,7 +12,13 @@ export const initState: StateType = {
   tokenData: [],
 };
 
-export const AppContext = React.createContext({});
+export const AppContext = React.createContext<{
+  state: StateType;
+  dispatch: React.Dispatch<ReducerAction>;
+}>({
+  state: initState,
+  dispatch: () => {},
+});
 
 const AppContextProvider = ({ children }) => {
   useEffect(() => {

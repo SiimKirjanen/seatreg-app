@@ -1,6 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, ParamListBase } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Input, Button } from '@rneui/themed';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
@@ -18,7 +19,7 @@ function AddToken() {
   const [apiToken, setApiToken] = useState('8285278186');
   const [loading, setLoading] = useState(false);
   const { dispatch } = useContext(AppContext);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useToast();
 
   async function validateURL() {
@@ -65,9 +66,7 @@ function AddToken() {
       } else {
         alert('Error');
       }
-    } catch (error) {
-      console.log('ttt');
-      console.log(error);
+    } catch {
       alert('error');
     } finally {
       setLoading(false);

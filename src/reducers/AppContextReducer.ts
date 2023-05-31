@@ -5,7 +5,7 @@ export const enum ACTION_TYPE {
   SET_TOKENS_ACTION = 'SET_TOKENS_ACTION',
   REMOVE_TOKEN_ACTION = 'REMOVE_TOKEN_ACTION',
 }
-interface ReducerAction {
+export interface ReducerAction {
   type: ACTION_TYPE;
   payload?: any;
 }

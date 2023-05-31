@@ -22,7 +22,7 @@ export function Bookings({ bookings, searchValue }: Props) {
   const filteredBookings = bookings.filter(bookingsFiltering);
 
   if (filteredBookings.length === 0) {
-    return <Text style={{fontSize: 18}}>No results</Text>;
+    return <Text style={{ fontSize: 18 }}>No results</Text>;
   }
 
   return (
