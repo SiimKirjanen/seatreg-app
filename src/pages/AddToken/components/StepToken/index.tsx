@@ -26,15 +26,17 @@ export function StepToken({ wrapStyles, setStep, siteURL }: Props) {
   const saveToken = async () => {
     try {
       setLoading(true);
-      const response = await (
-        await fetch(`${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`)
-      ).json();
 
-      if (response.message === 'ok') {
+      const response = await fetch(
+        `${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`
+      );
+      const responseData = await response.json();
+
+      if (response.ok) {
         const payload = {
-          apiToken: response.apiToken,
-          registrationName: response.registrationName,
-          apiTokenId: response.id,
+          apiToken: responseData.apiToken,
+          registrationName: responseData.registrationName,
+          apiTokenId: responseData.id,
           siteUrl: siteURL,
         };
 
@@ -48,7 +50,7 @@ export function StepToken({ wrapStyles, setStep, siteURL }: Props) {
         });
         navigation.navigate('Connections');
       } else {
-        alert('Error');
+        alert(responseData?.message || 'Request failed');
       }
     } catch {
       alert('error');
