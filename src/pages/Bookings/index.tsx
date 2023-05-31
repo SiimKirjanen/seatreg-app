@@ -1,5 +1,5 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
@@ -8,7 +8,7 @@ import { ActiveSearchNotification } from '../../components/ActiveSearchNotificat
 import { Bookings } from '../../components/Bookings';
 import SearchModal from '../../components/SearchModal';
 import { SEATREG_GREEN } from '../../constants';
-import { IBooking } from '../../interface';
+import { useGetRequest } from '../../hooks/useGetRequest';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
 
@@ -16,41 +16,25 @@ function BookingsPage() {
   const {
     params: { tokenData },
   } = useRoute<RouteProp<ParamList, 'Bookings'>>();
-  const [bookings, setBookings] = useState<IBooking[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
   const [bookingsState, bookingsDispatch] = useReducer(bookingsReducer, initState);
-
-  useEffect(() => {
-    async function getBookings() {
-      try {
-        setLoading(true);
-        const response = await (
-          await fetch(
-            `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`
-          )
-        ).json();
-
-        if (response.message === 'ok') {
-          setBookings(response.bookings);
-        } else {
-          alert('Error');
-        }
-      } catch (error) {
-        console.log(error);
-        alert('error');
-      } finally {
-        setLoading(false);
-      }
-    }
-    getBookings();
-  }, [tokenData.apiToken]);
+  const { data, loading, error } = useGetRequest(
+    `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`
+  );
 
   if (loading) {
     return (
-      <View style={styles.loadingWrap}>
+      <View style={styles.centerWrap}>
         <Text style={{ marginBottom: 6 }}>Loading bookings</Text>
         <ActivityIndicator size="large" color={SEATREG_GREEN} />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.centerWrap}>
+        <Text style={{ marginBottom: 6 }}>{error}</Text>
       </View>
     );
   }
@@ -64,7 +48,7 @@ function BookingsPage() {
         />
       )}
       <ScrollView>
-        <Bookings bookings={bookings} searchValue={bookingsState.searchParams.searchValue} />
+        <Bookings bookings={data.bookings} searchValue={bookingsState.searchParams.searchValue} />
       </ScrollView>
       <ActionWrapper>
         <BookingsActions onPress={() => setSearchOpen(true)} />
@@ -80,7 +64,7 @@ function BookingsPage() {
 }
 
 const styles = StyleSheet.create({
-  loadingWrap: {
+  centerWrap: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
