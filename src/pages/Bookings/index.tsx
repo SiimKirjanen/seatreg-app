@@ -1,5 +1,5 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
-import React, { useState, useReducer } from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useState, useReducer, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
@@ -21,6 +21,13 @@ function BookingsPage() {
   const { data, loading, error } = useGetRequest(
     `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`
   );
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: `${tokenData.registrationName} bookings`,
+    });
+  }, [navigation, tokenData.registrationName]);
 
   if (loading) {
     return (
