@@ -1,0 +1,77 @@
+import { useNavigation, ParamListBase } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Input, Button } from '@rneui/themed';
+import React, { useState, useContext } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
+
+import { STEP_1 } from '../..';
+import { AppContext } from '../../../../context/AppContextProvider';
+import { ACTION_TYPE } from '../../../../reducers/AppContextReducer';
+import { storeApiTokenData } from '../../../../service/storage';
+
+interface Props {
+  wrapStyles: any;
+  setStep: Function;
+  siteURL: string;
+}
+
+export function StepToken({ wrapStyles, setStep, siteURL }: Props) {
+  const [loading, setLoading] = useState(false);
+  const [apiToken, setApiToken] = useState('8285278186');
+  const { dispatch } = useContext(AppContext);
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const toast = useToast();
+
+  const saveToken = async () => {
+    try {
+      setLoading(true);
+      const response = await (
+        await fetch(`${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`)
+      ).json();
+
+      if (response.message === 'ok') {
+        const payload = {
+          apiToken: response.apiToken,
+          registrationName: response.registrationName,
+          apiTokenId: response.id,
+          siteUrl: siteURL,
+        };
+
+        dispatch({
+          type: ACTION_TYPE.ADD_TOKEN_ACTION,
+          payload,
+        });
+        storeApiTokenData(payload);
+        toast.show('Connection added', {
+          type: 'success',
+        });
+        navigation.navigate('Connections');
+      } else {
+        alert('Error');
+      }
+    } catch {
+      alert('error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View style={wrapStyles}>
+      <Text>Add token</Text>
+      <Input onChangeText={setApiToken} value={apiToken} placeholder="Enter API token" />
+      <View style={styles.buttonRow}>
+        <Button title="Back" onPress={() => setStep(STEP_1)} />
+        <Button title="Save" onPress={saveToken} loading={loading} />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  buttonRow: {
+    flexDirection: 'row',
+    columnGap: 16,
+  },
+});
