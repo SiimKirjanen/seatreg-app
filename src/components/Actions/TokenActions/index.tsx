@@ -4,6 +4,7 @@ import { FAB } from '@rneui/themed';
 import React from 'react';
 
 import { SEATREG_GREEN } from '../../../constants';
+import { PageNames } from '../../../enum';
 
 function TokenActions() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -13,7 +14,7 @@ function TokenActions() {
       loading={false}
       icon={{ name: 'add', color: 'white' }}
       color={SEATREG_GREEN}
-      onPress={() => navigation.navigate('AddToken')}
+      onPress={() => navigation.navigate(PageNames.AddToken)}
     />
   );
 }

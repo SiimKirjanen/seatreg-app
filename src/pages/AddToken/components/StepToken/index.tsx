@@ -7,6 +7,7 @@ import { useToast } from 'react-native-toast-notifications';
 
 import { ADD_CONNECTION_STEP_1 } from '../../../../constants';
 import { AppContext } from '../../../../context/AppContextProvider';
+import { PageNames } from '../../../../enum';
 import { ACTION_TYPE } from '../../../../reducers/AppContextReducer';
 import { storeApiTokenData } from '../../../../service/storage';
 
@@ -48,7 +49,7 @@ export function StepToken({ wrapStyles, setStep, siteURL }: Props) {
         toast.show('Connection added', {
           type: 'success',
         });
-        navigation.navigate('Connections');
+        navigation.navigate(PageNames.Home);
       } else {
         alert(responseData?.message || 'Request failed');
       }

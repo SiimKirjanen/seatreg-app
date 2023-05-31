@@ -5,6 +5,7 @@ import { ToastProvider } from 'react-native-toast-notifications';
 
 import { SEATREG_GREEN } from './src/constants';
 import AppContextProvider from './src/context/AppContextProvider';
+import { PageNames } from './src/enum';
 import AddTokenPage from './src/pages/AddToken';
 import Bookings from './src/pages/Bookings';
 import HomePage from './src/pages/Home';
@@ -20,10 +21,10 @@ function App() {
       offsetBottom={70}>
       <AppContextProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Connections">
-            <Stack.Screen name="Connections" component={HomePage} />
-            <Stack.Screen name="AddToken" component={AddTokenPage} />
-            <Stack.Screen name="Bookings" component={Bookings} />
+          <Stack.Navigator initialRouteName={PageNames.Home}>
+            <Stack.Screen name={PageNames.Home} component={HomePage} />
+            <Stack.Screen name={PageNames.AddToken} component={AddTokenPage} />
+            <Stack.Screen name={PageNames.Bookings} component={Bookings} />
           </Stack.Navigator>
         </NavigationContainer>
       </AppContextProvider>
