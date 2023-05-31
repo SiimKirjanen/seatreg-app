@@ -5,11 +5,13 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
+import { StepURL } from './components/StepURL';
 import { AppContext } from '../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { storeApiTokenData } from '../../service/storage';
 
-const STEP_1 = 1;
+export const STEP_1 = 1;
+export const STEP_2 = 2;
 
 function AddToken() {
   const [step, setStep] = useState(STEP_1);
@@ -21,23 +23,6 @@ function AddToken() {
   const { dispatch } = useContext(AppContext);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useToast();
-
-  async function validateURL() {
-    try {
-      setLoading(true);
-      const response = await (await fetch(`${siteURL}/wp-json/seatreg/v1/echo`)).json();
-
-      if (response.message === 'ok') {
-        setStep(2);
-      } else {
-        alert('not ok');
-      }
-    } catch (e) {
-      alert(e);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function saveToken() {
     try {
@@ -75,11 +60,12 @@ function AddToken() {
 
   if (step === STEP_1) {
     return (
-      <View style={styles.stepWrap}>
-        <Text>Enter site URL</Text>
-        <Input onChangeText={setSiteURL} value={siteURL} placeholder="Enter URL" />
-        <Button title="Next" onPress={validateURL} loading={loading} />
-      </View>
+      <StepURL
+        wrapStyles={styles.stepWrap}
+        siteURL={siteURL}
+        setSiteURL={setSiteURL}
+        setStep={setStep}
+      />
     );
   } else {
     return (
