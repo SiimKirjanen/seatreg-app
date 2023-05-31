@@ -1,7 +1,9 @@
-import { SearchBar, Dialog } from '@rneui/themed';
+import { SearchBar, Dialog, Button } from '@rneui/themed';
 import React, { useState } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
 
+import { SEATREG_GREEN } from '../../constants';
 import { ISearch } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/BookingsReducer';
 import { BarCodeScanner } from '../BarCodeScanner';
@@ -16,6 +18,7 @@ interface Props {
 function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch }: Props) {
   const [search, setSearch] = useState('');
   const [barCodeScannerOpen, setBarCodeScannerOpen] = useState(false);
+  const toast = useToast();
 
   const onbarCodeScanned = (scanningResults) => {
     setBarCodeScannerOpen(false);
@@ -33,6 +36,18 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
       payload: search,
     });
     closeModal();
+  };
+
+  const clearSearch = () => {
+    setSearch('');
+    bookingsDispatch({
+      type: ACTION_TYPE.UPDATE_SEARCH,
+      payload: '',
+    });
+    closeModal();
+    toast.show('Search cleared', {
+      type: 'success',
+    });
   };
 
   return (
@@ -60,7 +75,8 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
 
       <View style={styles.buttonsWrap}>
         <Button title="Close" onPress={closeModal} />
-        <Button title="Apply" onPress={applySearch} />
+        <Button title="Clear" onPress={clearSearch} color="error" />
+        <Button title="Apply" onPress={applySearch} color={SEATREG_GREEN} />
       </View>
     </Dialog>
   );
