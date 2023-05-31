@@ -13,15 +13,10 @@ function AddToken() {
 
   if (step === ADD_CONNECTION_STEP_1) {
     return (
-      <StepURL
-        wrapStyles={styles.stepWrap}
-        siteURL={siteURL}
-        setSiteURL={setSiteURL}
-        setStep={setStep}
-      />
+      <StepURL parentStyles={styles} siteURL={siteURL} setSiteURL={setSiteURL} setStep={setStep} />
     );
   } else {
-    return <StepToken wrapStyles={styles.stepWrap} setStep={setStep} siteURL={siteURL} />;
+    return <StepToken parentStyles={styles} setStep={setStep} siteURL={siteURL} />;
   }
 }
 
@@ -30,6 +25,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  stepText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  inputText: {
+    fontSize: 14,
+    textAlign: 'center',
   },
 });
 

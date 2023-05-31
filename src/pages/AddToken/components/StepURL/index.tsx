@@ -6,13 +6,13 @@ import { ADD_CONNECTION_STEP_2 } from '../../../../constants';
 import { isValidHttpsUrl } from '../../../../utils/validators';
 
 interface Props {
-  wrapStyles: any;
+  parentStyles: any;
   setSiteURL: Function;
   siteURL: string;
   setStep: Function;
 }
 
-export function StepURL({ wrapStyles, setSiteURL, siteURL, setStep }: Props) {
+export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
   const [errorMessage, setErrorMessage] = useState('');
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
@@ -51,13 +51,14 @@ export function StepURL({ wrapStyles, setSiteURL, siteURL, setStep }: Props) {
   };
 
   return (
-    <View style={wrapStyles}>
-      <Text>Enter site URL</Text>
+    <View style={parentStyles.stepWrap}>
+      <Text style={parentStyles.stepText}>Enter web address where SeatReg plugin is activated</Text>
       <Input
         onChangeText={urlInputChange}
         value={url}
         placeholder="Enter here"
         errorMessage={errorMessage}
+        inputStyle={parentStyles.inputText}
       />
       <Button title="Next" onPress={validateURL} loading={loading} />
     </View>

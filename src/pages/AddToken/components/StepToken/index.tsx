@@ -12,12 +12,12 @@ import { ACTION_TYPE } from '../../../../reducers/AppContextReducer';
 import { storeApiTokenData } from '../../../../service/storage';
 
 interface Props {
-  wrapStyles: any;
+  parentStyles: any;
   setStep: Function;
   siteURL: string;
 }
 
-export function StepToken({ wrapStyles, setStep, siteURL }: Props) {
+export function StepToken({ parentStyles, setStep, siteURL }: Props) {
   const [loading, setLoading] = useState(false);
   const [apiToken, setApiToken] = useState('8285278186');
   const { dispatch } = useContext(AppContext);
@@ -61,9 +61,14 @@ export function StepToken({ wrapStyles, setStep, siteURL }: Props) {
   };
 
   return (
-    <View style={wrapStyles}>
-      <Text>Add token</Text>
-      <Input onChangeText={setApiToken} value={apiToken} placeholder="Enter API token" />
+    <View style={parentStyles.stepWrap}>
+      <Text style={parentStyles.stepText}>Enter SeatReg public API token</Text>
+      <Input
+        onChangeText={setApiToken}
+        value={apiToken}
+        placeholder="Enter API token"
+        inputStyle={parentStyles.inputText}
+      />
       <View style={styles.buttonRow}>
         <Button title="Back" onPress={() => setStep(ADD_CONNECTION_STEP_1)} />
         <Button title="Save" onPress={saveToken} loading={loading} />
