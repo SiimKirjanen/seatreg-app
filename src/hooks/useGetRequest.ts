@@ -14,6 +14,7 @@ export const useGetRequest = (resource: string) => {
   const [data, setData] = useState<BookingsResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +36,11 @@ export const useGetRequest = (resource: string) => {
       }
     };
     fetchData();
-  }, [resource]);
+  }, [resource, refreshTrigger]);
 
-  return { data, loading, error };
+  const reload = () => {
+    setRefreshTrigger({});
+  };
+
+  return { data, loading, error, reload };
 };

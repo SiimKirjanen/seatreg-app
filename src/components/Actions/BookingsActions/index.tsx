@@ -1,15 +1,29 @@
 import { FAB } from '@rneui/themed';
 import React from 'react';
+import { View } from 'react-native';
 
-import { SEATREG_GREEN } from '../../../constants';
+import { NOTIFICATION_BLUE, SEATREG_GREEN } from '../../../constants';
 
-export function BookingsActions({ onPress }) {
+interface Props {
+  openSearch: Function;
+  refreshBookings: Function;
+}
+
+export function BookingsActions({ openSearch, refreshBookings }: Props) {
   return (
-    <FAB
-      loading={false}
-      icon={{ name: 'search', color: 'white' }}
-      color={SEATREG_GREEN}
-      onPress={onPress}
-    />
+    <View style={{ flexDirection: 'row', columnGap: 12 }}>
+      <FAB
+        loading={false}
+        icon={{ name: 'refresh', color: 'white' }}
+        color={NOTIFICATION_BLUE}
+        onPress={() => refreshBookings()}
+      />
+      <FAB
+        loading={false}
+        icon={{ name: 'search', color: 'white' }}
+        color={SEATREG_GREEN}
+        onPress={() => openSearch()}
+      />
+    </View>
   );
 }

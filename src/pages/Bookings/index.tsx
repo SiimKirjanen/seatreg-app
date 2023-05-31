@@ -18,7 +18,7 @@ function BookingsPage() {
   } = useRoute<RouteProp<ParamList, 'Bookings'>>();
   const [searchOpen, setSearchOpen] = useState(false);
   const [bookingsState, bookingsDispatch] = useReducer(bookingsReducer, initState);
-  const { data, loading, error } = useGetRequest(
+  const { data, loading, error, reload } = useGetRequest(
     `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`
   );
   const navigation = useNavigation();
@@ -58,7 +58,7 @@ function BookingsPage() {
         <Bookings bookings={data.bookings} searchValue={bookingsState.searchParams.searchValue} />
       </ScrollView>
       <ActionWrapper>
-        <BookingsActions onPress={() => setSearchOpen(true)} />
+        <BookingsActions openSearch={() => setSearchOpen(true)} refreshBookings={reload} />
       </ActionWrapper>
       <SearchModal
         searchParams={bookingsState.searchParams}
