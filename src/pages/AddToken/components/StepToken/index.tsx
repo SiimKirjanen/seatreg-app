@@ -51,7 +51,7 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
         });
         navigation.navigate(PageNames.Home);
       } else {
-        alert(responseData?.message || 'Request failed');
+        alert(responseData?.message || 'Validating token request failed');
       }
     } catch {
       alert('error');

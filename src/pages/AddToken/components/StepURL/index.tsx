@@ -30,7 +30,7 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
         setSiteURL(url);
         setStep(ADD_CONNECTION_STEP_2);
       } else {
-        alert('Request failed');
+        alert(`An error occured: ${response.status} Please try again`);
       }
     } catch (e) {
       alert(e.message);
