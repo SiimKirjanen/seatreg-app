@@ -20,11 +20,20 @@ interface Props {
 export function StepToken({ parentStyles, setStep, siteURL }: Props) {
   const [loading, setLoading] = useState(false);
   const [apiToken, setApiToken] = useState('8285278186');
-  const { dispatch } = useContext(AppContext);
+  const { dispatch, state } = useContext(AppContext);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useToast();
 
+  const tokenExists = () => {
+    return state.tokenData.find((token) => token.apiToken === apiToken);
+  };
+
   const saveToken = async () => {
+    if (tokenExists()) {
+      alert(`Token ${apiToken} is already added`);
+
+      return false;
+    }
     try {
       setLoading(true);
 
