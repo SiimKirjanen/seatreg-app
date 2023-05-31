@@ -2,8 +2,8 @@ import { Input, Button } from '@rneui/themed';
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 
+import { ADD_CONNECTION_STEP_2 } from '../../../../constants';
 import { isValidHttpsUrl } from '../../../../utils/validators';
-import { STEP_2 } from '../../../AddToken';
 
 interface Props {
   wrapStyles: any;
@@ -28,7 +28,7 @@ export function StepURL({ wrapStyles, setSiteURL, siteURL, setStep }: Props) {
 
       if (response.ok) {
         setSiteURL(url);
-        setStep(STEP_2);
+        setStep(ADD_CONNECTION_STEP_2);
       } else {
         alert('Request failed');
       }

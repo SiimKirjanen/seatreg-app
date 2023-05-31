@@ -3,17 +3,15 @@ import { StyleSheet } from 'react-native';
 
 import { StepToken } from './components/StepToken';
 import { StepURL } from './components/StepURL';
-
-export const STEP_1 = 1;
-export const STEP_2 = 2;
+import { ADD_CONNECTION_STEP_1 } from '../../constants';
 
 function AddToken() {
-  const [step, setStep] = useState(STEP_1);
+  const [step, setStep] = useState(ADD_CONNECTION_STEP_1);
   const [siteURL, setSiteURL] = useState(
     'https://62f0-2001-7d0-843c-1a80-2152-f535-fa32-48a4.ngrok-free.app'
   );
 
-  if (step === STEP_1) {
+  if (step === ADD_CONNECTION_STEP_1) {
     return (
       <StepURL
         wrapStyles={styles.stepWrap}

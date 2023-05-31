@@ -5,7 +5,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
-import { STEP_1 } from '../..';
+import { ADD_CONNECTION_STEP_1 } from '../../../../constants';
 import { AppContext } from '../../../../context/AppContextProvider';
 import { ACTION_TYPE } from '../../../../reducers/AppContextReducer';
 import { storeApiTokenData } from '../../../../service/storage';
@@ -64,7 +64,7 @@ export function StepToken({ wrapStyles, setStep, siteURL }: Props) {
       <Text>Add token</Text>
       <Input onChangeText={setApiToken} value={apiToken} placeholder="Enter API token" />
       <View style={styles.buttonRow}>
-        <Button title="Back" onPress={() => setStep(STEP_1)} />
+        <Button title="Back" onPress={() => setStep(ADD_CONNECTION_STEP_1)} />
         <Button title="Save" onPress={saveToken} loading={loading} />
       </View>
     </View>
