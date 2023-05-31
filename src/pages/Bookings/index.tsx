@@ -41,7 +41,7 @@ function BookingsPage() {
   if (error) {
     return (
       <View style={styles.centerWrap}>
-        <Text style={{ marginBottom: 6 }}>{error}</Text>
+        <Text style={{ marginBottom: 6, textAlign: 'center' }}>{error}</Text>
       </View>
     );
   }

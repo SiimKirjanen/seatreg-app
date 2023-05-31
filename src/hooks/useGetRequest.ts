@@ -29,8 +29,10 @@ export const useGetRequest = (resource: string) => {
         } else {
           setError(responseData?.message || 'Request failed');
         }
-      } catch (error: any) {
-        setError(error.message);
+      } catch {
+        setError(
+          'Unable to Establish Connection. Check your internet connection and verify the website availability'
+        );
       } finally {
         setLoading(false);
       }
