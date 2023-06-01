@@ -9,7 +9,7 @@ export interface IBooking {
   room_uuid: string;
   booking_date: number;
   booking_confirm_date: number;
-  custom_field_data: object;
+  custom_field_data: string;
   status: string;
   booking_id: string;
   booker_email: string;
@@ -25,4 +25,9 @@ export interface IToken {
 
 export interface ISearch {
   searchValue: string;
+}
+
+export interface ICustomField {
+  label: string;
+  value: string;
 }

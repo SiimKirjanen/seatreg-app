@@ -21,3 +21,13 @@ export function getDayWithSuffix(day: number) {
   }
   return `${day}${suffix}`;
 }
+
+export function getDateString(unixTimeStamp) {
+  const date = new Date(unixTimeStamp * 1000);
+  const day = date.getDate();
+  const month = date.toLocaleString('default', { month: 'long' });
+  const year = date.getFullYear();
+  const formattedDate = `${getDayWithSuffix(day)} ${month} ${year}`;
+
+  return formattedDate;
+}
