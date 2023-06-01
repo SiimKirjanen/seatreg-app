@@ -8,6 +8,7 @@ import { useToast } from 'react-native-toast-notifications';
 import { ADD_CONNECTION_STEP_1 } from '../../../../constants';
 import { AppContext } from '../../../../context/AppContextProvider';
 import { PageNames } from '../../../../enum';
+import { IConnection } from '../../../../interface';
 import { ACTION_TYPE } from '../../../../reducers/AppContextReducer';
 import { storeApiTokenData } from '../../../../service/storage';
 
@@ -43,19 +44,17 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
       const responseData = await response.json();
 
       if (response.ok) {
-        const payload = {
+        const payload: IConnection = {
           apiToken: responseData.apiToken,
-          registrationName: responseData.registrationName,
           apiTokenId: responseData.id,
+          pushNotifications: false,
+          registrationName: responseData.registrationName,
           siteUrl: siteURL,
         };
 
         dispatch({
           type: ACTION_TYPE.ADD_CONNECTION_ACTION,
-          payload: {
-            ...payload,
-            pushNotifications: false,
-          },
+          payload,
         });
         storeApiTokenData(payload);
         toast.show('Connection added', {

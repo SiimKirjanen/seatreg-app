@@ -18,13 +18,19 @@ export interface IBooking {
 
 export interface IToken {
   apiToken: string;
-  apiTokenId: number;
-  registrationName: string;
-  siteUrl: string;
+  apiTokenId: string;
 }
 
 export interface IConnection extends IToken {
   pushNotifications: boolean;
+  registrationName: string;
+  siteUrl: string;
+}
+
+export interface IStoredConnection {
+  pushNotifications: boolean;
+  registrationName: string;
+  siteUrl: string;
 }
 
 export interface ISearch {

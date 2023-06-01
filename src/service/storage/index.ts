@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
 import { SECURE_STORE_KEY, STORED_CONNECTIONS } from '../../constants';
-import { IConnection, IToken } from '../../interface';
+import { IConnection, IStoredConnection, IToken } from '../../interface';
 
 export async function getStoredApiTokenData() {
   try {
@@ -13,9 +13,14 @@ export async function getStoredApiTokenData() {
       const result = await SecureStore.getItemAsync(`${SECURE_STORE_KEY}_${key}`);
 
       if (result) {
-        const tokenData = JSON.parse(result);
+        const tokenData: IToken = JSON.parse(result);
 
-        storedConnectionsData.push({ ...tokenData, pushNotifications: value.pushNotifications });
+        storedConnectionsData.push({
+          ...tokenData,
+          pushNotifications: value.pushNotifications,
+          siteUrl: value.siteUrl,
+          registrationName: value.registrationName,
+        });
       }
     }
 
@@ -25,22 +30,24 @@ export async function getStoredApiTokenData() {
   }
 }
 
-async function getStoredConnections() {
+async function getStoredConnections(): Promise<Map<string, IStoredConnection>> {
   const result = await AsyncStorage.getItem(STORED_CONNECTIONS);
 
-  return result ? new Map<string, IConnection>(JSON.parse(result)) : new Map();
+  return result ? new Map(JSON.parse(result)) : new Map();
 }
 
-export async function storeApiTokenData(tokenData: IToken) {
+export async function storeApiTokenData(connectionData: IConnection) {
   try {
     const storedConnections = await getStoredConnections();
 
-    storedConnections.set(tokenData.apiTokenId, {
-      pushNotifications: false,
+    storedConnections.set(connectionData.apiTokenId, {
+      pushNotifications: connectionData.pushNotifications,
+      registrationName: connectionData.registrationName,
+      siteUrl: connectionData.siteUrl,
     });
     await SecureStore.setItemAsync(
-      `${SECURE_STORE_KEY}_${tokenData.apiTokenId}`,
-      JSON.stringify(tokenData)
+      `${SECURE_STORE_KEY}_${connectionData.apiTokenId}`,
+      JSON.stringify(connectionData)
     );
     await storeConnections(storedConnections);
   } catch (e) {
@@ -48,7 +55,7 @@ export async function storeApiTokenData(tokenData: IToken) {
   }
 }
 
-async function storeConnections(tokenIds) {
+async function storeConnections(tokenIds: Map<string, IStoredConnection>) {
   const value = JSON.stringify(Array.from(tokenIds));
 
   await AsyncStorage.setItem(STORED_CONNECTIONS, value);
