@@ -8,7 +8,7 @@ import { useToast } from 'react-native-toast-notifications';
 import { AppContext } from '../../context/AppContextProvider';
 import { IToken } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
-import { remoteApiTokenFromStorage } from '../../service/storage';
+import { removeApiTokenFromStorage } from '../../service/storage';
 
 interface Props {
   tokenData: IToken;
@@ -29,7 +29,7 @@ function Connection({ tokenData, optionsPress }: Props) {
       {
         text: 'Yes',
         onPress: async () => {
-          await remoteApiTokenFromStorage(tokenData);
+          await removeApiTokenFromStorage(tokenData);
           dispatch({ type: ACTION_TYPE.REMOVE_TOKEN_ACTION, payload: tokenData });
           toast.show('Connection removed', {
             type: 'success',

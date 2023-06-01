@@ -1,16 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-import { SECURE_STORE_KEY, STORED_API_TOKEN_IDS } from '../../constants';
+import { SECURE_STORE_KEY, STORED_CONNECTIONS } from '../../constants';
 import { IToken } from '../../interface';
 
 export async function getStoredApiTokenData() {
   try {
     const storedApiTokenData = [];
-    const tokenIdsSet = await getStoredApiTokenIds();
+    const storedConnections = await getStoredConnections();
 
-    for (const tokenId of tokenIdsSet) {
-      const result = await SecureStore.getItemAsync(`${SECURE_STORE_KEY}_${tokenId}`);
+    for (const [key, val] of storedConnections) {
+      const result = await SecureStore.getItemAsync(`${SECURE_STORE_KEY}_${key}`);
+
       if (result) {
         storedApiTokenData.push(JSON.parse(result));
       }
@@ -22,42 +23,44 @@ export async function getStoredApiTokenData() {
   }
 }
 
-async function getStoredApiTokenIds() {
-  const result = await AsyncStorage.getItem(STORED_API_TOKEN_IDS);
+async function getStoredConnections() {
+  const result = await AsyncStorage.getItem(STORED_CONNECTIONS);
 
-  return result ? new Set(JSON.parse(result)) : new Set();
+  return result ? new Map(JSON.parse(result)) : new Map();
 }
 
 export async function storeApiTokenData(tokenData: IToken) {
   try {
-    const tokenIdsSet = await getStoredApiTokenIds();
+    const storedConnections = await getStoredConnections();
 
-    tokenIdsSet.add(tokenData.apiTokenId);
+    storedConnections.set(tokenData.apiTokenId, {
+      pushNotifications: false,
+    });
     await SecureStore.setItemAsync(
       `${SECURE_STORE_KEY}_${tokenData.apiTokenId}`,
       JSON.stringify(tokenData)
     );
-    await storeApiTokenIds(tokenIdsSet);
+    await storeConnections(storedConnections);
   } catch (e) {
     alert(e.message);
   }
 }
 
-async function storeApiTokenIds(tokenIds) {
+async function storeConnections(tokenIds) {
   const value = JSON.stringify(Array.from(tokenIds));
 
-  await AsyncStorage.setItem(STORED_API_TOKEN_IDS, value);
+  await AsyncStorage.setItem(STORED_CONNECTIONS, value);
 }
 
-export async function remoteApiTokenFromStorage(tokenData: IToken) {
+export async function removeApiTokenFromStorage(tokenData: IToken) {
   try {
-    const tokenIdsSet = await getStoredApiTokenIds();
+    const storedConnections = await getStoredConnections();
 
     await SecureStore.deleteItemAsync(`${SECURE_STORE_KEY}_${tokenData.apiTokenId}`);
 
-    tokenIdsSet.delete(tokenData.apiTokenId);
+    storedConnections.delete(tokenData.apiTokenId);
 
-    await storeApiTokenIds(tokenIdsSet);
+    await storeConnections(storedConnections);
   } catch (e) {
     alert(e);
   }
@@ -65,12 +68,12 @@ export async function remoteApiTokenFromStorage(tokenData: IToken) {
 
 export async function clearAllStorage() {
   try {
-    const tokenIdsSet = await getStoredApiTokenIds();
+    const tokenIdsSet = await getStoredConnections();
 
     for (const tokenId of tokenIdsSet) {
       await SecureStore.deleteItemAsync(`${SECURE_STORE_KEY}_${tokenId}`);
     }
-    await AsyncStorage.removeItem(STORED_API_TOKEN_IDS);
+    await AsyncStorage.removeItem(STORED_CONNECTIONS);
   } catch (e) {
     alert(e.message);
   }
