@@ -6,16 +6,16 @@ import { StyleSheet, View, Text, Alert } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
 import { AppContext } from '../../context/AppContextProvider';
-import { IToken } from '../../interface';
+import { IConnection } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { removeApiTokenFromStorage } from '../../service/storage';
 
 interface Props {
-  tokenData: IToken;
+  tokenData: IConnection;
   optionsPress: Function;
 }
 
-function Connection({ tokenData, optionsPress }: Props) {
+function Connection({ tokenData }: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { dispatch } = useContext(AppContext);
   const toast = useToast();
@@ -30,7 +30,7 @@ function Connection({ tokenData, optionsPress }: Props) {
         text: 'Yes',
         onPress: async () => {
           await removeApiTokenFromStorage(tokenData);
-          dispatch({ type: ACTION_TYPE.REMOVE_TOKEN_ACTION, payload: tokenData });
+          dispatch({ type: ACTION_TYPE.REMOVE_CONNECTION_ACTION, payload: tokenData });
           toast.show('Connection removed', {
             type: 'success',
           });

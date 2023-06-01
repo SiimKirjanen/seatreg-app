@@ -10,7 +10,7 @@ import { AppContext } from '../../context/AppContextProvider';
 function Connections({ optionsPress }) {
   const { state } = useContext(AppContext);
 
-  if (state?.tokenData.length === 0) {
+  if (state?.connectionData.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>No connections</Text>
@@ -19,7 +19,7 @@ function Connections({ optionsPress }) {
   }
   return (
     <ScrollView>
-      {state?.tokenData.map((token, i) => (
+      {state?.connectionData.map((token, i) => (
         <Connection key={i} tokenData={token} optionsPress={optionsPress} />
       ))}
     </ScrollView>

@@ -9,7 +9,7 @@ export async function getStoredApiTokenData() {
     const storedApiTokenData = [];
     const storedConnections = await getStoredConnections();
 
-    for (const [key, val] of storedConnections) {
+    for (const [key] of storedConnections) {
       const result = await SecureStore.getItemAsync(`${SECURE_STORE_KEY}_${key}`);
 
       if (result) {

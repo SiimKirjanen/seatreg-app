@@ -23,6 +23,8 @@ export interface IToken {
   siteUrl: string;
 }
 
+export interface IConnection extends IToken {}
+
 export interface ISearch {
   searchValue: string;
 }

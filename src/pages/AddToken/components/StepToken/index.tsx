@@ -25,7 +25,7 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
   const toast = useToast();
 
   const tokenExists = () => {
-    return state.tokenData.find((token) => token.apiToken === apiToken);
+    return state.connectionData.find((token) => token.apiToken === apiToken);
   };
 
   const saveToken = async () => {
@@ -51,7 +51,7 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
         };
 
         dispatch({
-          type: ACTION_TYPE.ADD_TOKEN_ACTION,
+          type: ACTION_TYPE.ADD_CONNECTION_ACTION,
           payload,
         });
         storeApiTokenData(payload);

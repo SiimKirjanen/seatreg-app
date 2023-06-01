@@ -1,15 +1,15 @@
 import React, { useReducer, useEffect } from 'react';
 
-import { IToken } from '../interface';
+import { IConnection } from '../interface';
 import { ACTION_TYPE, reducer, ReducerAction } from '../reducers/AppContextReducer';
 import { getStoredApiTokenData } from '../service/storage';
 
 export type StateType = {
-  tokenData: IToken[];
+  connectionData: IConnection[];
 };
 
 export const initState: StateType = {
-  tokenData: [],
+  connectionData: [],
 };
 
 export const AppContext = React.createContext<{
@@ -23,11 +23,11 @@ export const AppContext = React.createContext<{
 const AppContextProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
-      const storedTokenData = await getStoredApiTokenData();
+      const storedConnectionData = await getStoredApiTokenData();
 
       dispatch({
-        type: ACTION_TYPE.SET_TOKENS_ACTION,
-        payload: storedTokenData,
+        type: ACTION_TYPE.SET_CONNECTION_ACTION,
+        payload: storedConnectionData,
       });
     })();
   }, []);
