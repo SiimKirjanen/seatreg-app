@@ -52,7 +52,10 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
 
         dispatch({
           type: ACTION_TYPE.ADD_CONNECTION_ACTION,
-          payload,
+          payload: {
+            ...payload,
+            pushNotifications: false,
+          },
         });
         storeApiTokenData(payload);
         toast.show('Connection added', {

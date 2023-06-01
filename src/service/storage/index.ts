@@ -2,22 +2,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
 import { SECURE_STORE_KEY, STORED_CONNECTIONS } from '../../constants';
-import { IToken } from '../../interface';
+import { IConnection, IToken } from '../../interface';
 
 export async function getStoredApiTokenData() {
   try {
-    const storedApiTokenData = [];
+    const storedConnectionsData: IConnection[] = [];
     const storedConnections = await getStoredConnections();
 
-    for (const [key] of storedConnections) {
+    for (const [key, value] of storedConnections) {
       const result = await SecureStore.getItemAsync(`${SECURE_STORE_KEY}_${key}`);
 
       if (result) {
-        storedApiTokenData.push(JSON.parse(result));
+        const tokenData = JSON.parse(result);
+
+        storedConnectionsData.push({ ...tokenData, pushNotifications: value.pushNotifications });
       }
     }
 
-    return storedApiTokenData;
+    return storedConnectionsData;
   } catch (e) {
     alert(e.message);
   }

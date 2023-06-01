@@ -23,7 +23,9 @@ export interface IToken {
   siteUrl: string;
 }
 
-export interface IConnection extends IToken {}
+export interface IConnection extends IToken {
+  pushNotifications: boolean;
+}
 
 export interface ISearch {
   searchValue: string;
