@@ -44,6 +44,7 @@ export async function storeApiTokenData(connectionData: IConnection) {
       pushNotifications: connectionData.pushNotifications,
       registrationName: connectionData.registrationName,
       siteUrl: connectionData.siteUrl,
+      apiTokenId: connectionData.apiTokenId,
     });
     await SecureStore.setItemAsync(
       `${SECURE_STORE_KEY}_${connectionData.apiTokenId}`,
@@ -61,7 +62,7 @@ async function storeConnections(tokenIds: Map<string, IStoredConnection>) {
   await AsyncStorage.setItem(STORED_CONNECTIONS, value);
 }
 
-export async function removeApiTokenFromStorage(tokenData: IToken) {
+export async function removeConnectionFromStorage(tokenData: IConnection) {
   try {
     const storedConnections = await getStoredConnections();
 

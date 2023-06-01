@@ -31,6 +31,7 @@ export interface IStoredConnection {
   pushNotifications: boolean;
   registrationName: string;
   siteUrl: string;
+  apiTokenId: string;
 }
 
 export interface ISearch {
