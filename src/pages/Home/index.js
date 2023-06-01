@@ -7,7 +7,9 @@ import Connection from '../../components/Connection';
 import { ConnectionOptions } from '../../components/ConnectionOptions';
 import { AppContext } from '../../context/AppContextProvider';
 
-function Connections({ state, optionsPress }) {
+function Connections({ optionsPress }) {
+  const { state } = useContext(AppContext);
+
   if (state?.tokenData.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -25,7 +27,6 @@ function Connections({ state, optionsPress }) {
 }
 
 function Home() {
-  const { state } = useContext(AppContext);
   const [showOptions, setShowOptions] = useState(false);
 
   const onOptionsPress = (tokenData) => {
@@ -34,7 +35,7 @@ function Home() {
 
   return (
     <View style={{ flex: 1 }}>
-      <Connections state={state} optionsPress={onOptionsPress} />
+      <Connections optionsPress={onOptionsPress} />
       <ActionWrapper>
         <TokenActions />
       </ActionWrapper>

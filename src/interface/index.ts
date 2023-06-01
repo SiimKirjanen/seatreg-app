@@ -10,7 +10,7 @@ export interface IBooking {
   booking_date: number;
   booking_confirm_date: number;
   custom_field_data: object;
-  status: number;
+  status: string;
   booking_id: string;
   booker_email: string;
   calendar_date: string;
