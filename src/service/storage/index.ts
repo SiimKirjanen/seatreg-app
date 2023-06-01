@@ -28,7 +28,7 @@ export async function getStoredApiTokenData() {
 async function getStoredConnections() {
   const result = await AsyncStorage.getItem(STORED_CONNECTIONS);
 
-  return result ? new Map(JSON.parse(result)) : new Map();
+  return result ? new Map<string, IConnection>(JSON.parse(result)) : new Map();
 }
 
 export async function storeApiTokenData(tokenData: IToken) {
@@ -64,7 +64,7 @@ export async function removeApiTokenFromStorage(tokenData: IToken) {
 
     await storeConnections(storedConnections);
   } catch (e) {
-    alert(e);
+    alert(e.message);
   }
 }
 
