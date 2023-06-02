@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-import { SECURE_STORE_KEY, STORED_CONNECTIONS } from '../../constants';
+import { STORED_CONNECTIONS } from '../../constants';
 import { IConnection, IStoredConnection, IToken } from '../../interface';
+import { getConnectionKey } from '../../utils/strings';
 
 export async function getStoredApiTokenData() {
   try {
@@ -10,7 +11,7 @@ export async function getStoredApiTokenData() {
     const storedConnections = await getStoredConnections();
 
     for (const [key, value] of storedConnections) {
-      const result = await SecureStore.getItemAsync(`${SECURE_STORE_KEY}_${key}`);
+      const result = await SecureStore.getItemAsync(`${key}`);
 
       if (result) {
         const tokenData: IToken = JSON.parse(result);
@@ -39,17 +40,15 @@ async function getStoredConnections(): Promise<Map<string, IStoredConnection>> {
 export async function storeApiTokenData(connectionData: IConnection) {
   try {
     const storedConnections = await getStoredConnections();
+    const connectionKey = getConnectionKey(connectionData);
 
-    storedConnections.set(connectionData.apiTokenId, {
+    storedConnections.set(connectionKey, {
       pushNotifications: connectionData.pushNotifications,
       registrationName: connectionData.registrationName,
       siteUrl: connectionData.siteUrl,
       apiTokenId: connectionData.apiTokenId,
     });
-    await SecureStore.setItemAsync(
-      `${SECURE_STORE_KEY}_${connectionData.apiTokenId}`,
-      JSON.stringify(connectionData)
-    );
+    await SecureStore.setItemAsync(`${connectionKey}`, JSON.stringify(connectionData));
     await storeConnections(storedConnections);
   } catch (e) {
     alert(e.message);
@@ -65,10 +64,11 @@ async function storeConnections(tokenIds: Map<string, IStoredConnection>) {
 export async function removeConnectionFromStorage(tokenData: IConnection) {
   try {
     const storedConnections = await getStoredConnections();
+    const connectionKey = getConnectionKey(tokenData);
 
-    await SecureStore.deleteItemAsync(`${SECURE_STORE_KEY}_${tokenData.apiTokenId}`);
+    await SecureStore.deleteItemAsync(`${connectionKey}`);
 
-    storedConnections.delete(tokenData.apiTokenId);
+    storedConnections.delete(connectionKey);
 
     await storeConnections(storedConnections);
   } catch (e) {
@@ -78,10 +78,10 @@ export async function removeConnectionFromStorage(tokenData: IConnection) {
 
 export async function clearAllStorage() {
   try {
-    const tokenIdsSet = await getStoredConnections();
+    const storedConnections = await getStoredConnections();
 
-    for (const tokenId of tokenIdsSet) {
-      await SecureStore.deleteItemAsync(`${SECURE_STORE_KEY}_${tokenId}`);
+    for (const [key] of storedConnections) {
+      await SecureStore.deleteItemAsync(`${key}`);
     }
     await AsyncStorage.removeItem(STORED_CONNECTIONS);
   } catch (e) {
