@@ -6,6 +6,7 @@ import { ActionWrapper } from '../../components/Actions';
 import { BookingsActions } from '../../components/Actions/BookingsActions';
 import { ActiveSearchNotification } from '../../components/ActiveSearchNotification';
 import { Bookings } from '../../components/Bookings';
+import { DateTimePicker } from '../../components/DateTimePicker';
 import SearchModal from '../../components/SearchModal';
 import { SEATREG_GREEN } from '../../constants';
 import { useGetRequest } from '../../hooks/useGetRequest';
@@ -17,6 +18,7 @@ function BookingsPage() {
     params: { tokenData },
   } = useRoute<RouteProp<ParamList, 'Bookings'>>();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [calendarDate, setCalendarDate] = useState(new Date());
   const [bookingsState, bookingsDispatch] = useReducer(bookingsReducer, initState);
   const { data, loading, error, reload } = useGetRequest(
     `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`
@@ -53,6 +55,9 @@ function BookingsPage() {
           activeSearch={bookingsState.searchParams}
           onPress={() => setSearchOpen(true)}
         />
+      )}
+      {data.options.usingCalendar && (
+        <DateTimePicker calendarDate={calendarDate} setCalendarDate={setCalendarDate} />
       )}
       <ScrollView>
         <Bookings bookings={data.bookings} searchValue={bookingsState.searchParams.searchValue} />

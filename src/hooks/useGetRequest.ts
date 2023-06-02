@@ -2,16 +2,24 @@ import { useState, useEffect } from 'react';
 
 import { IBooking } from '../interface';
 
-interface Response {
-  success: boolean;
+interface IRegistrationOptions {
+  calendarDates: string[];
+  usingCalendar: boolean;
 }
 
-interface BookingsResponse extends Response {
-  bookings?: IBooking[];
+interface IBookingResponse {
+  options: IRegistrationOptions;
+  message: string;
+  bookings: IBooking[];
+}
+
+interface BookingsState {
+  bookings: IBooking[];
+  options: IRegistrationOptions;
 }
 
 export const useGetRequest = (resource: string) => {
-  const [data, setData] = useState<BookingsResponse | null>(null);
+  const [data, setData] = useState<BookingsState | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState({});
@@ -22,10 +30,16 @@ export const useGetRequest = (resource: string) => {
         setLoading(true);
 
         const response = await fetch(resource);
-        const responseData = await response.json();
+        const responseData: IBookingResponse = await response.json();
 
         if (response.ok) {
-          setData(responseData);
+          setData({
+            bookings: responseData.bookings,
+            options: {
+              usingCalendar: !!+responseData.options.usingCalendar,
+              calendarDates: responseData.options.calendarDates,
+            },
+          });
         } else {
           setError(responseData?.message || 'Request failed');
         }
