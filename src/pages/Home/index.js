@@ -1,14 +1,24 @@
 import { useContext, useState } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, ActivityIndicator } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
 import TokenActions from '../../components/Actions/TokenActions';
 import Connection from '../../components/Connection';
 import { ConnectionOptions } from '../../components/ConnectionOptions';
+import { SEATREG_GREEN } from '../../constants';
 import { AppContext } from '../../context/AppContextProvider';
 
 function Connections({ optionsPress }) {
   const { state } = useContext(AppContext);
+
+  if (state.initializing) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ marginBottom: 6 }}>Initializing</Text>
+        <ActivityIndicator size="large" color={SEATREG_GREEN} />
+      </View>
+    );
+  }
 
   if (state?.connectionData.length === 0) {
     return (

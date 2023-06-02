@@ -6,10 +6,12 @@ import { getStoredApiTokenData } from '../service/storage';
 
 export type StateType = {
   connectionData: IConnection[];
+  initializing: boolean;
 };
 
 export const initState: StateType = {
   connectionData: [],
+  initializing: true,
 };
 
 export const AppContext = React.createContext<{
@@ -26,7 +28,7 @@ const AppContextProvider = ({ children }) => {
       const storedConnectionData = await getStoredApiTokenData();
 
       dispatch({
-        type: ACTION_TYPE.SET_CONNECTION_ACTION,
+        type: ACTION_TYPE.SET_CONNECTIONS_ACTION,
         payload: storedConnectionData,
       });
     })();
