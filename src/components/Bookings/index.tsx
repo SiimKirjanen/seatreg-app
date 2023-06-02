@@ -10,7 +10,7 @@ interface Props {
   searchValue: string;
 }
 
-export function Bookings({ bookings, searchValue }: Props) {
+export const Bookings = React.memo(({ bookings, searchValue }: Props) => {
   const bookingsFiltering = (booking: IBooking) => {
     if (searchValue) {
       if (!searchMatch(booking, searchValue)) {
@@ -32,4 +32,4 @@ export function Bookings({ bookings, searchValue }: Props) {
       ))}
     </View>
   );
-}
+});
