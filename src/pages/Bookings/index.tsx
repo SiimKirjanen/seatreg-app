@@ -12,16 +12,19 @@ import { SEATREG_GREEN } from '../../constants';
 import { useGetRequest } from '../../hooks/useGetRequest';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
+import { getDateStringForBE } from '../../utils/time';
 
 function BookingsPage() {
   const {
     params: { tokenData },
   } = useRoute<RouteProp<ParamList, 'Bookings'>>();
   const [searchOpen, setSearchOpen] = useState(false);
-  const [calendarDate, setCalendarDate] = useState(new Date());
+  const [calendarDate, setCalendarDate] = useState<Date>(new Date());
   const [bookingsState, bookingsDispatch] = useReducer(bookingsReducer, initState);
   const { data, loading, error, reload } = useGetRequest(
-    `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${tokenData.apiToken}`
+    `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${encodeURIComponent(
+      tokenData.apiToken
+    )}&calendar_date=${encodeURIComponent(getDateStringForBE(calendarDate))}`
   );
   const navigation = useNavigation();
 
