@@ -26,11 +26,11 @@ function CustomFields({ fields }) {
   );
 }
 
-function CalendarDate({ date }) {
-  if (!date) {
+function CalendarDate({ dateString }) {
+  if (!dateString) {
     return null;
   }
-  return <Text>Calendar date: {date}</Text>;
+  return <Text>Calendar date: {getDateString(new Date(dateString).getTime() / 1000)}</Text>;
 }
 
 export function Booking({ booking }: Props) {
@@ -51,7 +51,7 @@ export function Booking({ booking }: Props) {
       <Text>Booking date: {getDateString(booking.booking_date)}</Text>
       <Text>Booking approved date: {getDateString(booking.booking_confirm_date)}</Text>
       <CustomFields fields={customFields} />
-      <CalendarDate date={booking.calendar_date} />
+      <CalendarDate dateString={booking.calendar_date} />
     </Card>
   );
 }
