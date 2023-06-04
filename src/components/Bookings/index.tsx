@@ -21,8 +21,12 @@ export const Bookings = React.memo(({ bookings, searchValue }: Props) => {
   };
   const filteredBookings = bookings.filter(bookingsFiltering);
 
+  if (bookings.length === 0) {
+    return <Text style={{ fontSize: 18, marginTop: 30 }}>No bookings</Text>;
+  }
+
   if (filteredBookings.length === 0) {
-    return <Text style={{ fontSize: 18 }}>No results</Text>;
+    return <Text style={{ fontSize: 18, marginTop: 30 }}>No results</Text>;
   }
 
   return (
