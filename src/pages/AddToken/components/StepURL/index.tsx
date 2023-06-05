@@ -16,6 +16,7 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
   const [errorMessage, setErrorMessage] = useState('');
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     setUrl(siteURL);
@@ -43,9 +44,11 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
     setUrl(input);
 
     if (isValidHttpsUrl(input)) {
+      setIsValid(true);
       setErrorMessage('');
       setSiteURL(input);
     } else {
+      setIsValid(false);
       setErrorMessage('Please enter correct HTTPS site URL');
     }
   };
@@ -60,7 +63,7 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
         errorMessage={errorMessage}
         inputStyle={parentStyles.inputText}
       />
-      <Button title="Next" onPress={validateURL} loading={loading} />
+      <Button title="Next" onPress={validateURL} loading={loading} disabled={!isValid} />
     </View>
   );
 }
