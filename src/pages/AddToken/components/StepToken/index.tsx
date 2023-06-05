@@ -20,7 +20,7 @@ interface Props {
 
 export function StepToken({ parentStyles, setStep, siteURL }: Props) {
   const [loading, setLoading] = useState(false);
-  const [apiToken, setApiToken] = useState('8285278186');
+  const [apiToken, setApiToken] = useState('');
   const { dispatch, state } = useContext(AppContext);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const toast = useToast();
