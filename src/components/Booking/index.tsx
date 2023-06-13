@@ -45,6 +45,7 @@ export function Booking({ booking }: Props) {
         Name: {booking.first_name} {booking.last_name}
       </Text>
       <Text>Seat: {booking.seat_nr}</Text>
+      <Text>Room: {booking.room_name}</Text>
       <Text>Email: {booking.email}</Text>
       <Text>Booker email: {booking.booker_email}</Text>
       <Text>Status: {bookingStatus}</Text>

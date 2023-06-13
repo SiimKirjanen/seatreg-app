@@ -7,6 +7,7 @@ export interface IBooking {
   seat_id: string;
   seat_nr: string;
   room_uuid: string;
+  room_name: string;
   booking_date: number;
   booking_confirm_date: number;
   custom_field_data: string;
