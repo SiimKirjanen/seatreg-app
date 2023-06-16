@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-import { STORED_CONNECTIONS } from '../../constants';
+import { STORED_CONNECTIONS, STORED_REGISTRATION_BOOKINGS } from '../../constants';
 import { IConnection, IStoredConnection, IToken } from '../../interface';
 import { getConnectionKey } from '../../utils/strings';
 
@@ -87,4 +87,10 @@ export async function clearAllStorage() {
   } catch (e) {
     alert(e.message);
   }
+}
+
+export async function getRegistrationBookings() {
+  const result = await AsyncStorage.getItem(STORED_REGISTRATION_BOOKINGS);
+
+  return result ? new Map(JSON.parse(result)) : new Map();
 }
