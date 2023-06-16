@@ -4,11 +4,11 @@ import React from 'react';
 import { ToastProvider } from 'react-native-toast-notifications';
 
 import { SEATREG_GREEN } from './src/constants';
-import AppContextProvider from './src/context/AppContextProvider';
 import { PageNames } from './src/enum';
 import AddTokenPage from './src/pages/AddToken';
 import Bookings from './src/pages/Bookings';
 import HomePage from './src/pages/Home';
+import AppContextProvider from './src/providers/AppContextProvider';
 
 const Stack = createNativeStackNavigator();
 

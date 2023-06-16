@@ -1,4 +1,4 @@
-import { StateType } from '../context/AppContextProvider';
+import { StateType } from '../providers/AppContextProvider';
 
 export const enum ACTION_TYPE {
   ADD_CONNECTION_ACTION = 'ADD_CONNECTION_ACTION',

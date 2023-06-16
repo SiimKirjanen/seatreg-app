@@ -6,7 +6,7 @@ import TokenActions from '../../components/Actions/TokenActions';
 import Connection from '../../components/Connection';
 import { ConnectionOptions } from '../../components/ConnectionOptions';
 import { SEATREG_GREEN } from '../../constants';
-import { AppContext } from '../../context/AppContextProvider';
+import { AppContext } from '../../providers/AppContextProvider';
 
 function Connections({ optionsPress }) {
   const { state } = useContext(AppContext);

@@ -5,8 +5,8 @@ import React, { useContext } from 'react';
 import { StyleSheet, View, Text, Alert } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
-import { AppContext } from '../../context/AppContextProvider';
 import { IConnection } from '../../interface';
+import { AppContext } from '../../providers/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { removeConnectionFromStorage } from '../../service/storage';
 
