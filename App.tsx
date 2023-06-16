@@ -9,6 +9,7 @@ import AddTokenPage from './src/pages/AddToken';
 import Bookings from './src/pages/Bookings';
 import HomePage from './src/pages/Home';
 import AppContextProvider from './src/providers/AppContextProvider';
+import LocalNotificationsProvider from './src/providers/LocalNotificationsProvider';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,13 +21,15 @@ function App() {
       successColor={SEATREG_GREEN}
       offsetBottom={70}>
       <AppContextProvider>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName={PageNames.Home}>
-            <Stack.Screen name={PageNames.Home} component={HomePage} />
-            <Stack.Screen name={PageNames.AddToken} component={AddTokenPage} />
-            <Stack.Screen name={PageNames.Bookings} component={Bookings} />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <LocalNotificationsProvider>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName={PageNames.Home}>
+              <Stack.Screen name={PageNames.Home} component={HomePage} />
+              <Stack.Screen name={PageNames.AddToken} component={AddTokenPage} />
+              <Stack.Screen name={PageNames.Bookings} component={Bookings} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </LocalNotificationsProvider>
       </AppContextProvider>
     </ToastProvider>
   );
