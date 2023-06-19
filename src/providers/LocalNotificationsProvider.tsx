@@ -25,12 +25,11 @@ const LocalNotificationsProvider = ({ children }) => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      console.log('starting interval!');
       try {
         const bookingsMap = await getRegistrationBookings();
 
         connectionData.forEach(async (connection: IConnection) => {
-          if (connection.pushNotifications) {
+          if (connection.localNotifications) {
             const storedBookings = bookingsMap.get(getConnectionKey(connection));
             const currentBookings = await fetchRegistrationBookings(connection);
 

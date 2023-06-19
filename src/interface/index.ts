@@ -23,13 +23,13 @@ export interface IToken {
 }
 
 export interface IConnection extends IToken {
-  pushNotifications: boolean;
+  localNotifications: boolean;
   registrationName: string;
   siteUrl: string;
 }
 
 export interface IStoredConnection {
-  pushNotifications: boolean;
+  localNotifications: boolean;
   registrationName: string;
   siteUrl: string;
   apiTokenId: string;

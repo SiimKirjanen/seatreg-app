@@ -15,7 +15,7 @@ interface Props {
   optionsPress: Function;
 }
 
-function Connection({ tokenData }: Props) {
+function Connection({ tokenData, optionsPress }: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { dispatch } = useContext(AppContext);
   const toast = useToast();
@@ -46,6 +46,7 @@ function Connection({ tokenData }: Props) {
         <Card.Divider />
         <Text style={styles.siteUrl}>{tokenData.siteUrl}</Text>
         <View style={styles.buttonWrap}>
+          <Button title="Options" onPress={() => optionsPress(tokenData)} />
           <Button
             title="Bookings"
             onPress={() =>

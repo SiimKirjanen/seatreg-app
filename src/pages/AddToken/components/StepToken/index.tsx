@@ -47,7 +47,7 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
         const payload: IConnection = {
           apiToken: responseData.apiToken,
           apiTokenId: responseData.id,
-          pushNotifications: false,
+          localNotifications: false,
           registrationName: responseData.registrationName,
           siteUrl: siteURL,
         };

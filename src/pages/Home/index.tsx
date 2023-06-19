@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, ScrollView, Text, ActivityIndicator } from 'react-native';
 
 import { ActionWrapper } from '../../components/Actions';
@@ -6,7 +6,9 @@ import TokenActions from '../../components/Actions/TokenActions';
 import Connection from '../../components/Connection';
 import { ConnectionOptions } from '../../components/ConnectionOptions';
 import { SEATREG_GREEN } from '../../constants';
+import { IConnection } from '../../interface';
 import { AppContext } from '../../providers/AppContextProvider';
+import { getConnectionKey } from '../../utils/strings';
 
 function Connections({ optionsPress }) {
   const { state } = useContext(AppContext);
@@ -37,19 +39,30 @@ function Connections({ optionsPress }) {
 }
 
 function Home() {
-  const [showOptions, setShowOptions] = useState(false);
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [activeOptionConnectionKey, setActiveOptionConnectionKey] = useState<null | string>(null);
 
-  const onOptionsPress = (tokenData) => {
+  const openOptions = (tokenData: IConnection) => {
+    setActiveOptionConnectionKey(getConnectionKey(tokenData));
     setShowOptions(true);
+  };
+
+  const closeOptions = () => {
+    setShowOptions(false);
+    setActiveOptionConnectionKey(null);
   };
 
   return (
     <View style={{ flex: 1 }}>
-      <Connections optionsPress={onOptionsPress} />
+      <Connections optionsPress={openOptions} />
       <ActionWrapper>
         <TokenActions />
       </ActionWrapper>
-      <ConnectionOptions isVisible={showOptions} setShowOptions={setShowOptions} />
+      <ConnectionOptions
+        isVisible={showOptions}
+        closeOptions={closeOptions}
+        activeOptionConnectionKey={activeOptionConnectionKey}
+      />
     </View>
   );
 }

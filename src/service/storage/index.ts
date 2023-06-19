@@ -18,7 +18,7 @@ export async function getStoredApiTokenData() {
 
         storedConnectionsData.push({
           ...tokenData,
-          pushNotifications: value.pushNotifications,
+          localNotifications: value.localNotifications,
           siteUrl: value.siteUrl,
           registrationName: value.registrationName,
         });
@@ -43,7 +43,7 @@ export async function storeApiTokenData(connectionData: IConnection) {
     const connectionKey = getConnectionKey(connectionData);
 
     storedConnections.set(connectionKey, {
-      pushNotifications: connectionData.pushNotifications,
+      localNotifications: connectionData.localNotifications,
       registrationName: connectionData.registrationName,
       siteUrl: connectionData.siteUrl,
       apiTokenId: connectionData.apiTokenId,
