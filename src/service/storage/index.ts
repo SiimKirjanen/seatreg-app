@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-import { STORED_CONNECTIONS, STORED_REGISTRATION_BOOKINGS } from '../../constants';
+import { STORED_CONNECTIONS } from '../../constants';
 import { IConnection, IStoredConnection, IToken } from '../../interface';
 import { getConnectionKey } from '../../utils/strings';
 
@@ -21,6 +21,7 @@ export async function getStoredApiTokenData() {
           localNotifications: value.localNotifications,
           siteUrl: value.siteUrl,
           registrationName: value.registrationName,
+          bookings: value.bookings,
         });
       }
     }
@@ -47,6 +48,7 @@ export async function storeApiTokenData(connectionData: IConnection) {
       registrationName: connectionData.registrationName,
       siteUrl: connectionData.siteUrl,
       apiTokenId: connectionData.apiTokenId,
+      bookings: connectionData.bookings,
     });
     await SecureStore.setItemAsync(`${connectionKey}`, JSON.stringify(connectionData));
     await storeConnections(storedConnections);
@@ -105,10 +107,4 @@ export async function clearAllStorage() {
   } catch (e) {
     alert(e.message);
   }
-}
-
-export async function getRegistrationBookings() {
-  const result = await AsyncStorage.getItem(STORED_REGISTRATION_BOOKINGS);
-
-  return result ? new Map(JSON.parse(result)) : new Map();
 }

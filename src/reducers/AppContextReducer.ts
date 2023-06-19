@@ -6,6 +6,7 @@ export const enum ACTION_TYPE {
   SET_CONNECTIONS_ACTION = 'SET_CONNECTIONS_ACTION',
   REMOVE_CONNECTION_ACTION = 'REMOVE_CONNECTION_ACTION',
   CHANGE_CONNECTION_OPTIONS = 'CHANGE_CONNECTION_OPTIONS',
+  CHANGE_BOOKINGS = 'CHANGE_BOOKINGS',
 }
 export interface ReducerAction {
   type: ACTION_TYPE;
@@ -31,6 +32,19 @@ export const reducer = (state: StateType, action: ReducerAction) => {
           return {
             ...connection,
             localNotifications: action.payload.localNotifications,
+          };
+        }
+        return connection;
+      });
+
+      return { ...state, connectionData: updatedConnectionData };
+    }
+    case ACTION_TYPE.CHANGE_BOOKINGS: {
+      const updatedConnectionData = state.connectionData.map((connection) => {
+        if (getConnectionKey(connection) === action.payload.activeOptionConnectionKey) {
+          return {
+            ...connection,
+            bookings: action.payload.bookings,
           };
         }
         return connection;

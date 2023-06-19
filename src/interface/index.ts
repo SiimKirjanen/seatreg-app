@@ -17,6 +17,10 @@ export interface IBooking {
   calendar_date: string;
 }
 
+export interface IStoredBooking {
+  id: string;
+}
+
 export interface IToken {
   apiToken: string;
   apiTokenId: string;
@@ -26,6 +30,7 @@ export interface IConnection extends IToken {
   localNotifications: boolean;
   registrationName: string;
   siteUrl: string;
+  bookings: IStoredBooking[];
 }
 
 export interface IStoredConnection {
@@ -33,6 +38,7 @@ export interface IStoredConnection {
   registrationName: string;
   siteUrl: string;
   apiTokenId: string;
+  bookings: IStoredBooking[];
 }
 
 export interface ISearch {
