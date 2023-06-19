@@ -76,6 +76,24 @@ export async function removeConnectionFromStorage(tokenData: IConnection) {
   }
 }
 
+export async function updateConnection(connectionData: IConnection) {
+  try {
+    const storedConnections = await getStoredConnections();
+    const connectionKey = getConnectionKey(connectionData);
+
+    const storedConnection = storedConnections.get(connectionKey);
+
+    storedConnections.set(connectionKey, {
+      ...storedConnection,
+      localNotifications: connectionData.localNotifications,
+    });
+
+    await storeConnections(storedConnections);
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
 export async function clearAllStorage() {
   try {
     const storedConnections = await getStoredConnections();

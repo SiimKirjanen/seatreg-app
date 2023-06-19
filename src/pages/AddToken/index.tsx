@@ -7,7 +7,7 @@ import { ADD_CONNECTION_STEP_1 } from '../../constants';
 
 function AddToken() {
   const [step, setStep] = useState(ADD_CONNECTION_STEP_1);
-  const [siteURL, setSiteURL] = useState('https://57b1-2001-7d0-843c-1a80-7151-555-edaa-f9ca.ngrok-free.app');
+  const [siteURL, setSiteURL] = useState('https://229e-2001-7d0-843c-1a80-5d1d-429a-2877-7047.ngrok-free.app');
 
   if (step === ADD_CONNECTION_STEP_1) {
     return (
