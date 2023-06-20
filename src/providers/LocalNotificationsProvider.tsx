@@ -2,9 +2,9 @@ import React, { useEffect, useState, useContext } from 'react';
 
 import { AppContext } from './AppContextProvider';
 import { IBooking, IConnection } from '../interface';
-import { getDateStringForBE } from '../utils/time';
-import { updateConnection } from '../service/storage';
 import { ACTION_TYPE } from '../reducers/AppContextReducer';
+import { updateConnection } from '../service/storage';
+import { getDateStringForBE } from '../utils/time';
 
 interface ILocalNotificationsContext {
   registrationBookings: Map<string, string[]>;
