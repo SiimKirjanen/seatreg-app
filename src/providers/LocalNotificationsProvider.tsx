@@ -1,14 +1,72 @@
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState, useContext } from 'react';
+import { Platform } from 'react-native';
 
 import { AppContext } from './AppContextProvider';
-import { IBooking, IConnection } from '../interface';
+import { IBooking, IConnection, IStoredBooking } from '../interface';
 import { ACTION_TYPE } from '../reducers/AppContextReducer';
 import { updateConnection } from '../service/storage';
 import { getDateStringForBE } from '../utils/time';
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
+export async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    console.log('existingStatus ', existingStatus);
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      console.log('Requesting permissions');
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  return token;
+}
+
+async function scheduleNotification(title, body) {
+  console.log('Scheduling notification');
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title,
+      body,
+      data: { data: 'goes here' },
+    },
+    trigger: null,
+  });
+}
+
 interface ILocalNotificationsContext {
   registrationBookings: Map<string, string[]>;
   setRegistrationBookings: Function;
+  notifications: any;
 }
 
 interface IBookingResponse {
@@ -43,30 +101,47 @@ const LocalNotificationsProvider = ({ children }) => {
       try {
         connectionData.forEach(async (connection: IConnection) => {
           if (connection.localNotifications) {
-            const freshBookings = await fetchRegistrationBookings(connection);
+            //console.log(connection);
+            const freshBookings: IBooking[] = await fetchRegistrationBookings(connection);
+            const freshBookingsIds: IStoredBooking[] = freshBookings.map(({ booking_id }) => {
+              return { booking_id };
+            });
             const storedBookings = connection.bookings || [];
             const newBookings = freshBookings.filter(
-              (x: IBooking) => !storedBookings.some((y: IBooking) => x.booking_id === y.booking_id)
+              (x: IBooking) =>
+                !storedBookings.some((y: IStoredBooking) => x.booking_id === y.booking_id)
             );
+            console.log(newBookings);
 
-            if (newBookings.length === 0) {
-              console.log('No new bookings!');
-            } else if (newBookings.length < 2) {
-              console.log('New bookings');
+            console.log('fresh bookings', freshBookings.length);
+            console.log('stored bookings', storedBookings.length);
+            console.log('new bookings', newBookings.length);
+
+            if (storedBookings.length && newBookings.length) {
+              if (newBookings.length <= 1) {
+                newBookings.forEach((booking) => {
+                  console.log('New booking', booking.first_name);
+                  scheduleNotification('New booking', booking.first_name);
+                });
+              } else if (newBookings.length >= 2) {
+                console.log(`You got ${newBookings.length} bookings`);
+                scheduleNotification(`You got ${newBookings.length} bookings`, '');
+              }
             } else {
-              console.log(`You got ${newBookings.length} bookings`);
+              console.log('Nothing to notify');
             }
 
             dispatch({
               type: ACTION_TYPE.CHANGE_BOOKINGS,
               payload: {
                 ...connection,
-                bookings: freshBookings,
+                bookings: freshBookingsIds,
               },
             });
+
             updateConnection({
               ...connection,
-              bookings: newBookings,
+              bookings: freshBookingsIds,
             });
           }
         });
@@ -78,10 +153,11 @@ const LocalNotificationsProvider = ({ children }) => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [connectionData]);
 
   return (
-    <LocalNotificationsContext.Provider value={{ registrationBookings, setRegistrationBookings }}>
+    <LocalNotificationsContext.Provider
+      value={{ registrationBookings, setRegistrationBookings, notifications: Notifications }}>
       {children}
     </LocalNotificationsContext.Provider>
   );

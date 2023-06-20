@@ -18,7 +18,7 @@ export interface IBooking {
 }
 
 export interface IStoredBooking {
-  id: string;
+  booking_id: string;
 }
 
 export interface IToken {

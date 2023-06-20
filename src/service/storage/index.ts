@@ -88,6 +88,7 @@ export async function updateConnection(connectionData: IConnection) {
     storedConnections.set(connectionKey, {
       ...storedConnection,
       localNotifications: connectionData.localNotifications,
+      bookings: connectionData.bookings,
     });
 
     await storeConnections(storedConnections);

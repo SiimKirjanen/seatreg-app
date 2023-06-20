@@ -5,10 +5,10 @@ import { useToast } from 'react-native-toast-notifications';
 
 import { IConnection } from '../../interface';
 import { AppContext } from '../../providers/AppContextProvider';
+import { registerForPushNotificationsAsync } from '../../providers/LocalNotificationsProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { updateConnection } from '../../service/storage';
 import { getConnectionKey } from '../../utils/strings';
-
 interface Props {
   isVisible: boolean;
   closeOptions: Function;
@@ -22,23 +22,29 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
     return getConnectionKey(connection) === activeOptionConnectionKey;
   });
 
-  const toggleChecked = (value: boolean) => {
-    const payLoad = {
-      ...activeConnection,
-      localNotifications: value,
-    };
+  const toggleNotifications = async (value: boolean) => {
+    try {
+      if (value) {
+        await registerForPushNotificationsAsync();
+      }
 
-    dispatch({
-      type: ACTION_TYPE.CHANGE_CONNECTION_OPTIONS,
-      payload: {
-        activeOptionConnectionKey,
+      const payLoad = {
+        ...activeConnection,
         localNotifications: value,
-      },
-    });
-    updateConnection(payLoad);
-    toast.show('Options updated', {
-      type: 'success',
-    });
+      };
+
+      dispatch({
+        type: ACTION_TYPE.CHANGE_CONNECTION_OPTIONS,
+        payload: {
+          activeOptionConnectionKey,
+          localNotifications: value,
+        },
+      });
+      updateConnection(payLoad);
+      toast.show('Options updated', {
+        type: 'success',
+      });
+    } catch (e) {}
   };
 
   return (
@@ -48,7 +54,10 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
       <Dialog.Actions>
         <View style={styles.actionWrap}>
           <Text>Enable booking notifications</Text>
-          <Switch value={activeConnection?.localNotifications} onValueChange={toggleChecked} />
+          <Switch
+            value={activeConnection?.localNotifications}
+            onValueChange={toggleNotifications}
+          />
         </View>
       </Dialog.Actions>
     </Dialog>
