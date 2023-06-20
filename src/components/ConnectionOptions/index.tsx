@@ -5,8 +5,8 @@ import { useToast } from 'react-native-toast-notifications';
 
 import { IConnection } from '../../interface';
 import { AppContext } from '../../providers/AppContextProvider';
-import { registerForPushNotificationsAsync } from '../../providers/LocalNotificationsProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
+import { registerForPushNotificationsAsync } from '../../service/notification';
 import { updateConnection } from '../../service/storage';
 import { getConnectionKey } from '../../utils/strings';
 interface Props {
