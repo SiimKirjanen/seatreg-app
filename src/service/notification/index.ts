@@ -77,42 +77,48 @@ const fetchRegistrationBookings = async (connection: IConnection) => {
 export async function notificationsPusher() {
   const connectionData = await getStoredApiTokenData();
 
-  connectionData.forEach(async (connection: IConnection) => {
-    if (connection.localNotifications) {
-      const freshBookings: IBooking[] = await fetchRegistrationBookings(connection);
-      const freshBookingsIds: IStoredBooking[] = freshBookings.map(({ booking_id }) => {
-        return { booking_id };
-      });
-      const storedBookings = connection.bookings || [];
-      const newBookings = freshBookings.filter(
-        (x: IBooking) => !storedBookings.some((y: IStoredBooking) => x.booking_id === y.booking_id)
-      );
+  for (let i = 0; i < connectionData.length; i++) {
+    try {
+      const connection: IConnection = connectionData[i];
 
-      /*  
-      console.log('fresh bookings', freshBookings.length);
-      console.log('stored bookings', storedBookings.length);
-      console.log('new bookings', newBookings.length);
-    */
-
-      if (storedBookings.length && newBookings.length) {
-        if (newBookings.length <= 1) {
-          newBookings.forEach((booking) => {
+      if (connection.localNotifications) {
+        console.log('start');
+        const freshBookings: IBooking[] = await fetchRegistrationBookings(connection);
+        const freshBookingsIds: IStoredBooking[] = freshBookings.map(({ booking_id }) => {
+          return { booking_id };
+        });
+        const storedBookings = connection.bookings || [];
+        const newBookings = freshBookings.filter(
+          (x: IBooking) =>
+            !storedBookings.some((y: IStoredBooking) => x.booking_id === y.booking_id)
+        );
+        /*
+        console.log('fresh bookings', freshBookings.length);
+        console.log('stored bookings', storedBookings.length);
+        console.log('new bookings', newBookings.length);
+        */
+        if (storedBookings.length && newBookings.length) {
+          if (newBookings.length <= 1) {
+            newBookings.forEach((booking) => {
+              scheduleNotification(
+                `${connection.registrationName} got new booking`,
+                `Name: ${booking.first_name} ${booking.last_name} \nRoom: ${booking.room_name} \nSeat: ${booking.seat_nr}`
+              );
+            });
+          } else if (newBookings.length >= 2) {
             scheduleNotification(
-              `${connection.registrationName} got new booking`,
-              `Name: ${booking.first_name} ${booking.last_name} \nRoom: ${booking.room_name} \nSeat: ${booking.seat_nr}`
+              `${connection.registrationName} got ${newBookings.length} new bookings`
             );
-          });
-        } else if (newBookings.length >= 2) {
-          scheduleNotification(
-            `${connection.registrationName} got ${newBookings.length} new bookings`
-          );
+          }
         }
-      }
 
-      updateConnection({
-        ...connection,
-        bookings: freshBookingsIds,
-      });
+        updateConnection({
+          ...connection,
+          bookings: freshBookingsIds,
+        });
+      }
+    } catch (e) {
+      console.log('Getting bookings failed');
     }
-  });
+  }
 }

@@ -25,11 +25,7 @@ const DELAY = 5000;
 const LocalNotificationsProvider = ({ children }) => {
   useEffect(() => {
     const interval = setInterval(async () => {
-      try {
-        notificationsPusher();
-      } catch (e) {
-        console.log(e.message);
-      }
+      notificationsPusher();
     }, DELAY);
 
     return () => {
