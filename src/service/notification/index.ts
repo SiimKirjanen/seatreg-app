@@ -2,6 +2,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
+import { SEATREG_GREEN } from '../../constants';
 import { IBooking, IConnection, IStoredBooking } from '../../interface';
 import { getDateStringForBE } from '../../utils/time';
 import { getStoredApiTokenData, updateConnection } from '../storage';
@@ -34,19 +35,16 @@ export async function registerForPushNotificationsAsync() {
 
   if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    console.log('existingStatus ', existingStatus);
     let finalStatus = existingStatus;
     if (existingStatus !== 'granted') {
-      console.log('Requesting permissions');
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
+      alert('Failed to get permissions for push notification!');
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -54,13 +52,12 @@ export async function registerForPushNotificationsAsync() {
   return token;
 }
 
-async function scheduleNotification(title, body) {
-  console.log('Scheduling notification');
+async function scheduleNotification(title, body = '') {
   await Notifications.scheduleNotificationAsync({
     content: {
       title,
       body,
-      data: { data: 'goes here' },
+      color: SEATREG_GREEN,
     },
     trigger: null,
   });
@@ -90,24 +87,26 @@ export async function notificationsPusher() {
       const newBookings = freshBookings.filter(
         (x: IBooking) => !storedBookings.some((y: IStoredBooking) => x.booking_id === y.booking_id)
       );
-      console.log(newBookings);
 
+      /*  
       console.log('fresh bookings', freshBookings.length);
       console.log('stored bookings', storedBookings.length);
       console.log('new bookings', newBookings.length);
+    */
 
       if (storedBookings.length && newBookings.length) {
         if (newBookings.length <= 1) {
           newBookings.forEach((booking) => {
-            console.log('New booking', booking.first_name);
-            scheduleNotification('New booking', booking.first_name);
+            scheduleNotification(
+              `${connection.registrationName} got new booking`,
+              `Name: ${booking.first_name} ${booking.last_name} \nRoom: ${booking.room_name} \nSeat: ${booking.seat_nr}`
+            );
           });
         } else if (newBookings.length >= 2) {
-          console.log(`You got ${newBookings.length} bookings`);
-          scheduleNotification(`You got ${newBookings.length} bookings`, '');
+          scheduleNotification(
+            `${connection.registrationName} got ${newBookings.length} new bookings`
+          );
         }
-      } else {
-        console.log('Nothing to notify');
       }
 
       updateConnection({
