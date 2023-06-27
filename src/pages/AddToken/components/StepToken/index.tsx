@@ -50,6 +50,9 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
           localNotifications: false,
           registrationName: responseData.registrationName,
           siteUrl: siteURL,
+          bookings: [],
+          alerts: [],
+          requestFailCounter: 0,
         };
 
         dispatch({

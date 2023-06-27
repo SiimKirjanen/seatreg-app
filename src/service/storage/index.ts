@@ -22,6 +22,8 @@ export async function getStoredApiTokenData() {
           siteUrl: value.siteUrl,
           registrationName: value.registrationName,
           bookings: value.bookings,
+          alerts: value.alerts,
+          requestFailCounter: value.requestFailCounter,
         });
       }
     }
@@ -49,6 +51,8 @@ export async function storeApiTokenData(connectionData: IConnection) {
       siteUrl: connectionData.siteUrl,
       apiTokenId: connectionData.apiTokenId,
       bookings: connectionData.bookings,
+      alerts: connectionData.alerts,
+      requestFailCounter: connectionData.requestFailCounter,
     });
     await SecureStore.setItemAsync(`${connectionKey}`, JSON.stringify(connectionData));
     await storeConnections(storedConnections);
@@ -89,6 +93,8 @@ export async function updateConnection(connectionData: IConnection) {
       ...storedConnection,
       localNotifications: connectionData.localNotifications,
       bookings: connectionData.bookings,
+      requestFailCounter: connectionData.requestFailCounter,
+      alerts: connectionData.alerts,
     });
 
     await storeConnections(storedConnections);

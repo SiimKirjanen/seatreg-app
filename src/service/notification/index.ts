@@ -2,7 +2,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
-import { SEATREG_GREEN } from '../../constants';
+import { NOTIFICATION_FAIL_COUNT, SEATREG_GREEN } from '../../constants';
 import { IBooking, IConnection, IStoredBooking } from '../../interface';
 import { getDateStringForBE } from '../../utils/time';
 import { getStoredApiTokenData, updateConnection } from '../storage';
@@ -78,9 +78,9 @@ export async function notificationsPusher() {
   const connectionData = await getStoredApiTokenData();
 
   for (let i = 0; i < connectionData.length; i++) {
-    try {
-      const connection: IConnection = connectionData[i];
+    const connection: IConnection = connectionData[i];
 
+    try {
       if (connection.localNotifications) {
         console.log('start');
         const freshBookings: IBooking[] = await fetchRegistrationBookings(connection);
@@ -115,10 +115,35 @@ export async function notificationsPusher() {
         updateConnection({
           ...connection,
           bookings: freshBookingsIds,
+          requestFailCounter: 0,
         });
       }
     } catch (e) {
       console.log('Getting bookings failed');
+      const faileCount = connection.requestFailCounter || 0;
+      const alerts = connection.alerts || [];
+
+      if (faileCount > NOTIFICATION_FAIL_COUNT) {
+        console.log('Too many failed counts');
+        updateConnection({
+          ...connection,
+          localNotifications: false,
+          requestFailCounter: 0,
+          alerts: [
+            ...alerts,
+            {
+              text: `${faileCount} continuous request failures detected. Turning off notifications`,
+              date: getDateStringForBE(new Date()),
+            },
+          ],
+        });
+      } else {
+        console.log('Updating failed count! ', faileCount);
+        updateConnection({
+          ...connection,
+          requestFailCounter: connection.requestFailCounter + 1,
+        });
+      }
     }
   }
 }

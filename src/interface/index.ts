@@ -21,6 +21,11 @@ export interface IStoredBooking {
   booking_id: string;
 }
 
+export interface IAlert {
+  text: string;
+  date: string;
+}
+
 export interface IToken {
   apiToken: string;
   apiTokenId: string;
@@ -31,6 +36,8 @@ export interface IConnection extends IToken {
   registrationName: string;
   siteUrl: string;
   bookings: IStoredBooking[];
+  alerts: IAlert[];
+  requestFailCounter: number;
 }
 
 export interface IStoredConnection {
@@ -39,6 +46,8 @@ export interface IStoredConnection {
   siteUrl: string;
   apiTokenId: string;
   bookings: IStoredBooking[];
+  alerts: IAlert[];
+  requestFailCounter: number;
 }
 
 export interface ISearch {
