@@ -2,6 +2,7 @@ import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import React, { useEffect } from 'react';
 
+import { NOTIFICATIONS_PUSH_INTERVAL } from '../constants';
 import { notificationsPusher } from '../service/notification';
 
 const BACKGROUND_FETCH_TASK = 'background-fetch';
@@ -20,13 +21,12 @@ TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
 });
 
 export const LocalNotificationsContext = React.createContext<ILocalNotificationsContext>(null);
-const DELAY = 5000;
 
 const LocalNotificationsProvider = ({ children }) => {
   useEffect(() => {
     const interval = setInterval(async () => {
       notificationsPusher();
-    }, DELAY);
+    }, NOTIFICATIONS_PUSH_INTERVAL);
 
     return () => {
       clearInterval(interval);
@@ -36,7 +36,7 @@ const LocalNotificationsProvider = ({ children }) => {
   useEffect(() => {
     async function registerBackgroundFetchAsync() {
       return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-        minimumInterval: 1 * 60,
+        minimumInterval: NOTIFICATIONS_PUSH_INTERVAL / 1000,
         stopOnTerminate: false, // android only,
         startOnBoot: true, // android only
       });

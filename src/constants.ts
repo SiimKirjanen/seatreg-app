@@ -7,3 +7,4 @@ export const ADD_CONNECTION_STEP_1 = 1;
 export const ADD_CONNECTION_STEP_2 = 2;
 
 export const NOTIFICATION_FAIL_COUNT = 10;
+export const NOTIFICATIONS_PUSH_INTERVAL = 5000;
