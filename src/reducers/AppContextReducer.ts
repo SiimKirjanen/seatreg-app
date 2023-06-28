@@ -43,9 +43,6 @@ export const reducer = (state: StateType, action: ReducerAction) => {
     case ACTION_TYPE.CHANGE_BOOKINGS: {
       const updatedConnectionData = state.connectionData.map((connection) => {
         if (getConnectionKey(connection) === getConnectionKey(action.payload)) {
-          console.log('Found what to change!');
-          console.log('Before ', connection.bookings.length);
-          console.log('After ', action.payload.bookings.length);
           return {
             ...connection,
             bookings: action.payload.bookings,

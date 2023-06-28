@@ -3,9 +3,14 @@ import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
 import { NOTIFICATION_FAIL_COUNT, SEATREG_GREEN } from '../../constants';
-import { IBooking, IConnection, IStoredBooking } from '../../interface';
+import { IBooking, IConnection, IGlobalConfig, IStoredBooking } from '../../interface';
 import { getDateStringForBE } from '../../utils/time';
-import { getStoredApiTokenData, updateConnection } from '../storage';
+import {
+  getGlobalConfig,
+  getStoredApiTokenData,
+  setGlobalConfig,
+  updateConnection,
+} from '../storage';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -76,6 +81,7 @@ const fetchRegistrationBookings = async (connection: IConnection) => {
 
 export async function notificationsPusher() {
   const connectionData = await getStoredApiTokenData();
+  const globalConfig: IGlobalConfig = await getGlobalConfig();
 
   for (let i = 0; i < connectionData.length; i++) {
     const connection: IConnection = connectionData[i];
@@ -121,7 +127,6 @@ export async function notificationsPusher() {
     } catch (e) {
       console.log('Getting bookings failed');
       const faileCount = connection.requestFailCounter || 0;
-      const alerts = connection.alerts || [];
 
       if (faileCount > NOTIFICATION_FAIL_COUNT) {
         console.log('Too many failed counts');
@@ -129,10 +134,13 @@ export async function notificationsPusher() {
           ...connection,
           localNotifications: false,
           requestFailCounter: 0,
+        });
+        setGlobalConfig({
+          ...globalConfig,
           alerts: [
-            ...alerts,
+            ...globalConfig.alerts,
             {
-              text: `${faileCount} continuous request failures detected. Turning off notifications`,
+              text: `${faileCount} continuous request failures detected. Turning off booking notifications`,
               date: getDateStringForBE(new Date()),
             },
           ],

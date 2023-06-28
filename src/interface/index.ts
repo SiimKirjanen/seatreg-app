@@ -40,7 +40,6 @@ export interface IConnection extends IToken {
   registrationName: string;
   siteUrl: string;
   bookings: IStoredBooking[];
-  alerts: IAlert[];
   requestFailCounter: number;
 }
 
@@ -50,7 +49,6 @@ export interface IStoredConnection {
   siteUrl: string;
   apiTokenId: string;
   bookings: IStoredBooking[];
-  alerts: IAlert[];
   requestFailCounter: number;
 }
 

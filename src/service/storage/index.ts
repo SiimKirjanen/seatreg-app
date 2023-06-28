@@ -3,14 +3,22 @@ import * as SecureStore from 'expo-secure-store';
 
 import { STORED_CONNECTIONS, STORED_GLOBAL_CONFIG } from '../../constants';
 import { initState } from '../../context/AppContext';
-import { IConnection, IStoredConnection, IToken } from '../../interface';
+import { IConnection, IGlobalConfig, IStoredConnection, IToken } from '../../interface';
 import { getConnectionKey } from '../../utils/strings';
 
 export async function getGlobalConfig() {
   try {
     const result = await AsyncStorage.getItem(STORED_GLOBAL_CONFIG);
 
-    return result ? result : initState.globalConfig;
+    return result ? JSON.parse(result) : initState.globalConfig;
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+export async function setGlobalConfig(value: IGlobalConfig) {
+  try {
+    await AsyncStorage.setItem(STORED_GLOBAL_CONFIG, JSON.stringify(value));
   } catch (e) {
     alert(e.message);
   }
@@ -33,7 +41,6 @@ export async function getStoredApiTokenData() {
           siteUrl: value.siteUrl,
           registrationName: value.registrationName,
           bookings: value.bookings,
-          alerts: value.alerts,
           requestFailCounter: value.requestFailCounter,
         });
       }
@@ -62,7 +69,6 @@ export async function storeApiTokenData(connectionData: IConnection) {
       siteUrl: connectionData.siteUrl,
       apiTokenId: connectionData.apiTokenId,
       bookings: connectionData.bookings,
-      alerts: connectionData.alerts,
       requestFailCounter: connectionData.requestFailCounter,
     });
     await SecureStore.setItemAsync(`${connectionKey}`, JSON.stringify(connectionData));
@@ -105,7 +111,6 @@ export async function updateConnection(connectionData: IConnection) {
       localNotifications: connectionData.localNotifications,
       bookings: connectionData.bookings,
       requestFailCounter: connectionData.requestFailCounter,
-      alerts: connectionData.alerts,
     });
 
     await storeConnections(storedConnections);

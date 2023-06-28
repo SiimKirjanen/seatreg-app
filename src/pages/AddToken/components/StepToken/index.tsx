@@ -51,7 +51,6 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
           registrationName: responseData.registrationName,
           siteUrl: siteURL,
           bookings: [],
-          alerts: [],
           requestFailCounter: 0,
         };
 
