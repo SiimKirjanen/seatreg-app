@@ -2,8 +2,8 @@ import { Card } from '@rneui/base';
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { IBooking, ICustomField } from '../../interface';
-import { getDateString } from '../../utils/time';
+import { IBooking, ICustomField } from '../../../interface';
+import { getDateString } from '../../../utils/time';
 
 interface Props {
   booking: IBooking;

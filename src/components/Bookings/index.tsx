@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
+import { Booking } from './Booking';
 import { IBooking } from '../../interface';
 import { searchMatch } from '../../utils/search';
-import { Booking } from '../Booking';
 
 interface Props {
   bookings: IBooking[];

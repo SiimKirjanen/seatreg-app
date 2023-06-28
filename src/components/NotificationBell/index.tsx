@@ -1,6 +1,6 @@
 import { Dialog, Icon } from '@rneui/themed';
 import React, { useContext, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 import { AppContext } from '../../context/AppContext';
 
@@ -12,7 +12,9 @@ export function NotificationBell() {
 
   return (
     <View>
-      <Icon name="bell-o" type="font-awesome" onPress={() => setNotificationsVisible(true)} />
+      <TouchableOpacity onPress={() => setNotificationsVisible(true)}>
+        <Icon name="bell-o" type="font-awesome" />
+      </TouchableOpacity>
 
       <Dialog
         isVisible={notificationsVisible}
