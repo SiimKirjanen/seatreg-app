@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 
 import { NOTIFICATION_FAIL_COUNT, SEATREG_GREEN } from '../../constants';
 import { IBooking, IConnection, IGlobalConfig, IStoredBooking } from '../../interface';
-import { getDateStringForBE } from '../../utils/time';
+import { getDateString, getDateStringForBE } from '../../utils/time';
 import {
   getGlobalConfig,
   getStoredApiTokenData,
@@ -138,11 +138,11 @@ export async function notificationsPusher() {
         setGlobalConfig({
           ...globalConfig,
           alerts: [
-            ...globalConfig.alerts,
             {
-              text: `${faileCount} continuous request failures detected. Turning off booking notifications`,
-              date: getDateStringForBE(new Date()),
+              text: `${connection.registrationName} had ${faileCount} continuous request failures . Turning off booking notifications`,
+              date: getDateString(Date.now() / 1000),
             },
+            ...globalConfig.alerts,
           ],
         });
       } else {

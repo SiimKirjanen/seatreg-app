@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { ToastProvider } from 'react-native-toast-notifications';
 
+import { NotificationBell } from './src/components/NotificationBell';
 import { SEATREG_GREEN } from './src/constants';
 import { PageNames } from './src/enum';
 import AddTokenPage from './src/pages/AddToken';
@@ -24,9 +25,27 @@ function App() {
         <LocalNotificationsProvider>
           <NavigationContainer>
             <Stack.Navigator initialRouteName={PageNames.Home}>
-              <Stack.Screen name={PageNames.Home} component={HomePage} />
-              <Stack.Screen name={PageNames.AddToken} component={AddTokenPage} />
-              <Stack.Screen name={PageNames.Bookings} component={Bookings} />
+              <Stack.Screen
+                name={PageNames.Home}
+                component={HomePage}
+                options={{
+                  headerRight: () => <NotificationBell />,
+                }}
+              />
+              <Stack.Screen
+                name={PageNames.AddToken}
+                component={AddTokenPage}
+                options={{
+                  headerRight: () => <NotificationBell />,
+                }}
+              />
+              <Stack.Screen
+                name={PageNames.Bookings}
+                component={Bookings}
+                options={{
+                  headerRight: () => <NotificationBell />,
+                }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </LocalNotificationsProvider>
