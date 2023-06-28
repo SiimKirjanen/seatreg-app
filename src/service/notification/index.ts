@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 
 import { NOTIFICATION_FAIL_COUNT, SEATREG_GREEN } from '../../constants';
 import { IBooking, IConnection, IGlobalConfig, IStoredBooking } from '../../interface';
+import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { getDateString, getDateStringForBE } from '../../utils/time';
 import {
   getGlobalConfig,
@@ -79,7 +80,7 @@ const fetchRegistrationBookings = async (connection: IConnection) => {
   return responseData.bookings;
 };
 
-export async function notificationsPusher() {
+export async function notificationsPusher(dispatch = null) {
   const connectionData = await getStoredApiTokenData();
   const globalConfig: IGlobalConfig = await getGlobalConfig();
 
@@ -127,24 +128,44 @@ export async function notificationsPusher() {
     } catch (e) {
       console.log('Getting bookings failed');
       const faileCount = connection.requestFailCounter || 0;
+      const alerts = [
+        {
+          text: `${connection.registrationName} had ${faileCount} continuous request failures . Turning off booking notifications`,
+          date: getDateString(Date.now() / 1000),
+        },
+        ...globalConfig.alerts,
+      ];
 
       if (faileCount > NOTIFICATION_FAIL_COUNT) {
         console.log('Too many failed counts');
+
         updateConnection({
           ...connection,
           localNotifications: false,
           requestFailCounter: 0,
         });
+
         setGlobalConfig({
           ...globalConfig,
-          alerts: [
-            {
-              text: `${connection.registrationName} had ${faileCount} continuous request failures . Turning off booking notifications`,
-              date: getDateString(Date.now() / 1000),
-            },
-            ...globalConfig.alerts,
-          ],
+          alerts,
         });
+
+        if (dispatch) {
+          dispatch({
+            type: ACTION_TYPE.SET_GLOBAL_CONFIG,
+            payload: {
+              ...globalConfig,
+              alerts,
+            },
+          });
+          dispatch({
+            type: ACTION_TYPE.CHANGE_CONNECTION_OPTIONS,
+            payload: {
+              ...connection,
+              localNotifications: false,
+            },
+          });
+        }
       } else {
         console.log('Updating failed count! ', faileCount);
         updateConnection({
