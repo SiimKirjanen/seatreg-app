@@ -31,6 +31,10 @@ export interface IToken {
   apiTokenId: string;
 }
 
+export interface IGlobalConfig {
+  alerts: IAlert[];
+}
+
 export interface IConnection extends IToken {
   localNotifications: boolean;
   registrationName: string;

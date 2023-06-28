@@ -1,4 +1,4 @@
-import { StateType } from '../providers/AppContextProvider';
+import { StateType } from '../types';
 import { getConnectionKey } from '../utils/strings';
 
 export const enum ACTION_TYPE {
@@ -7,6 +7,7 @@ export const enum ACTION_TYPE {
   REMOVE_CONNECTION_ACTION = 'REMOVE_CONNECTION_ACTION',
   CHANGE_CONNECTION_OPTIONS = 'CHANGE_CONNECTION_OPTIONS',
   CHANGE_BOOKINGS = 'CHANGE_BOOKINGS',
+  SET_GLOBAL_CONFIG = 'SET_GLOBAL_CONFIG',
 }
 export interface ReducerAction {
   type: ACTION_TYPE;
@@ -54,6 +55,9 @@ export const reducer = (state: StateType, action: ReducerAction) => {
       });
 
       return { ...state, connectionData: updatedConnectionData };
+    }
+    case ACTION_TYPE.SET_GLOBAL_CONFIG: {
+      return { ...state, globalConfig: action.payload };
     }
     default: {
       return state;

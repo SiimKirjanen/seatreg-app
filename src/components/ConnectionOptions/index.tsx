@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
+import { AppContext } from '../../context/AppContext';
 import { IConnection } from '../../interface';
-import { AppContext } from '../../providers/AppContextProvider';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { registerForPushNotificationsAsync } from '../../service/notification';
 import { updateConnection } from '../../service/storage';

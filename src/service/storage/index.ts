@@ -1,9 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-import { STORED_CONNECTIONS } from '../../constants';
+import { STORED_CONNECTIONS, STORED_GLOBAL_CONFIG } from '../../constants';
+import { initState } from '../../context/AppContext';
 import { IConnection, IStoredConnection, IToken } from '../../interface';
 import { getConnectionKey } from '../../utils/strings';
+
+export async function getGlobalConfig() {
+  try {
+    const result = await AsyncStorage.getItem(STORED_GLOBAL_CONFIG);
+
+    return result ? result : initState.globalConfig;
+  } catch (e) {
+    alert(e.message);
+  }
+}
 
 export async function getStoredApiTokenData() {
   try {

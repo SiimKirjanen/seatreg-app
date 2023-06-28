@@ -1,27 +1,10 @@
 import React, { useReducer, useEffect } from 'react';
 
+import { AppContext, initState } from '../context/AppContext';
 import { useAppState } from '../hooks/useAppState';
-import { IConnection } from '../interface';
-import { ACTION_TYPE, reducer, ReducerAction } from '../reducers/AppContextReducer';
-import { getStoredApiTokenData } from '../service/storage';
-
-export type StateType = {
-  connectionData: IConnection[];
-  initializing: boolean;
-};
-
-export const initState: StateType = {
-  connectionData: [],
-  initializing: true,
-};
-
-export const AppContext = React.createContext<{
-  state: StateType;
-  dispatch: React.Dispatch<ReducerAction>;
-}>({
-  state: initState,
-  dispatch: () => {},
-});
+import { ACTION_TYPE, reducer } from '../reducers/AppContextReducer';
+import { getGlobalConfig, getStoredApiTokenData } from '../service/storage';
+import { StateType } from '../types';
 
 const AppContextProvider = ({ children }) => {
   const [appStateVisible] = useAppState();
@@ -30,10 +13,15 @@ const AppContextProvider = ({ children }) => {
     (async () => {
       if (appStateVisible === 'active') {
         const storedConnectionData = await getStoredApiTokenData();
+        const globalConfig = await getGlobalConfig();
 
         dispatch({
           type: ACTION_TYPE.SET_CONNECTIONS_ACTION,
           payload: storedConnectionData,
+        });
+        dispatch({
+          type: ACTION_TYPE.SET_GLOBAL_CONFIG,
+          payload: globalConfig,
         });
       }
     })();

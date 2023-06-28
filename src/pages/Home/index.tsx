@@ -6,8 +6,8 @@ import TokenActions from '../../components/Actions/TokenActions';
 import Connection from '../../components/Connection';
 import { ConnectionOptions } from '../../components/ConnectionOptions';
 import { SEATREG_GREEN } from '../../constants';
+import { AppContext } from '../../context/AppContext';
 import { IConnection } from '../../interface';
-import { AppContext } from '../../providers/AppContextProvider';
 import { getConnectionKey } from '../../utils/strings';
 
 function Connections({ optionsPress }) {

@@ -6,9 +6,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
 import { ADD_CONNECTION_STEP_1 } from '../../../../constants';
+import { AppContext } from '../../../../context/AppContext';
 import { PageNames } from '../../../../enum';
 import { IConnection } from '../../../../interface';
-import { AppContext } from '../../../../providers/AppContextProvider';
 import { ACTION_TYPE } from '../../../../reducers/AppContextReducer';
 import { storeApiTokenData } from '../../../../service/storage';
 
