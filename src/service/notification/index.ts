@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 import { NOTIFICATION_FAIL_COUNT, SEATREG_GREEN } from '../../constants';
 import { IBooking, IConnection, IGlobalConfig, IStoredBooking } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
-import { getDateString, getDateStringForBE } from '../../utils/time';
+import { getDateString } from '../../utils/time';
 import {
   getGlobalConfig,
   getStoredApiTokenData,
@@ -70,9 +70,9 @@ async function scheduleNotification(title, body = '') {
 }
 
 const fetchRegistrationBookings = async (connection: IConnection) => {
-  const url = `${connection.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${encodeURIComponent(
-    connection.apiToken
-  )}&calendar_date=${encodeURIComponent(getDateStringForBE(new Date()))}`;
+  const url = `${
+    connection.siteUrl
+  }/wp-json/seatreg/v1/notification-bookings?api_token=${encodeURIComponent(connection.apiToken)}`;
 
   const response = await fetch(url);
   const responseData: IBookingResponse = await response.json();
@@ -107,9 +107,23 @@ export async function notificationsPusher(dispatch = null) {
         if (storedBookings.length && newBookings.length) {
           if (newBookings.length <= 1) {
             newBookings.forEach((booking) => {
+              const bookingInfo = [
+                `Name: ${booking.first_name} ${booking.last_name}`,
+                `Room: ${booking.room_name}`,
+                `Seat: ${booking.room_name}`,
+              ];
+
+              if (booking.calendar_date) {
+                bookingInfo.push(
+                  `Calendar date: ${getDateString(
+                    new Date(booking.calendar_date).getTime() / 1000
+                  )}`
+                );
+              }
+
               scheduleNotification(
                 `${connection.registrationName} got new booking`,
-                `Name: ${booking.first_name} ${booking.last_name} \nRoom: ${booking.room_name} \nSeat: ${booking.seat_nr}`
+                bookingInfo.join('\n')
               );
             });
           } else if (newBookings.length >= 2) {
