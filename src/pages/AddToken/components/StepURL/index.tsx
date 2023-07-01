@@ -38,7 +38,6 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
         alert(`An error occured: ${response.status} Please try again`);
       }
     } catch (e) {
-      console.log(e.message);
       alert(e.message);
     } finally {
       setLoading(false);
