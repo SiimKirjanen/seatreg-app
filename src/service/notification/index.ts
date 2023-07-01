@@ -148,7 +148,7 @@ export async function notificationsPusher(dispatch = null) {
           text: `${connection.registrationName} had ${faileCount} continuous request failures . Turning off booking notifications`,
           date: getDateString(Date.now() / 1000),
         },
-        ...globalConfig.alerts,
+        ...globalConfig.alerts.slice(0, 30),
       ];
 
       if (faileCount > NOTIFICATION_FAIL_COUNT) {
