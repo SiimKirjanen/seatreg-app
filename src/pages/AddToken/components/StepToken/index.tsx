@@ -5,7 +5,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
-import { ADD_CONNECTION_STEP_1 } from '../../../../constants';
+import { ADD_CONNECTION_STEP_1, SEATREG_REQUIRED_API_VERSION } from '../../../../constants';
 import { AppContext } from '../../../../context/AppContext';
 import { PageNames } from '../../../../enum';
 import { IConnection } from '../../../../interface';
@@ -39,7 +39,7 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
       setLoading(true);
 
       const response = await fetch(
-        `${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}`
+        `${siteURL}/wp-json/seatreg/v1/validate-token?api_token=${apiToken}&seatreg_api=${SEATREG_REQUIRED_API_VERSION}`
       );
       const responseData = await response.json();
 
@@ -66,8 +66,8 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
       } else {
         alert(responseData?.message || 'Validating token request failed');
       }
-    } catch {
-      alert('error');
+    } catch (e) {
+      alert(e.message);
     } finally {
       setLoading(false);
     }

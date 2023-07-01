@@ -2,7 +2,7 @@ import { Input, Button } from '@rneui/themed';
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 
-import { ADD_CONNECTION_STEP_2 } from '../../../../constants';
+import { ADD_CONNECTION_STEP_2, SEATREG_REQUIRED_API_VERSION } from '../../../../constants';
 import { isValidHttpsUrl } from '../../../../utils/validators';
 
 interface Props {
@@ -25,7 +25,11 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
   const validateURL = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${siteURL}/wp-json/seatreg/v1/echo`);
+      const response = await fetch(
+        `${siteURL}/wp-json/seatreg/v1/echo?seatreg_api=${encodeURIComponent(
+          SEATREG_REQUIRED_API_VERSION
+        )}`
+      );
 
       if (response.ok) {
         setSiteURL(url);
@@ -34,6 +38,7 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
         alert(`An error occured: ${response.status} Please try again`);
       }
     } catch (e) {
+      console.log(e.message);
       alert(e.message);
     } finally {
       setLoading(false);

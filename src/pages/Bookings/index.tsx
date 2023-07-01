@@ -8,7 +8,7 @@ import { ActiveSearchNotification } from '../../components/ActiveSearchNotificat
 import { Bookings } from '../../components/Bookings';
 import { DateTimePicker } from '../../components/DateTimePicker';
 import SearchModal from '../../components/SearchModal';
-import { SEATREG_GREEN } from '../../constants';
+import { SEATREG_GREEN, SEATREG_REQUIRED_API_VERSION } from '../../constants';
 import { useGetRequest } from '../../hooks/useGetRequest';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
@@ -24,7 +24,9 @@ function BookingsPage() {
   const { data, loading, error, reload } = useGetRequest(
     `${tokenData.siteUrl}/wp-json/seatreg/v1/bookings?api_token=${encodeURIComponent(
       tokenData.apiToken
-    )}&calendar_date=${encodeURIComponent(getDateStringForBE(calendarDate))}`
+    )}&calendar_date=${encodeURIComponent(
+      getDateStringForBE(calendarDate)
+    )}&seatreg_api=${encodeURIComponent(SEATREG_REQUIRED_API_VERSION)}`
   );
   const navigation = useNavigation();
 

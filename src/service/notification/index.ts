@@ -2,7 +2,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
-import { NOTIFICATION_FAIL_COUNT, SEATREG_GREEN } from '../../constants';
+import { NOTIFICATION_FAIL_COUNT, SEATREG_REQUIRED_API_VERSION } from '../../constants';
 import { IBooking, IConnection, IGlobalConfig, IStoredBooking } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { getDateString } from '../../utils/time';
@@ -58,12 +58,11 @@ export async function registerForPushNotificationsAsync() {
   return token;
 }
 
-async function scheduleNotification(title, body = '') {
+async function scheduleNotification(title: string, body = '') {
   await Notifications.scheduleNotificationAsync({
     content: {
       title,
       body,
-      color: SEATREG_GREEN,
     },
     trigger: null,
   });
@@ -72,7 +71,9 @@ async function scheduleNotification(title, body = '') {
 const fetchRegistrationBookings = async (connection: IConnection) => {
   const url = `${
     connection.siteUrl
-  }/wp-json/seatreg/v1/notification-bookings?api_token=${encodeURIComponent(connection.apiToken)}`;
+  }/wp-json/seatreg/v1/notification-bookings?api_token=${encodeURIComponent(
+    connection.apiToken
+  )}&seatreg_api=${encodeURIComponent(SEATREG_REQUIRED_API_VERSION)}`;
 
   const response = await fetch(url);
   const responseData: IBookingResponse = await response.json();
@@ -110,7 +111,7 @@ export async function notificationsPusher(dispatch = null) {
               const bookingInfo = [
                 `Name: ${booking.first_name} ${booking.last_name}`,
                 `Room: ${booking.room_name}`,
-                `Seat: ${booking.room_name}`,
+                `Seat: ${booking.seat_nr}`,
               ];
 
               if (booking.calendar_date) {
