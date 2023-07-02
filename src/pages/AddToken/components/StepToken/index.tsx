@@ -81,6 +81,7 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
         value={apiToken}
         placeholder="Enter API token"
         inputStyle={parentStyles.inputText}
+        inputMode="numeric"
       />
       <View style={styles.buttonRow}>
         <Button title="Back" onPress={() => setStep(ADD_CONNECTION_STEP_1)} />

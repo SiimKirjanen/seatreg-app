@@ -66,6 +66,7 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
         placeholder="Enter here"
         errorMessage={errorMessage}
         inputStyle={parentStyles.inputText}
+        inputMode="url"
       />
       <Button title="Next" onPress={validateURL} loading={loading} disabled={!isValid} />
     </View>
