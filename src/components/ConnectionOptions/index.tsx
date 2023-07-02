@@ -44,7 +44,9 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
       toast.show('Options updated', {
         type: 'success',
       });
-    } catch (e) {}
+    } catch (e) {
+      alert(e.message);
+    }
   };
 
   return (
