@@ -28,8 +28,6 @@ interface IBookingResponse {
 }
 
 export async function registerForPushNotificationsAsync() {
-  let token;
-
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
       name: 'default',
@@ -48,14 +46,10 @@ export async function registerForPushNotificationsAsync() {
     }
     if (finalStatus !== 'granted') {
       alert('Failed to get permissions for push notification!');
-      return;
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
   } else {
     alert('Must use physical device for Push Notifications');
   }
-
-  return token;
 }
 
 async function scheduleNotification(title: string, body = '') {
