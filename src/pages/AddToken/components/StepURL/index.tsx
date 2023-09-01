@@ -59,7 +59,9 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
 
   return (
     <View style={parentStyles.stepWrap}>
-      <Text style={parentStyles.stepText}>Enter web address where SeatReg plugin is activated</Text>
+      <Text style={parentStyles.stepText}>
+        Please enter the root URL of your WordPress site where SeatReg plugin is activated
+      </Text>
       <Input
         onChangeText={urlInputChange}
         value={url}
@@ -67,6 +69,7 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
         errorMessage={errorMessage}
         inputStyle={parentStyles.inputText}
         inputMode="url"
+        autoCapitalize="none"
       />
       <Button title="Next" onPress={validateURL} loading={loading} disabled={!isValid} />
     </View>
