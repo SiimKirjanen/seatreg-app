@@ -1,4 +1,4 @@
-import { Camera, CameraType } from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera/legacy';
 import { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
