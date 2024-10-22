@@ -12,6 +12,12 @@ Mobile app for SeatReg
 1. Start the development server with `npm run start`
 2. Use Expo Go mobile app for development
 
+## Testing build
+
+1. `build:android:preview`
+2. Go to expo.dev and wain until .APK is generated
+3. Open the .APK in Android phone
+
 ## Deployment
 
 1. For building a ready-to-submit binary use [EAS Build](https://docs.expo.dev/)

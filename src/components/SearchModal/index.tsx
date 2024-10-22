@@ -6,7 +6,7 @@ import { useToast } from 'react-native-toast-notifications';
 import { SEATREG_GREEN } from '../../constants';
 import { ISearch } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/BookingsReducer';
-import { BarCodeScanner } from '../BarCodeScanner';
+import { SeatRegBarCodeScanner } from '../BarCodeScanner';
 
 interface Props {
   searchOpen: boolean;
@@ -65,7 +65,7 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
       <View style={{ marginBottom: 26 }}>
         {barCodeScannerOpen ? (
           <>
-            <BarCodeScanner barCodeScanned={onbarCodeScanned} />
+            <SeatRegBarCodeScanner barCodeScanned={onbarCodeScanned} />
             <Button title="Close QR scanner" onPress={() => setBarCodeScannerOpen(false)} />
           </>
         ) : (

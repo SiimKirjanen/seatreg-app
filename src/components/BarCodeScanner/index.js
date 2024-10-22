@@ -1,20 +1,29 @@
-import { Camera, CameraType } from 'expo-camera/legacy';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
-export function BarCodeScanner({ barCodeScanned }) {
-  const [type] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+export function SeatRegBarCodeScanner({ barCodeScanned }) {
+  const [hasPermission, setHasPermission] = useState(null);
 
   useEffect(() => {
-    if (!permission?.granted) {
-      requestPermission();
-    }
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    };
+
+    getBarCodeScannerPermissions();
   }, []);
+
+  if (hasPermission === null) {
+    return <Text style={styles.infoText}>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text style={styles.infoText}>No access to camera</Text>;
+  }
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} onBarCodeScanned={barCodeScanned} />
+      <BarCodeScanner style={styles.camera} onBarCodeScanned={barCodeScanned} />
     </View>
   );
 }
@@ -30,5 +39,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     borderWidth: 1,
+  },
+  infoText: {
+    marginBottom: 4,
   },
 });
