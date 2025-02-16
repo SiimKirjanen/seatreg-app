@@ -1,16 +1,22 @@
 import { IBooking } from '../interface';
 
 export const searchMatch = (booking: IBooking, searchValue: string) => {
-  //Name search
-  if (`${booking.first_name} ${booking.last_name}`.includes(searchValue)) {
+  const lowerCaseSearchValue = searchValue.toLowerCase();
+
+  // Name search
+  if (
+    `${booking.first_name.toLowerCase()} ${booking.last_name.toLowerCase()}`.includes(
+      lowerCaseSearchValue
+    )
+  ) {
     return true;
   }
-  //Email search
-  if (booking.email.includes(searchValue)) {
+  // Email search
+  if (booking.email.toLowerCase().includes(lowerCaseSearchValue)) {
     return true;
   }
-  //Booking ID search
-  if (booking.booking_id.includes(searchValue)) {
+  // Booking ID search
+  if (booking.booking_id.toLowerCase().includes(lowerCaseSearchValue)) {
     return true;
   }
 
