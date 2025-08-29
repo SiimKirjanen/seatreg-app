@@ -1,29 +1,35 @@
-import { BarCodeScanner } from 'expo-barcode-scanner';
-import { useState, useEffect } from 'react';
+import { Button } from '@rneui/themed';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { StyleSheet, View, Text } from 'react-native';
 
 export function SeatRegBarCodeScanner({ barCodeScanned }) {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [permission, requestPermission] = useCameraPermissions();
 
-  useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    };
-
-    getBarCodeScannerPermissions();
-  }, []);
-
-  if (hasPermission === null) {
+  if (!permission) {
     return <Text style={styles.infoText}>Requesting for camera permission</Text>;
   }
-  if (hasPermission === false) {
-    return <Text style={styles.infoText}>No access to camera</Text>;
+  if (!permission.granted) {
+    return (
+      <View style={styles.grandPermissionsWrap}>
+        <Text style={{ marginBottom: 2, textAlign: 'center' }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="Grant permission" />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner style={styles.camera} onBarCodeScanned={barCodeScanned} />
+      <Text style={{ marginBottom: 2, textAlign: 'center' }}>Scanning may take a few seconds.</Text>
+      <CameraView
+        style={styles.camera}
+        onBarCodeScanned={barCodeScanned}
+        barcodeScannerSettings={{
+          barCodeTypes: ['qr'],
+        }}
+        onBarcodeScanned={barCodeScanned}
+      />
     </View>
   );
 }
@@ -41,6 +47,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   infoText: {
+    marginBottom: 4,
+  },
+  grandPermissionsWrap: {
     marginBottom: 4,
   },
 });

@@ -1,4 +1,5 @@
 import { SearchBar, Dialog, Button } from '@rneui/themed';
+import { BarcodeScanningResult } from 'expo-camera';
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
@@ -20,7 +21,7 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
   const [barCodeScannerOpen, setBarCodeScannerOpen] = useState(false);
   const toast = useToast();
 
-  const onbarCodeScanned = (scanningResults) => {
+  const onbarCodeScanned = (scanningResults: BarcodeScanningResult) => {
     setBarCodeScannerOpen(false);
     setSearch(scanningResults.data);
   };
