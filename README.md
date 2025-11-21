@@ -1,6 +1,6 @@
 # seatreg-app
 
-Mobile app for SeatReg
+Mobile companion app for SeatReg WordPress plugin. Available at Google Play Store: https://play.google.com/store/apps/details?id=com.seatreg&hl=en&pli=1
 
 ## Installation
 
