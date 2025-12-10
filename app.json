@@ -3,9 +3,6 @@
     "name": "SeatReg",
     "slug": "seatreg",
     "version": "1.3.0",
-    "author": "Siim Kirjanen",
-    "description": "Mobile companion app for the SeatReg WordPress plugin.",
-    "githubUrl": "https://github.com/SiimKirjanen/seatreg-app",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -37,6 +36,9 @@
     "notification": {
       "icon": "./assets/push-notification.png",
       "color": "#61B329"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
