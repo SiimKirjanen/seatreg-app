@@ -135,7 +135,7 @@ export async function notificationsPusher(dispatch = null) {
         });
       }
     } catch (e) {
-      console.log('Getting bookings failed');
+      /* console.log('Getting bookings failed'); */
       const faileCount = connection.requestFailCounter || 0;
       const alerts = [
         {
@@ -146,7 +146,7 @@ export async function notificationsPusher(dispatch = null) {
       ];
 
       if (faileCount > NOTIFICATION_FAIL_COUNT) {
-        console.log('Too many failed counts');
+        /* console.log('Too many failed counts'); */
 
         updateConnection({
           ...connection,
@@ -176,7 +176,7 @@ export async function notificationsPusher(dispatch = null) {
           });
         }
       } else {
-        console.log('Updating failed count! ', faileCount);
+        /* console.log('Updating failed count! ', faileCount); */
         updateConnection({
           ...connection,
           requestFailCounter: connection.requestFailCounter + 1,
