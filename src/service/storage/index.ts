@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 import { STORED_CONNECTIONS, STORED_GLOBAL_CONFIG } from '../../constants';
 import { initState } from '../../context/AppContext';
 import { IConnection, IGlobalConfig, IStoredConnection, IToken } from '../../interface';
 import { getConnectionKey } from '../../utils/strings';
+import { secureDeleteItem, secureGetItem, secureSetItem } from './secureStorage';
 
 export async function getGlobalConfig() {
   try {
@@ -30,7 +32,7 @@ export async function getStoredApiTokenData() {
     const storedConnections = await getStoredConnections();
 
     for (const [key, value] of storedConnections) {
-      const result = await SecureStore.getItemAsync(`${key}`);
+      const result = await secureGetItem(`${key}`);
 
       if (result) {
         const tokenData: IToken = JSON.parse(result);
@@ -71,7 +73,11 @@ export async function storeApiTokenData(connectionData: IConnection) {
       bookings: connectionData.bookings,
       requestFailCounter: connectionData.requestFailCounter,
     });
-    await SecureStore.setItemAsync(`${connectionKey}`, JSON.stringify(connectionData));
+
+    await secureSetItem(
+      connectionKey,
+      JSON.stringify(connectionData)
+    );
     await storeConnections(storedConnections);
   } catch (e) {
     alert(e.message);
@@ -89,8 +95,7 @@ export async function removeConnectionFromStorage(tokenData: IConnection) {
     const storedConnections = await getStoredConnections();
     const connectionKey = getConnectionKey(tokenData);
 
-    await SecureStore.deleteItemAsync(`${connectionKey}`);
-
+    await secureDeleteItem(`${connectionKey}`);
     storedConnections.delete(connectionKey);
 
     await storeConnections(storedConnections);
@@ -124,7 +129,7 @@ export async function clearAllStorage() {
     const storedConnections = await getStoredConnections();
 
     for (const [key] of storedConnections) {
-      await SecureStore.deleteItemAsync(`${key}`);
+      await secureDeleteItem(`${key}`);
     }
     await AsyncStorage.removeItem(STORED_CONNECTIONS);
   } catch (e) {
