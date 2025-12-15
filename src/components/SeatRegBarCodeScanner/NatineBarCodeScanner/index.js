@@ -2,7 +2,7 @@ import { Button } from '@rneui/themed';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { StyleSheet, View, Text } from 'react-native';
 
-export function SeatRegBarCodeScanner({ barCodeScanned }) {
+export function NatineBarCodeScanner({ barCodeScanned }) {
   const [permission, requestPermission] = useCameraPermissions();
 
   if (!permission) {
