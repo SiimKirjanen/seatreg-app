@@ -8,7 +8,6 @@ import { PageNames } from '../../../enum';
 
 function TokenActions() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-
   return (
     <FAB
       loading={false}

@@ -1,13 +1,14 @@
 import { SearchBar, Dialog, Button } from '@rneui/themed';
 import { BarcodeScanningResult } from 'expo-camera';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 
 import { SEATREG_GREEN } from '../../constants';
 import { ISearch } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/BookingsReducer';
-import { SeatRegBarCodeScanner } from '../BarCodeScanner';
+import { WebBarCodeScannerRef } from '../SeatRegBarCodeScanner/WebBarCodeScanner';
+import { SeatRegBarCodeScanner } from '../SeatRegBarCodeScanner';
 
 interface Props {
   searchOpen: boolean;
@@ -20,11 +21,7 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
   const [search, setSearch] = useState('');
   const [barCodeScannerOpen, setBarCodeScannerOpen] = useState(false);
   const toast = useToast();
-
-  const onbarCodeScanned = (scanningResults: BarcodeScanningResult) => {
-    setBarCodeScannerOpen(false);
-    setSearch(scanningResults.data);
-  };
+  const webScannerRef = useRef<WebBarCodeScannerRef>(null);
 
   const closeModal = () => {
     setBarCodeScannerOpen(false);
@@ -66,8 +63,18 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
       <View style={{ marginBottom: 26 }}>
         {barCodeScannerOpen ? (
           <>
-            <SeatRegBarCodeScanner barCodeScanned={onbarCodeScanned} />
-            <Button title="Close QR scanner" onPress={() => setBarCodeScannerOpen(false)} />
+            <SeatRegBarCodeScanner
+                ref={webScannerRef}
+                onScan={(value) => {
+                  setSearch(value);
+                  setBarCodeScannerOpen(false);
+                }}
+              />
+            <Button title="Close QR scanner" onPress={async () => {
+              await webScannerRef.current?.stop();
+              setBarCodeScannerOpen(false);
+            }} 
+            />
           </>
         ) : (
           <Button title="Scan QR" onPress={() => setBarCodeScannerOpen(true)} />

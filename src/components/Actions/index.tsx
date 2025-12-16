@@ -7,7 +7,6 @@ export function ActionWrapper({ children }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

@@ -12,6 +12,8 @@ import HomePage from './src/pages/Home';
 import AppContextProvider from './src/providers/AppContextProvider';
 import LocalNotificationsProvider from './src/providers/LocalNotificationsProvider';
 
+import './polyfills';
+
 const Stack = createNativeStackNavigator();
 
 function App() {

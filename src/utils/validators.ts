@@ -1,13 +1,8 @@
-import { URL } from 'react-native-url-polyfill';
-
 export function isValidHttpsUrl(input: string) {
-  let url;
-
   try {
-    url = new URL(input);
+    const url = new URL(input);
+    return url.protocol === 'https:';
   } catch {
     return false;
   }
-
-  return url.protocol === 'https:';
 }
