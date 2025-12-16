@@ -13,7 +13,7 @@ export function NotificationBell() {
   return (
     <View>
       <TouchableOpacity onPress={() => setNotificationsVisible(true)}>
-        <Icon name="bell-o" type="font-awesome" />
+        <Icon name="bell-o" type="font-awesome" style={{ marginLeft: 16, marginRight: 16 }} />
       </TouchableOpacity>
 
       <Dialog
