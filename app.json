@@ -15,6 +15,9 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
+    "experiments": {
+      "baseUrl": "/wp-content/plugins/seatreg/companion_app"
+    },
     "ios": {
       "supportsTablet": true
     },
