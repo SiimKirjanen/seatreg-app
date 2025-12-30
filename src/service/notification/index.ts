@@ -52,7 +52,31 @@ export async function registerForPushNotificationsAsync() {
   }
 }
 
+export async function registerForWebNotificationsAsync() {
+  if (Platform.OS !== 'web') return;
+
+  if (!('Notification' in window)) {
+    alert('This browser does not support notifications');
+    return;
+  }
+
+  if (Notification.permission === 'default') {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      alert('Failed to get permissions for web notifications');
+    }
+  }
+}
+
 async function scheduleNotification(title: string, body = '') {
+
+  if(Platform.OS === 'web') {
+    if (Notification.permission === 'granted') {
+      new Notification(title, { body });
+    }
+    return;
+  }
+
   await Notifications.scheduleNotificationAsync({
     content: {
       title,
