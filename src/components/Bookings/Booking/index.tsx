@@ -39,7 +39,7 @@ export function Booking({ booking }: Props) {
 
   return (
     <Card key={booking.id}>
-      <Card.Title>{booking.booking_id}</Card.Title>
+      <Card.Title numberOfLines={2} ellipsizeMode="tail">{booking.booking_id}</Card.Title>
       <Card.Divider />
       <Text>
         Name: {booking.first_name} {booking.last_name}
