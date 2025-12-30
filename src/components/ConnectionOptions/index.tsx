@@ -6,7 +6,7 @@ import { useToast } from 'react-native-toast-notifications';
 import { AppContext } from '../../context/AppContext';
 import { IConnection } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
-import { registerForPushNotificationsAsync } from '../../service/notification';
+import { registerForPushNotificationsAsync, registerForWebNotificationsAsync } from '../../service/notification';
 import { updateConnection } from '../../service/storage';
 import { getConnectionKey } from '../../utils/strings';
 interface Props {
@@ -25,6 +25,7 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
   const toggleNotifications = async (value: boolean) => {
     try {
       if (value) {
+        await registerForWebNotificationsAsync();
         await registerForPushNotificationsAsync();
       }
 
