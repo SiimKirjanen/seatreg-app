@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   buttonWrap: {
     flexDirection: 'row',
     columnGap: 10,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
 });
 
