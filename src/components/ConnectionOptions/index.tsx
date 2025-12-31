@@ -38,7 +38,9 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
         type: ACTION_TYPE.CHANGE_CONNECTION_OPTIONS,
         payload: {
           activeOptionConnectionKey,
-          localNotifications: value,
+          options: {
+            localNotifications: value,
+          }
         },
       });
       updateConnection(payLoad);
@@ -50,28 +52,60 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
     }
   };
 
+  const toggleBookingStatusColors = async (value: boolean) => {
+    try {
+      const payLoad = {
+        ...activeConnection,
+        bookingStatusColors: value,
+      };
+
+      dispatch({
+        type: ACTION_TYPE.CHANGE_CONNECTION_OPTIONS,
+        payload: {
+          activeOptionConnectionKey,
+          options: {
+            bookingStatusColors: value,
+          }
+        },
+      });
+      updateConnection(payLoad);
+      toast.show('Options updated', {
+        type: 'success',
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+
   return (
     <Dialog isVisible={isVisible} onBackdropPress={() => closeOptions()}>
-      <Dialog.Title title="Options" />
+      <Dialog.Title title="Options" titleStyle={{ textAlign: 'center' }} />
 
-      <Dialog.Actions>
-        <View style={styles.actionWrap}>
-          <Text>Enable booking notifications</Text>
-          <Switch
-            value={activeConnection?.localNotifications}
-            onValueChange={toggleNotifications}
-          />
-        </View>
-      </Dialog.Actions>
+      <View style={styles.actionWrap}>
+        <Text>Enable booking notifications</Text>
+        <Switch
+          value={activeConnection?.localNotifications}
+          onValueChange={toggleNotifications}
+        />
+      </View>
+      <View style={styles.actionWrap}>
+        <Text>Enable booking status colors</Text>
+        <Switch
+          value={activeConnection?.bookingStatusColors}
+          onValueChange={toggleBookingStatusColors}
+        />
+      </View>
+
     </Dialog>
   );
 }
 
 const styles = StyleSheet.create({
   actionWrap: {
-    flex: 1,
-    justifyContent: 'flex-end',
     flexDirection: 'row',
     alignItems: 'center',
-  },
+    justifyContent: 'center',
+    paddingVertical: 8,
+    gap: 12,
+  }
 });

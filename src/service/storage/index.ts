@@ -44,6 +44,7 @@ export async function getStoredApiTokenData() {
           registrationName: value.registrationName,
           bookings: value.bookings,
           requestFailCounter: value.requestFailCounter,
+          bookingStatusColors: value.bookingStatusColors
         });
       }
     }
@@ -72,6 +73,7 @@ export async function storeApiTokenData(connectionData: IConnection) {
       apiTokenId: connectionData.apiTokenId,
       bookings: connectionData.bookings,
       requestFailCounter: connectionData.requestFailCounter,
+      bookingStatusColors: connectionData.bookingStatusColors
     });
 
     await secureSetItem(
@@ -116,6 +118,7 @@ export async function updateConnection(connectionData: IConnection) {
       localNotifications: connectionData.localNotifications,
       bookings: connectionData.bookings,
       requestFailCounter: connectionData.requestFailCounter,
+      bookingStatusColors: connectionData.bookingStatusColors
     });
 
     await storeConnections(storedConnections);

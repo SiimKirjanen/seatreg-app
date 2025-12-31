@@ -8,9 +8,10 @@ import { searchMatch } from '../../utils/search';
 interface Props {
   bookings: IBooking[];
   searchValue: string;
+  displayBookingStatusColors: boolean;
 }
 
-export const Bookings = React.memo(({ bookings, searchValue }: Props) => {
+export const Bookings = React.memo(({ bookings, searchValue, displayBookingStatusColors }: Props) => {
   const bookingsFiltering = (booking: IBooking) => {
     if (searchValue) {
       if (!searchMatch(booking, searchValue)) {
@@ -32,7 +33,7 @@ export const Bookings = React.memo(({ bookings, searchValue }: Props) => {
   return (
     <View>
       {filteredBookings.map((booking) => (
-        <Booking booking={booking} key={booking.id} />
+        <Booking booking={booking} key={booking.id} displayBookingStatusColors={displayBookingStatusColors} />
       ))}
     </View>
   );

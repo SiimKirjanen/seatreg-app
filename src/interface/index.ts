@@ -41,6 +41,7 @@ export interface IConnection extends IToken {
   siteUrl: string;
   bookings: IStoredBooking[];
   requestFailCounter: number;
+  bookingStatusColors: boolean;
 }
 
 export interface IStoredConnection {
@@ -50,6 +51,7 @@ export interface IStoredConnection {
   apiTokenId: string;
   bookings: IStoredBooking[];
   requestFailCounter: number;
+  bookingStatusColors: boolean;
 }
 
 export interface ISearch {
