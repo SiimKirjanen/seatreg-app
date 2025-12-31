@@ -4,9 +4,11 @@ import { Text, View } from 'react-native';
 
 import { IBooking, ICustomField } from '../../../interface';
 import { getDateString } from '../../../utils/time';
+import { SEATREG_BOOKING_PENDING, SEATREG_GREEN } from '../../../constants';
 
 interface Props {
   booking: IBooking;
+  displayBookingStatusColors: boolean;
 }
 
 function CustomFields({ fields }) {
@@ -33,13 +35,20 @@ function CalendarDate({ dateString }) {
   return <Text>Calendar date: {getDateString(new Date(dateString).getTime() / 1000)}</Text>;
 }
 
-export function Booking({ booking }: Props) {
+export function Booking({ booking, displayBookingStatusColors }: Props) {
   const bookingStatus = booking.status === '1' ? 'Pending' : 'Approved';
+  const statusColor =
+  displayBookingStatusColors
+    ? booking.status === '1'
+      ? SEATREG_BOOKING_PENDING
+      : SEATREG_GREEN
+    : undefined;
   const customFields = JSON.parse(booking.custom_field_data);
 
   return (
     <Card key={booking.id}>
-      <Card.Title numberOfLines={2} ellipsizeMode="tail">{booking.booking_id}</Card.Title>
+      <Card.Title numberOfLines={2} ellipsizeMode="tail" style={statusColor ? { color: statusColor } : undefined}>{booking.booking_id}</Card.Title>
+      <Text style={statusColor ? { color: statusColor, fontWeight: '600' } : undefined}>Status: {bookingStatus}</Text>
       <Card.Divider />
       <Text>
         Name: {booking.first_name} {booking.last_name}
@@ -48,7 +57,6 @@ export function Booking({ booking }: Props) {
       <Text>Room: {booking.room_name}</Text>
       <Text>Email: {booking.email}</Text>
       <Text>Booker email: {booking.booker_email}</Text>
-      <Text>Status: {bookingStatus}</Text>
       <Text>Booking date: {getDateString(booking.booking_date)}</Text>
       <Text>Booking approved date: {getDateString(booking.booking_confirm_date)}</Text>
       <CustomFields fields={customFields} />

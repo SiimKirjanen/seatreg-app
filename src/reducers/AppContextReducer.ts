@@ -32,7 +32,7 @@ export const reducer = (state: StateType, action: ReducerAction) => {
         if (getConnectionKey(connection) === action.payload.activeOptionConnectionKey) {
           return {
             ...connection,
-            localNotifications: action.payload.localNotifications,
+            ...action.payload.options
           };
         }
         return connection;

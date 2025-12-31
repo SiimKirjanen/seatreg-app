@@ -29,6 +29,7 @@ function BookingsPage() {
     )}&seatreg_api=${encodeURIComponent(SEATREG_REQUIRED_API_VERSION)}`
   );
   const navigation = useNavigation();
+  const displayBookingStatusColors = tokenData.bookingStatusColors;
 
   useEffect(() => {
     navigation.setOptions({
@@ -65,7 +66,7 @@ function BookingsPage() {
         <DateTimePicker calendarDate={calendarDate} setCalendarDate={setCalendarDate} />
       )}
       <ScrollView>
-        <Bookings bookings={data.bookings} searchValue={bookingsState.searchParams.searchValue} />
+        <Bookings bookings={data.bookings} searchValue={bookingsState.searchParams.searchValue} displayBookingStatusColors={displayBookingStatusColors} />
       </ScrollView>
       <ActionWrapper>
         <BookingsActions openSearch={() => setSearchOpen(true)} refreshBookings={reload} />

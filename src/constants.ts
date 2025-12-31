@@ -1,6 +1,7 @@
 export const BORDER_COLOR = 'rgb(225, 232, 238)';
 export const SEATREG_GREEN = '#61B329';
 export const NOTIFICATION_BLUE = '#2089dc';
+export const SEATREG_BOOKING_PENDING = '#f59e0b';
 export const STORED_CONNECTIONS = 'stored-connections';
 export const STORED_GLOBAL_CONFIG = 'stored-global-config';
 
