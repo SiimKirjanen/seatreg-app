@@ -9,6 +9,7 @@ import { SEATREG_GREEN } from '../../constants';
 import { AppContext } from '../../context/AppContext';
 import { IConnection } from '../../interface';
 import { getConnectionKey } from '../../utils/strings';
+import { translate } from '../../service/translation';
 
 function Connections({ optionsPress }) {
   const { state } = useContext(AppContext);
@@ -16,7 +17,7 @@ function Connections({ optionsPress }) {
   if (state.initializing) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ marginBottom: 6 }}>Initializing</Text>
+        <Text style={{ marginBottom: 6 }}>{translate('Initializing', 'initializing')}</Text>
         <ActivityIndicator size="large" color={SEATREG_GREEN} />
       </View>
     );
@@ -25,7 +26,7 @@ function Connections({ optionsPress }) {
   if (state?.connectionData.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>No connections</Text>
+        <Text>{translate('No connections', 'noConnections')}</Text>
       </View>
     );
   }

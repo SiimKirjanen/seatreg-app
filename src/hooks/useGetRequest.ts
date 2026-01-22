@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { IBooking } from '../interface';
+import { translate } from '../service/translation';
 
 interface IRegistrationOptions {
   calendarDates: string[];
@@ -41,11 +42,11 @@ export const useGetRequest = (resource: string) => {
             },
           });
         } else {
-          setError(responseData?.message || 'Request failed');
+          setError(responseData?.message || translate('Request failed', 'requestFailed'));
         }
       } catch {
         setError(
-          'Unable to Establish Connection. Check your internet connection and verify the website availability'
+          translate('Unable to Establish Connection. Check your internet connection and verify the website availability', 'unableToEstablishConnection')
         );
       } finally {
         setLoading(false);

@@ -13,6 +13,7 @@ import AppContextProvider from './src/providers/AppContextProvider';
 import LocalNotificationsProvider from './src/providers/LocalNotificationsProvider';
 
 import './polyfills';
+import { translate } from './src/service/translation';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ function App() {
                 name={PageNames.Home}
                 component={HomePage}
                 options={{
+                  title: translate(PageNames.Home, 'home'),
                   headerRight: () => <NotificationBell />,
                 }}
               />
@@ -38,6 +40,7 @@ function App() {
                 name={PageNames.AddToken}
                 component={AddTokenPage}
                 options={{
+                  title: translate(PageNames.AddToken, 'addToken'),
                   headerRight: () => <NotificationBell />,
                 }}
               />
@@ -45,6 +48,7 @@ function App() {
                 name={PageNames.Bookings}
                 component={Bookings}
                 options={{
+                  title: translate(PageNames.Bookings, 'bookings'),
                   headerRight: () => <NotificationBell />,
                 }}
               />
