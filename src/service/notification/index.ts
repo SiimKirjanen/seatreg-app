@@ -12,6 +12,7 @@ import {
   setGlobalConfig,
   updateConnection,
 } from '../storage';
+import { translate } from '../translation';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -45,10 +46,19 @@ export async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-      alert('Failed to get permissions for push notification!');
+      alert(
+        translate(
+          'Failed to get permissions for push notification!',
+          'pushPermissionFailed'
+        )
+      );
     }
   } else {
-    alert('Must use physical device for Push Notifications');
+    alert( 
+      translate(
+        'Must use physical device for Push Notifications',
+        'pushPhysicalDeviceRequired'
+    ));
   }
 }
 
@@ -56,14 +66,24 @@ export async function registerForWebNotificationsAsync() {
   if (Platform.OS !== 'web') return;
 
   if (!('Notification' in window)) {
-    alert('This browser does not support notifications');
+    alert(
+       translate(
+        'This browser does not support notifications',
+        'notificationsNotSupported'
+      )
+    );
     return;
   }
 
   if (Notification.permission === 'default') {
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
-      alert('Failed to get permissions for web notifications');
+      alert(
+        translate(
+          'Failed to get permissions for web notifications',
+          'webNotificationPermissionFailed'
+        )
+      );
     }
   }
 }
@@ -108,7 +128,6 @@ export async function notificationsPusher(dispatch = null) {
 
     try {
       if (connection.localNotifications) {
-        console.log('start');
         const freshBookings: IBooking[] = await fetchRegistrationBookings(connection);
         const freshBookingsIds: IStoredBooking[] = freshBookings.map(({ booking_id }) => {
           return { booking_id };
@@ -127,27 +146,52 @@ export async function notificationsPusher(dispatch = null) {
           if (newBookings.length <= 1) {
             newBookings.forEach((booking) => {
               const bookingInfo = [
-                `Name: ${booking.first_name} ${booking.last_name}`,
-                `Room: ${booking.room_name}`,
-                `Seat: ${booking.seat_nr}`,
+                translate(
+                  'Name: %s',
+                  'bookingName',
+                  `${booking.first_name} ${booking.last_name}`
+                ),
+                translate(
+                  'Room: %s',
+                  'bookingRoom',
+                  booking.room_name
+                ),
+                translate(
+                  'Seat: %s',
+                  'bookingSeat',
+                  booking.seat_nr
+                )
               ];
 
               if (booking.calendar_date) {
                 bookingInfo.push(
-                  `Calendar date: ${getDateString(
-                    new Date(booking.calendar_date).getTime() / 1000
-                  )}`
+                  translate(
+                    'Calendar date: %s',
+                    'bookingCalendarDate',
+                    getDateString(
+                      new Date(booking.calendar_date).getTime() / 1000
+                    )
+                  )
                 );
               }
 
               scheduleNotification(
-                `${connection.registrationName} got new booking`,
+                translate(
+                  '%s got a new booking',
+                  'newBookingsSingle',
+                  connection.registrationName
+                ),
                 bookingInfo.join('\n')
               );
             });
           } else if (newBookings.length >= 2) {
             scheduleNotification(
-              `${connection.registrationName} got ${newBookings.length} new bookings`
+              translate(
+                '%s got %s new bookings',
+                'newBookingsMultiple',
+                connection.registrationName,
+                newBookings.length
+              )
             );
           }
         }
@@ -159,19 +203,21 @@ export async function notificationsPusher(dispatch = null) {
         });
       }
     } catch (e) {
-      /* console.log('Getting bookings failed'); */
       const faileCount = connection.requestFailCounter || 0;
       const alerts = [
         {
-          text: `${connection.registrationName} had ${faileCount} continuous request failures . Turning off booking notifications`,
+          text: translate(
+            '%s had %s continuous request failures. Turning off booking notifications.',
+            'bookingNotificationsDisabledDueToFailures',
+            connection.registrationName,
+            faileCount
+          ),
           date: getDateString(Date.now() / 1000),
         },
         ...globalConfig.alerts.slice(0, 30),
       ];
 
       if (faileCount > NOTIFICATION_FAIL_COUNT) {
-        /* console.log('Too many failed counts'); */
-
         updateConnection({
           ...connection,
           localNotifications: false,
@@ -200,7 +246,6 @@ export async function notificationsPusher(dispatch = null) {
           });
         }
       } else {
-        /* console.log('Updating failed count! ', faileCount); */
         updateConnection({
           ...connection,
           requestFailCounter: connection.requestFailCounter + 1,

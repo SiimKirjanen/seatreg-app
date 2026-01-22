@@ -10,6 +10,7 @@ import { IConnection } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { removeConnectionFromStorage } from '../../service/storage';
 import ConfirmDialog from '../ConfirmDialog';
+import { translate } from '../../service/translation';
 
 interface Props {
   tokenData: IConnection;
@@ -32,7 +33,10 @@ function Connection({ tokenData, optionsPress }: Props) {
       type: ACTION_TYPE.REMOVE_CONNECTION_ACTION,
       payload: tokenData,
     });
-    toast.show('Connection removed', { type: 'success' });
+    toast.show(
+      translate('Connection removed', 'connectionRemoved'),
+      { type: 'success' }
+    );
     setShowDeleteDialog(false);
   };
 
@@ -43,22 +47,22 @@ function Connection({ tokenData, optionsPress }: Props) {
         <Card.Divider />
         <Text style={styles.siteUrl}>{tokenData.siteUrl}</Text>
         <View style={styles.buttonWrap}>
-          <Button title="Options" onPress={() => optionsPress(tokenData)} />
+          <Button title={translate('Options', 'optionsButton')} onPress={() => optionsPress(tokenData)} />
           <Button
-            title="Bookings"
+            title={translate('Bookings', 'bookingsButton')}
             onPress={() =>
               navigation.navigate('Bookings', {
                 tokenData,
               })
             }
           />
-          <Button title="Remove" onPress={confirmDeleteAlert} color="error" />
+          <Button title={translate('Remove', 'removeButton')} onPress={confirmDeleteAlert} color="error" />
         </View>
       </Card>
       <ConfirmDialog
         visible={showDeleteDialog}
-        title="Delete connection"
-        message="Are you sure?"
+        title={translate('Delete connection', 'deleteConnectionDialogTitle')}
+        message={translate('Are you sure?', 'deleteConnectionDialogMessage')}
         onCancel={() => setShowDeleteDialog(false)}
         onConfirm={handleDelete}
       />

@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { NOTIFICATION_BLUE } from '../../constants';
 import { ISearch } from '../../interface';
+import { translate } from '../../service/translation';
 
 interface Props {
   activeSearch: ISearch;
@@ -13,7 +14,9 @@ export function ActiveSearchNotification({ activeSearch, onPress }: Props) {
   return (
     <View style={styles.wrap}>
       <TouchableOpacity onPress={() => onPress()}>
-        <Text style={styles.text}>Booking filtering is active</Text>
+        <Text style={styles.text}>
+          {translate('Booking filtering is active', 'bookingFilteringActive')}
+        </Text>
       </TouchableOpacity>
     </View>
   );
