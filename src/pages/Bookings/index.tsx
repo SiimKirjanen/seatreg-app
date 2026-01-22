@@ -13,6 +13,7 @@ import { useGetRequest } from '../../hooks/useGetRequest';
 import { bookingsReducer, initState } from '../../reducers/BookingsReducer';
 import { ParamList } from '../../types';
 import { getDateStringForBE } from '../../utils/time';
+import { translate } from '../../service/translation';
 
 function BookingsPage() {
   const {
@@ -33,14 +34,14 @@ function BookingsPage() {
 
   useEffect(() => {
     navigation.setOptions({
-      title: `${tokenData.registrationName} bookings`,
+      title: `${tokenData.registrationName} ${translate('bookings', 'bookings')}`,
     });
   }, [navigation, tokenData.registrationName]);
 
   if (loading) {
     return (
       <View style={styles.centerWrap}>
-        <Text style={{ marginBottom: 6 }}>Loading bookings</Text>
+        <Text style={{ marginBottom: 6 }}>{translate('Loading bookings', 'loadingBookings')}</Text>
         <ActivityIndicator size="large" color={SEATREG_GREEN} />
       </View>
     );

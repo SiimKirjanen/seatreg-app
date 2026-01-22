@@ -11,6 +11,7 @@ import { PageNames } from '../../../../enum';
 import { IConnection } from '../../../../interface';
 import { ACTION_TYPE } from '../../../../reducers/AppContextReducer';
 import { storeApiTokenData } from '../../../../service/storage';
+import { translate } from '../../../../service/translation';
 
 interface Props {
   parentStyles: any;
@@ -31,7 +32,7 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
 
   const saveToken = async () => {
     if (tokenExists()) {
-      alert(`Token ${apiToken} is already added`);
+      alert(translate('Token %s is already added', 'tokenAlreadyAdded', apiToken));
 
       return false;
     }
@@ -59,12 +60,12 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
           payload,
         });
         storeApiTokenData(payload);
-        toast.show('Connection added', {
+        toast.show(translate('Connection added', 'connectionAdded'), {
           type: 'success',
         });
         navigation.navigate(PageNames.Home);
       } else {
-        alert(responseData?.message || 'Validating token request failed');
+        alert(responseData?.message || translate('Validating token request failed', 'tokenValidationFailed'));
       }
     } catch (e) {
       alert(e.message);
@@ -75,17 +76,17 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
 
   return (
     <View style={parentStyles.stepWrap}>
-      <Text style={parentStyles.stepText}>Enter SeatReg public API token</Text>
+      <Text style={parentStyles.stepText}>{translate('Enter SeatReg public API token', 'enterSeatRegApiToken')}</Text>
       <Input
         onChangeText={setApiToken}
         value={apiToken}
-        placeholder="Enter API token"
+        placeholder={translate('Enter API token', 'enterApiTokenPlaceholder')}
         inputStyle={parentStyles.inputText}
         inputMode="numeric"
       />
       <View style={styles.buttonRow}>
-        <Button title="Back" onPress={() => setStep(ADD_CONNECTION_STEP_1)} />
-        <Button title="Save" onPress={saveToken} loading={loading} />
+        <Button title={translate('Back', 'back')} onPress={() => setStep(ADD_CONNECTION_STEP_1)} />
+        <Button title={translate('Save', 'save')} onPress={saveToken} loading={loading} />
       </View>
     </View>
   );

@@ -4,6 +4,7 @@ import { View, Text } from 'react-native';
 
 import { ADD_CONNECTION_STEP_2, SEATREG_REQUIRED_API_VERSION } from '../../../../constants';
 import { isValidHttpsUrl } from '../../../../utils/validators';
+import { translate } from '../../../../service/translation';
 
 interface Props {
   parentStyles: any;
@@ -35,7 +36,11 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
         setSiteURL(url);
         setStep(ADD_CONNECTION_STEP_2);
       } else {
-        alert(`An error occured: ${response.status} Please try again`);
+        alert(translate(
+          'An error occurred: %s. Please try again', 
+          'errorMessage',
+          response.status
+        ));
       }
     } catch (e) {
       alert(e.message);
@@ -53,25 +58,25 @@ export function StepURL({ parentStyles, setSiteURL, siteURL, setStep }: Props) {
       setSiteURL(input);
     } else {
       setIsValid(false);
-      setErrorMessage('Please enter correct HTTPS site URL');
+      setErrorMessage(translate('Please enter correct HTTPS site URL', 'enterCorrectHttpsUrl'));
     }
   };
 
   return (
     <View style={parentStyles.stepWrap}>
       <Text style={parentStyles.stepText}>
-        Please enter the root URL of your WordPress site where SeatReg plugin is activated
+        {translate('Please enter the root URL of your WordPress site where SeatReg plugin is activated', 'enterWPSiteUrl')}
       </Text>
       <Input
         onChangeText={urlInputChange}
         value={url}
-        placeholder="Enter here"
+        placeholder={translate('Enter here', 'enterHere')}
         errorMessage={errorMessage}
         inputStyle={parentStyles.inputText}
         inputMode="url"
         autoCapitalize="none"
       />
-      <Button title="Next" onPress={validateURL} loading={loading} disabled={!isValid} />
+      <Button title={translate('Next', 'next')} onPress={validateURL} loading={loading} disabled={!isValid} />
     </View>
   );
 }

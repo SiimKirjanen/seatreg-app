@@ -1,5 +1,4 @@
 import { SearchBar, Dialog, Button } from '@rneui/themed';
-import { BarcodeScanningResult } from 'expo-camera';
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
@@ -9,6 +8,7 @@ import { ISearch } from '../../interface';
 import { ACTION_TYPE } from '../../reducers/BookingsReducer';
 import { WebBarCodeScannerRef } from '../SeatRegBarCodeScanner/WebBarCodeScanner';
 import { SeatRegBarCodeScanner } from '../SeatRegBarCodeScanner';
+import { translate } from '../../service/translation';
 
 interface Props {
   searchOpen: boolean;
@@ -43,17 +43,17 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
       payload: '',
     });
     closeModal();
-    toast.show('Search cleared', {
+    toast.show(translate('Search cleared', 'searchCleared'), {
       type: 'success',
     });
   };
 
   return (
     <Dialog isVisible={searchOpen} onBackdropPress={closeModal}>
-      <Dialog.Title title="Booking search" />
+      <Dialog.Title title={translate('Booking search', 'bookingSearch')} />
       <SearchBar
         lightTheme
-        placeholder="Search"
+        placeholder={translate('Search', 'searchPlaceholder')}
         onChangeText={(search) => setSearch(search)}
         containerStyle={{ marginBottom: 12 }}
         inputStyle={{ color: 'black', fontSize: 16 }}
@@ -70,21 +70,21 @@ function SearchModal({ searchOpen, setSearchOpen, searchParams, bookingsDispatch
                   setBarCodeScannerOpen(false);
                 }}
               />
-            <Button title="Close QR scanner" onPress={async () => {
+            <Button title={translate('Close QR scanner', 'closeQRScanner')} onPress={async () => {
               await webScannerRef.current?.stop();
               setBarCodeScannerOpen(false);
             }} 
             />
           </>
         ) : (
-          <Button title="Scan QR" onPress={() => setBarCodeScannerOpen(true)} />
+          <Button title={translate('Scan QR', 'scanQR')} onPress={() => setBarCodeScannerOpen(true)} />
         )}
       </View>
 
       <View style={styles.buttonsWrap}>
-        <Button title="Close" onPress={closeModal} />
-        <Button title="Clear" onPress={clearSearch} color="error" />
-        <Button title="Apply" onPress={applySearch} color={SEATREG_GREEN} />
+        <Button title={translate('Close', 'closeButton')} onPress={closeModal} />
+        <Button title={translate('Clear', 'clearButton')} onPress={clearSearch} color="error" />
+        <Button title={translate('Apply', 'applyButton')} onPress={applySearch} color={SEATREG_GREEN} />
       </View>
     </Dialog>
   );

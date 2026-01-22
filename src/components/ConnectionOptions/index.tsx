@@ -9,6 +9,7 @@ import { ACTION_TYPE } from '../../reducers/AppContextReducer';
 import { registerForPushNotificationsAsync, registerForWebNotificationsAsync } from '../../service/notification';
 import { updateConnection } from '../../service/storage';
 import { getConnectionKey } from '../../utils/strings';
+import { translate } from '../../service/translation';
 interface Props {
   isVisible: boolean;
   closeOptions: Function;
@@ -44,9 +45,12 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
         },
       });
       updateConnection(payLoad);
-      toast.show('Options updated', {
-        type: 'success',
-      });
+      toast.show(
+        translate('Options updated', 'optionsUpdated'), 
+        {
+          type: 'success',
+        }
+      );
     } catch (e) {
       alert(e.message);
     }
@@ -69,9 +73,10 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
         },
       });
       updateConnection(payLoad);
-      toast.show('Options updated', {
-        type: 'success',
-      });
+      toast.show(
+        translate('Options updated', 'optionsUpdated'),
+        { type: 'success' }
+      );
     } catch (e) {
       alert(e.message);
     }
@@ -79,7 +84,7 @@ export function ConnectionOptions({ isVisible, closeOptions, activeOptionConnect
 
   return (
     <Dialog isVisible={isVisible} onBackdropPress={() => closeOptions()}>
-      <Dialog.Title title="Options" titleStyle={{ textAlign: 'center' }} />
+      <Dialog.Title title={translate('Options', 'optionsDialogTitle')} titleStyle={{ textAlign: 'center' }} />
 
       <View style={styles.actionWrap}>
         <Text>Enable booking notifications</Text>

@@ -1,5 +1,6 @@
 import { Html5Qrcode } from 'html5-qrcode';
 import React, { useEffect, useImperativeHandle, useRef, forwardRef, useState } from 'react';
+import { translate } from '../../../service/translation';
 
 export interface WebBarCodeScannerRef {
   stop: () => Promise<void>;
@@ -48,19 +49,31 @@ export const WebBarCodeScanner = forwardRef<WebBarCodeScannerRef, Props>(
           
           if (err.name === 'NotFoundError') {
             setErrorMessage(
-              'No camera was found. Please connect a camera or use a different device.'
+              translate(
+                'No camera was found. Please connect a camera or use a different device.',
+                'cameraNotFound'
+              )
             );
           } else if (err.name === 'NotAllowedError') {
             setErrorMessage(
-              'Camera access was denied. Please allow camera permissions.'
+               translate(
+                'Camera access was denied. Please allow camera permissions.',
+                'cameraAccessDenied'
+              )
             );
           } else if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
             setErrorMessage(
-              'Camera access requires HTTPS.'
+              translate(
+                'Camera access requires HTTPS.',
+                'cameraRequiresHttps'
+              )
             );
           } else {
             setErrorMessage(
-              'Unable to start the camera. Please try again.'
+              translate(
+                'Unable to start the camera. Please try again.',
+                'cameraStartFailed'
+              )
             );
           }
         });
