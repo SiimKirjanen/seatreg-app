@@ -19,6 +19,10 @@ export const searchMatch = (booking: IBooking, searchValue: string) => {
   if (booking.booking_id.toLowerCase().includes(lowerCaseSearchValue)) {
     return true;
   }
+  // Seat nr search
+  if (booking.seat_nr.toLowerCase().includes(lowerCaseSearchValue)) {
+    return true;
+  }
 
   return false;
 };
