@@ -27,7 +27,8 @@ function App() {
       <AppContextProvider>
         <LocalNotificationsProvider>
           <NavigationContainer>
-            <Stack.Navigator initialRouteName={PageNames.Home}>
+            {/* React Navigation 7 types require `id` when strictNullChecks is off */}
+            <Stack.Navigator id={undefined} initialRouteName={PageNames.Home}>
               <Stack.Screen
                 name={PageNames.Home}
                 component={HomePage}
