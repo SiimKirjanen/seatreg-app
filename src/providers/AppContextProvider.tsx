@@ -4,7 +4,6 @@ import { AppContext, initState } from '../context/AppContext';
 import { useAppState } from '../hooks/useAppState';
 import { ACTION_TYPE, reducer } from '../reducers/AppContextReducer';
 import { getGlobalConfig, getStoredApiTokenData } from '../service/storage';
-import { StateType } from '../types';
 
 const AppContextProvider = ({ children }) => {
   const [appStateVisible] = useAppState();
@@ -27,7 +26,7 @@ const AppContextProvider = ({ children }) => {
     })();
   }, [appStateVisible]);
 
-  const [state, dispatch] = useReducer<React.Reducer<StateType, any>>(reducer, initState);
+  const [state, dispatch] = useReducer(reducer, initState);
 
   return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 };

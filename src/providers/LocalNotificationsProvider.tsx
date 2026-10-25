@@ -1,4 +1,4 @@
-import * as BackgroundFetch from 'expo-background-fetch';
+import * as BackgroundTask from 'expo-background-task';
 import * as TaskManager from 'expo-task-manager';
 import React, { useContext, useEffect } from 'react';
 import { Platform } from 'react-native';
@@ -7,20 +7,23 @@ import { NOTIFICATIONS_PUSH_INTERVAL } from '../constants';
 import { AppContext } from '../context/AppContext';
 import { notificationsPusher } from '../service/notification';
 
-const BACKGROUND_FETCH_TASK = 'background-fetch';
+const BACKGROUND_NOTIFICATIONS_TASK = 'background-notifications';
+// Task name used by expo-background-fetch before the SDK 57 upgrade
+const LEGACY_BACKGROUND_FETCH_TASK = 'background-fetch';
 
 interface ILocalNotificationsContext {}
 
 if (Platform.OS !== 'web') {
-  TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
+  TaskManager.defineTask(BACKGROUND_NOTIFICATIONS_TASK, async () => {
     try {
       await notificationsPusher();
     } catch (e) {
       console.log(e.message);
+
+      return BackgroundTask.BackgroundTaskResult.Failed;
     }
 
-    // Be sure to return the successful result type!
-    return BackgroundFetch.BackgroundFetchResult.NewData;
+    return BackgroundTask.BackgroundTaskResult.Success;
   });
 }
 
@@ -42,18 +45,25 @@ const LocalNotificationsProvider = ({ children }) => {
   useEffect(() => {
     if (Platform.OS === 'web') return;
 
-    async function registerBackgroundFetchAsync() {
-      return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-        minimumInterval: NOTIFICATIONS_PUSH_INTERVAL / 1000,
-        stopOnTerminate: false, // android only,
-        startOnBoot: true, // android only
-      }); 
+    async function registerBackgroundTaskAsync() {
+      try {
+        if (await TaskManager.isTaskRegisteredAsync(LEGACY_BACKGROUND_FETCH_TASK)) {
+          await TaskManager.unregisterTaskAsync(LEGACY_BACKGROUND_FETCH_TASK);
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
+
+      return BackgroundTask.registerTaskAsync(BACKGROUND_NOTIFICATIONS_TASK, {
+        minimumInterval: 15, // minutes, the minimum the OS allows
+      });
     }
 
-    registerBackgroundFetchAsync();
+    // Fails in Expo Go on iOS and when the user has disabled background refresh
+    registerBackgroundTaskAsync().catch((e) => console.log(e.message));
 
     return () => {
-      BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
+      BackgroundTask.unregisterTaskAsync(BACKGROUND_NOTIFICATIONS_TASK);
     };
   }, []);
 

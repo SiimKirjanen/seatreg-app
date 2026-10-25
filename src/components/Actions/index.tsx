@@ -1,8 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function ActionWrapper({ children }) {
-  return <View style={styles.container}>{children}</View>;
+  // Android draws edge-to-edge, so keep the actions above the system navigation bar
+  const { bottom } = useSafeAreaInsets();
+
+  return <View style={[styles.container, { paddingBottom: 10 + bottom }]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -10,7 +14,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 10,
     paddingTop: 10,
   },
 });

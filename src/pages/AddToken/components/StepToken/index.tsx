@@ -63,7 +63,7 @@ export function StepToken({ parentStyles, setStep, siteURL }: Props) {
         toast.show(translate('Connection added', 'connectionAdded'), {
           type: 'success',
         });
-        navigation.navigate(PageNames.Home);
+        navigation.popTo(PageNames.Home);
       } else {
         alert(responseData?.message || translate('Validating token request failed', 'tokenValidationFailed'));
       }
